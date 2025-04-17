@@ -1,0 +1,11 @@
+.btn-primary {
+  @apply bg-amber-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-amber-600 transition-colors shadow-md;
+}
+
+.btn-secondary {
+  @apply text-amber-500 border border-amber-500 font-semibold px-6 py-3 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors shadow-md;
+}
+
+.btn-cta {
+  @apply bg-amber-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-amber-600 transition-colors shadow-lg transform hover:scale-[1.02] border-b-4 border-amber-600;
+} 

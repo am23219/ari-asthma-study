@@ -1,0 +1,37 @@
+{
+  "name": "diabetic-foot-ulcer-study",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "ghl:setup": "node setup-env.js",
+    "ghl:test": "node test-ghl-system.js",
+    "ghl:check-leads": "node check-local-leads.js"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
+    "@next/third-parties": "^15.2.4",
+    "autoprefixer": "^10.4.17",
+    "axios": "^1.8.3",
+    "dotenv": "^16.4.7",
+    "framer-motion": "^12.5.0",
+    "gh": "^2.8.9",
+    "next": "^15.2.4",
+    "postcss": "^8.4.35",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.1"
+  }
+}
