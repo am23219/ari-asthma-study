@@ -7,7 +7,7 @@ const path = require('path');
 // Sample form data for different form types
 const testForms = [
   {
-    formType: 'diabetic-foot-ulcer',
+    formType: 'uc-study',
     firstName: 'John',
     lastName: 'Doe',
     email: 'john.doe@example.com',
@@ -58,13 +58,13 @@ async function processForm(formData) {
     
     // Process different form types
     switch (formData.formType) {
-      case 'diabetic-foot-ulcer':
-        // Format for the diabetic foot ulcer form
+      case 'uc-study':
+        // Format for the uc study form
         contactData.firstName = formData.firstName || '';
         contactData.lastName = formData.lastName || '';
         contactData.email = formData.email || '';
         contactData.phone = formData.phone || '';
-        contactData.tags.push("Diabetic Foot Ulcer Study");
+        contactData.tags.push("UC Study");
         
         // Add custom fields
         if (formData.hasUlcer !== undefined) {

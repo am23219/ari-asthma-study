@@ -44,7 +44,7 @@ export default function ConsultForm() {
       setFormStatus({
         isSubmitting: false,
         isSubmitted: false,
-        error: "We apologize, but this study is only for patients with diabetic foot ulcers."
+        error: "We apologize, but this study is only for patients with ulcerative colitis."
       });
       return;
     }

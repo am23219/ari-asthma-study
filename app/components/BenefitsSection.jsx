@@ -16,7 +16,7 @@ export default function BenefitsSection() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white font-serif">Study Benefits</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-secondary to-accent mx-auto mb-8"></div>
           <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            Participating in our study offers several potential advantages for patients with liver disease.
+            Participating in our study offers several potential advantages for patients with ulcerative colitis.
           </p>
         </div>
         
@@ -98,7 +98,7 @@ export default function BenefitsSection() {
                 </span>
               </h3>
               <p className="text-gray-300">
-                By participating, you help advance medical knowledge and potentially improve future treatments for liver disease.
+                By participating, you help advance medical knowledge and potentially improve future treatments for ulcerative colitis.
               </p>
             </div>
           </div>

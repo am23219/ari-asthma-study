@@ -70,7 +70,7 @@ export default function ParticipationBenefitsSection() {
               </div>
               <div>
                 <p className="text-xl font-medium text-white">
-                  Have <span className="text-[#5FC3C3]">in-depth, long-term monitoring of your liver health</span> (as well as any associated conditions such as type 2 diabetes and high blood pressure by experts in this field of medicine). This includes access to specialist medical tests that would not be part of standard care outside of a clinical study.
+                  Have <span className="text-[#5FC3C3]">in-depth, long-term monitoring of your health</span>. This includes access to specialist medical tests that would not be part of standard care outside of a clinical study.
                 </p>
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function ParticipationBenefitsSection() {
               </div>
               <div>
                 <p className="text-xl font-medium text-white">
-                  Be a <span className="text-[#5FC3C3]">partner</span> in this quest to help improve understanding of MASH.
+                  Be a <span className="text-[#5FC3C3]">partner</span> in this quest to help improve understanding of Ulcerative Colitis.
                 </p>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function ParticipationBenefitsSection() {
               </div>
               <div>
                 <p className="text-xl font-medium text-white">
-                  Potentially <span className="text-[#5FC3C3]">help other people with MASH</span> in the future.
+                  Potentially <span className="text-[#5FC3C3]">help other people with Ulcerative Colitis</span> in the future.
                 </p>
               </div>
             </div>

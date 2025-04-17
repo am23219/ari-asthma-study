@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { GoogleTagManager } from '@next/third-parties/google'
 
 export const metadata = {
-  title: "Diabetic Foot Ulcer Study",
-  description: "Join our clinical study to improve diabetic foot ulcer treatment and care",
+  title: "UC Study",
+  description: "Join our clinical study to improve ulcerative colitis treatment and care",
 };
 
 export default function RootLayout({ children }) {

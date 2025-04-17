@@ -57,7 +57,7 @@ export default function NewsletterSignup() {
         Subscribe to Our Newsletter
       </h3>
       <p className="text-slate-600 dark:text-slate-300 mb-4">
-        Stay updated with the latest news and information about diabetic foot ulcer treatments.
+        Stay updated with the latest news and information about clinical treatments.
       </p>
       
       {submitStatus === 'success' && (

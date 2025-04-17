@@ -36,10 +36,10 @@ export default function HeroSection() {
               transition={{ duration: 0.5 }}
             >
               <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 text-white leading-tight tracking-tight" style={{ textShadow: '0 2px 15px rgba(0,0,0,0.8)' }}>
-                Have you been <span className="block">struggling with</span> <span className="text-[#00A896] drop-shadow-lg">Fatty Liver Disease?</span>
+                Have you been <span className="block">struggling with</span> <span className="text-[#00A896] drop-shadow-lg">Ulcerative Colitis or IBD?</span>
               </h1>
               <p className="text-lg md:text-xl text-white mb-6 md:mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.6)' }}>
-                Join our clinical research study evaluating whether survodutide, an injectable medication, can prevent liver complications and potentially improve liver health in patients with compensated cirrhosis due to MASH.
+                Join our clinical research study evaluating whether a new medication that blocks the TL1A protein can effectively treat moderate to severe ulcerative colitis.
               </p>
               
               <div className="mb-6 md:mb-10">

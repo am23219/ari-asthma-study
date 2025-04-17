@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
       
       <p className="mb-4">
         When you submit a form on our Site, we collect personal information which may include your name, email address, 
-        phone number, date of birth, and health information related to diabetic foot ulcers.
+        phone number, date of birth, and health information.
       </p>
       
       <h2 className="text-2xl font-semibold mt-6 mb-3">HOW WE USE YOUR PERSONAL INFORMATION</h2>
@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
       </p>
       
       <ul className="list-disc ml-8 mb-4">
-        <li>Contact you regarding your interest in our diabetic foot ulcer study</li>
+        <li>Contact you regarding your interest in our study</li>
         <li>Determine your eligibility for the study</li>
         <li>Schedule appointments and provide follow-up care</li>
         <li>Maintain and improve our website</li>
@@ -73,14 +73,13 @@ export default function PrivacyPolicy() {
       
       <p className="mb-4">
         For more information about our privacy practices, if you have questions, or if you would like to make a complaint, 
-        please contact us by email at info@denalihealthplantcity.com or by mail using the details provided below:
+        please contact us by email at info@ariinstitute.com or by mail using the details provided below:
       </p>
       
       <p className="mb-4">
-        Denali Health Plant City<br />
-        1503 S Alexander St, Suite 103<br />
-        Plant City, FL 33563<br />
-        United States
+        Access Research Institute<br /> 
+        11373 Cortez Blvd Building C, Suite 200<br />
+        Brooksville, FL 34613
       </p>
     </div>
   );

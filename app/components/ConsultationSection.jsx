@@ -1,6 +1,6 @@
 'use client';
 
-import ConsultForm from "./ConsultForm";
+import LeadCaptureForm from "./LeadCaptureForm";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -95,7 +95,7 @@ export default function ConsultationSection() {
           </motion.div>
           
           <motion.div 
-            className="lg:w-7/12 bg-white rounded-xl p-8 md:p-10 shadow-xl flex flex-col justify-between relative overflow-hidden"
+            className="lg:w-7/12 bg-white rounded-xl p-8 md:p-10 shadow-xl flex flex-col justify-center relative overflow-hidden"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -114,7 +114,9 @@ export default function ConsultationSection() {
             </div>
             
             <h3 className="text-2xl font-serif font-bold mb-8 text-center text-primary">Complete the Form Below</h3>
-            <ConsultForm />
+            <div className="flex items-center justify-center">
+              <LeadCaptureForm />
+            </div>
           </motion.div>
         </div>
       </div>

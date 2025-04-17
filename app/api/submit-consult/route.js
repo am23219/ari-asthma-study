@@ -61,7 +61,7 @@ export async function POST(request) {
         lastName: formData.lastName || '',
         email: formData.email || '',
         phone: formData.phone || '',
-        tags: ["Diabetic Foot Ulcer Study", "Website Lead"],
+        tags: ["UC Study", "Website Lead"],
         source: "Website Form"
       },
       customFields: [

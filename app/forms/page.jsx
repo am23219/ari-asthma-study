@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import LeadCaptureForm from '../components/LeadCaptureForm';
 import ContactForm from '../components/ContactForm';
-import NewsletterSignup from '../components/NewsletterSignup';
-import ConsultForm from '../components/ConsultForm';
 import { submitToGoHighLevel } from '../utils/gohighlevel';
 import { sendGTMEvent } from '@next/third-parties/google';
 
@@ -66,9 +64,9 @@ export default function FormsPage() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Diabetic Foot Ulcer Study Form</h2>
+          <h2 className="text-2xl font-semibold mb-4">Study Interest Form</h2>
           <p className="text-gray-600 mb-6">
-See if you qualify for the diabetic foot ulcer study.           </p>
+See if you qualify for the study.           </p>
           <LeadCaptureForm />
         </div>
         

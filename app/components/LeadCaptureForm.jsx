@@ -9,10 +9,10 @@ export default function LeadCaptureForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
-    hasDiagnosis: null,
-    hasOtherLiverDisease: null,
-    pregnancyStatus: null,
-    hadRecentCardiacEvent: null,
+    hasUcDiagnosis: null,
+    hasCrohnsOrIndeterminate: null,
+    hasColectomyOrOstomy: null,
+    recentlyHospitalized: null,
     name: '',
     phone: '',
     email: ''
@@ -23,31 +23,31 @@ export default function LeadCaptureForm() {
     setFormData(newFormData);
 
     // Determine next step based on answer
-    if (question === 'hasDiagnosis' && answer === false) {
+    if (question === 'hasUcDiagnosis' && answer === false) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'hasOtherLiverDisease' && answer === true) {
+    if (question === 'hasCrohnsOrIndeterminate' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'pregnancyStatus' && answer === true) {
+    if (question === 'hasColectomyOrOstomy' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'hadRecentCardiacEvent' && answer === true) {
+    if (question === 'recentlyHospitalized' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
 
     // Advance to next question or contact info
-    if (question === 'hasDiagnosis') {
-      setCurrentStep('otherLiverDisease');
-    } else if (question === 'hasOtherLiverDisease') {
-      setCurrentStep('pregnancyStatus');
-    } else if (question === 'pregnancyStatus') {
-      setCurrentStep('recentCardiacEvent');
-    } else if (question === 'hadRecentCardiacEvent') {
+    if (question === 'hasUcDiagnosis') {
+      setCurrentStep('crohnsQuestion');
+    } else if (question === 'hasCrohnsOrIndeterminate') {
+      setCurrentStep('colectomyQuestion');
+    } else if (question === 'hasColectomyOrOstomy') {
+      setCurrentStep('hospitalizedQuestion');
+    } else if (question === 'recentlyHospitalized') {
       setCurrentStep('contactInfo');
     }
   };
@@ -68,15 +68,15 @@ export default function LeadCaptureForm() {
       setIsSubmitting(true);
       // Format data for API submission
       const apiFormData = {
-        formType: 'mash-study',
+        formType: 'uc-study',
         firstName: formData.name?.split(' ')[0] || '',
         lastName: formData.name?.split(' ').slice(1).join(' ') || '',
         email: formData.email,
         phone: formData.phone,
-        hasDiagnosis: formData.hasDiagnosis,
-        hasOtherLiverDisease: formData.hasOtherLiverDisease,
-        pregnancyStatus: formData.pregnancyStatus,
-        hadRecentCardiacEvent: formData.hadRecentCardiacEvent
+        hasUcDiagnosis: formData.hasUcDiagnosis,
+        hasCrohnsOrIndeterminate: formData.hasCrohnsOrIndeterminate,
+        hasColectomyOrOstomy: formData.hasColectomyOrOstomy,
+        recentlyHospitalized: formData.recentlyHospitalized
       };
       
       console.log('Submitting Lead Capture form data:', apiFormData);
@@ -89,14 +89,14 @@ export default function LeadCaptureForm() {
           lastName: apiFormData.lastName,
           email: apiFormData.email,
           phone: apiFormData.phone,
-          tags: ["NASH/MASH Study", "Website Lead"],
+          tags: ["UC Study", "Website Lead"],
           source: "Website Eligibility Form",
           notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
-Has MASH/NASH Diagnosis: ${formData.hasDiagnosis ? "Yes/Maybe" : "Definitely Not"}
-Has Other Liver Disease: ${formData.hasOtherLiverDisease ? "Yes" : "No"}
-Pregnancy Status (if applicable): ${formData.pregnancyStatus ? "Yes" : "No"}
-Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
+Has UC Diagnosis: ${formData.hasUcDiagnosis ? "Yes/Maybe" : "Definitely Not"}
+Has Crohn's or Indeterminate Colitis: ${formData.hasCrohnsOrIndeterminate ? "Yes" : "No"}
+Has Colectomy/Ostomy/Pouch: ${formData.hasColectomyOrOstomy ? "Yes" : "No"}
+Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
         };
         
         // Use API key directly - this is what works in testing
@@ -191,10 +191,10 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
   const restart = () => {
     setCurrentStep('initial');
     setFormData({
-      hasDiagnosis: null,
-      hasOtherLiverDisease: null,
-      pregnancyStatus: null,
-      hadRecentCardiacEvent: null,
+      hasUcDiagnosis: null,
+      hasCrohnsOrIndeterminate: null,
+      hasColectomyOrOstomy: null,
+      recentlyHospitalized: null,
       name: '',
       phone: '',
       email: ''
@@ -223,17 +223,17 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
             </p>
             <div className="mb-3 sm:mb-4">
               <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Have you been diagnosed with Fatty Liver Disease or Non-Alcoholic Steatohepatitis (NASH/MASH)?
+              Have you been diagnosed with ulcerative colitis and are actively experiencing symptoms?
               </p>
               <div className="flex gap-2 sm:gap-3">
                 <button
-                  onClick={() => handleAnswer('hasDiagnosis', true)}
+                  onClick={() => handleAnswer('hasUcDiagnosis', true)}
                   className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
                 >
                   Yes/Maybe
                 </button>
                 <button
-                  onClick={() => handleAnswer('hasDiagnosis', false)}
+                  onClick={() => handleAnswer('hasUcDiagnosis', false)}
                   className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
                 >
                   Definitely Not
@@ -243,9 +243,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
           </motion.div>
         )}
         
-        {currentStep === 'otherLiverDisease' && (
+        {currentStep === 'crohnsQuestion' && (
           <motion.div
-            key="otherLiverDisease"
+            key="crohnsQuestion"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -256,17 +256,17 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
             </p>
             <div className="mb-3 sm:mb-4">
               <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Do you have any history of other liver diseases besides MASH?
+              Do you have a history of Crohn's disease or indeterminate colitis?
               </p>
               <div className="flex gap-2 sm:gap-3">
                 <button
-                  onClick={() => handleAnswer('hasOtherLiverDisease', true)}
+                  onClick={() => handleAnswer('hasCrohnsOrIndeterminate', true)}
                   className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('hasOtherLiverDisease', false)}
+                  onClick={() => handleAnswer('hasCrohnsOrIndeterminate', false)}
                   className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
                 >
                   No
@@ -276,9 +276,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
           </motion.div>
         )}
         
-        {currentStep === 'pregnancyStatus' && (
+        {currentStep === 'colectomyQuestion' && (
           <motion.div
-            key="pregnancyStatus"
+            key="colectomyQuestion"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -289,17 +289,17 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
             </p>
             <div className="mb-3 sm:mb-4">
               <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              For women: Are you pregnant, breastfeeding, or planning pregnancy in the next 7 years?
+              Have you had a colectomy (surgical removal of the colon) or do you have an ostomy or ileoanal pouch?
               </p>
               <div className="flex gap-2 sm:gap-3">
                 <button
-                  onClick={() => handleAnswer('pregnancyStatus', true)}
+                  onClick={() => handleAnswer('hasColectomyOrOstomy', true)}
                   className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('pregnancyStatus', false)}
+                  onClick={() => handleAnswer('hasColectomyOrOstomy', false)}
                   className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
                 >
                   No
@@ -309,9 +309,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
           </motion.div>
         )}
         
-        {currentStep === 'recentCardiacEvent' && (
+        {currentStep === 'hospitalizedQuestion' && (
           <motion.div
-            key="recentCardiacEvent"
+            key="hospitalizedQuestion"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -322,17 +322,17 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
             </p>
             <div className="mb-3 sm:mb-4">
               <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Have you had a heart attack stroke or mini stroke in the last 6 months?
+              Have you been hospitalized for your ulcerative colitis within the last two weeks?
               </p>
               <div className="flex gap-2 sm:gap-3">
                 <button
-                  onClick={() => handleAnswer('hadRecentCardiacEvent', true)}
+                  onClick={() => handleAnswer('recentlyHospitalized', true)}
                   className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('hadRecentCardiacEvent', false)}
+                  onClick={() => handleAnswer('recentlyHospitalized', false)}
                   className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
                 >
                   No

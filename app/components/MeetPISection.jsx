@@ -112,7 +112,7 @@ export default function MeetPISection() {
                 viewport={{ once: true }}
                 className="pl-4 md:pl-6 border-l-4 border-secondary italic text-base md:text-lg text-gray-600 bg-gray-50 p-3 md:p-4 rounded-r-lg shadow-sm"
               >
-               "As a doctor, I see how challenging liver disease can be. This study is a way for us to explore potential options that may help people feel better and live healthier lives. Every person who joins helps us move one step closer to better care in the future."
+               "As a doctor, I see how challenging ulcerative colitis can be. This study is a way for us to explore potential options that may help people feel better and live healthier lives. Every person who joins helps us move one step closer to better care in the future."
               </motion.blockquote>
             </div>
           </div>

@@ -10,23 +10,23 @@ export default function FAQSection() {
   const faqs = [
     {
       question: "What is a clinical trial?",
-      answer: "A clinical trial is a research study that evaluates new medical treatments, interventions, or devices to determine if they're safe and effective for humans. These studies follow strict scientific standards and regulatory guidelines to protect participants' safety and rights. By participating in our clinical trial, you're helping to advance medical knowledge and potentially improve future treatments for liver disease."
+      answer: "A clinical trial is a research study that evaluates new medical treatments, interventions, or devices to determine if they're safe and effective for humans. These studies follow strict scientific standards and regulatory guidelines to protect participants' safety and rights. By participating in our clinical trial, you're helping to advance medical knowledge and potentially improve future treatments for this disease."
     },
     {
       question: "What are the benefits of participating?",
-      answer: "You'll receive close monitoring of your liver condition at no cost, including specialized tests that might not be part of regular care. If you receive the active medication and it works, you may experience improvement in your liver condition and possibly weight loss. However, there's no guarantee you'll receive the active medication or that it will work for you."
+      answer: "You may receive a new treatment that could help your ulcerative colitis when other treatments haven't worked well. You'll also receive close monitoring of your condition and contribute to research that may help future patients."
     },
     {
       question: "What happens after my screening call?",
-      answer: "If you appear eligible and are interested, a study coordinator will contact you to schedule an in-person screening visit. This will include blood tests, a review of your medical history, and imaging tests to confirm if you qualify for the study."
+      answer: "If you're interested and potentially eligible, a study coordinator will contact you to schedule a screening visit where they will determine if you qualify for the study based on additional tests and a full review of your medical history."
     },
     {
       question: "What does participation involve?",
-      answer: "Participation involves visits to our clinic in Brooksville, FL. During the first few months, visits will be more frequent (approximately every 1-2 weeks) as you start the medication. After that, visits will be less frequent during the long-term follow-up period. You will be compensated for your time and travel."
+      answer: "Participation involves visits to our clinic in Brooksville, FL. The staff will monitor your condition and provide care at no cost. You will be compensated for your time and travel."
     },
     {
-      question: "Is the treatment safe?",
-      answer: "The treatment being studied has undergone initial safety testing and is approved for this clinical trial. Throughout the study, our medical team closely monitors all participants for any potential side effects or complications. Your safety is our top priority."
+      question: "What is the study medication and how does it work?",
+      answer: "The medication (RO7790121) targets a specific protein called TL1A that is involved in gut inflammation. By blocking this protein, it may help reduce inflammation and improve symptoms of ulcerative colitis."
     },
     {
       question: "Do I need insurance to participate?",

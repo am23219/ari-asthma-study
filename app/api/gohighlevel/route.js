@@ -124,13 +124,13 @@ export async function POST(request) {
     
     // Process different form types
     switch (formType) {
-      case 'diabetic-foot-ulcer':
-        // Format for the diabetic foot ulcer form
+      case 'uc-study':
+        // Format for the uc study form
         contactData.firstName = formData.firstName || '';
         contactData.lastName = formData.lastName || '';
         contactData.email = formData.email || '';
         contactData.phone = formData.phone || '';
-        contactData.tags.push("Diabetic Foot Ulcer Study");
+        contactData.tags.push("UC Study");
         
         // Add custom fields
         if (formData.hasUlcer !== undefined) {

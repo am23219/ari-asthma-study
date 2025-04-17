@@ -20,7 +20,7 @@ export default function AboutSection() {
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-[#00A896] to-[#028090] mx-auto mb-6"></div>
           <p className="text-lg text-white max-w-3xl mx-auto font-light leading-relaxed">
-          This is a clinical research study to identify new treatments for metabolic dysfunction-associated steatohepatitis (MASH), also known as nonalcoholic steatohepatitis (NASH) and Fibrosis.</p>
+          This study evaluates whether a new medication that blocks the TL1A protein can effectively treat moderate to severe ulcerative colitis when other treatments have not worked adequately.</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -39,7 +39,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white tracking-wide">Study Purpose</h3>
               <p className="text-gray-200 font-light leading-relaxed">
-              This study tests survodutide, a dual-action medication that may not only improve liver health by reducing inflammation and scarring but also address underlying metabolic issues through weight loss and improved blood sugar control.
+              This study tests a medication that works through a completely new mechanism - blocking the TL1A protein that plays a key role in gut inflammation - potentially offering a new option for patients who haven't found relief with existing therapies.
               </p>
             </div>
           </motion.div>
@@ -59,10 +59,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white tracking-wide">Duration</h3>
               <p className="text-gray-200 font-light leading-relaxed">
-                Study duration time varies, but typically lasts about 7 years. There will be
-different amounts of time that pass between each visit throughout the study (example: every 6 weeks). Some visits may be conducted remotely. The
-study team will go over the appointment schedule with you and address any questions you may
-have.
+              The main part of the study lasts about one year (52 weeks). This includes a 12-week initial treatment phase followed by a 40-week maintenance phase. After that, there's an opportunity to continue in an open-label extension phase.
               </p>
             </div>
           </motion.div>

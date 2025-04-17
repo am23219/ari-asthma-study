@@ -41,7 +41,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h4 className="text-base md:text-lg font-medium text-primary mb-1">Email</h4>
-                  <p className="text-sm md:text-base text-gray-600">info@amclinical.com</p>
+                  <p className="text-sm md:text-base text-gray-600">info@ariinstitute.com</p>
                   <p className="text-xs md:text-sm text-gray-500 mt-1">We'll respond within 24-48 hours</p>
                 </div>
               </div>
