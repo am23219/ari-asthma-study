@@ -347,7 +347,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
               <p className={questionTextClasses}>
               Do you have any history of other liver diseases besides MASH?
               </p>
-              <div className="flex gap-3 sm:gap-4">
+              <div className="flex gap-3 sm:gap-4 mb-3">
                 <button
                   onClick={() => handleAnswer('hasOtherLiverDisease', true)}
                   className={buttonSecondaryClasses}
@@ -361,6 +361,18 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   No
                 </button>
               </div>
+              <button
+                onClick={handleSkipToContact}
+                className={clsx(
+                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
+                  {
+                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
+                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
+                  }
+                )}
+              >
+                Skip Questionnaire & Fill Interest Form
+              </button>
             </div>
           </motion.div>
         )}
@@ -383,7 +395,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
               <p className={questionTextClasses}>
               For women: Are you pregnant, breastfeeding, or planning pregnancy in the next 7 years?
               </p>
-              <div className="flex gap-3 sm:gap-4">
+              <div className="flex gap-3 sm:gap-4 mb-3">
                 <button
                   onClick={() => handleAnswer('pregnancyStatus', true)}
                   className={buttonSecondaryClasses}
@@ -397,6 +409,18 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   No
                 </button>
               </div>
+              <button
+                onClick={handleSkipToContact}
+                className={clsx(
+                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
+                  {
+                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
+                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
+                  }
+                )}
+              >
+                Skip Questionnaire & Fill Interest Form
+              </button>
             </div>
           </motion.div>
         )}
@@ -419,7 +443,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
               <p className={questionTextClasses}>
               Have you had a heart attack stroke or mini stroke in the last 6 months?
               </p>
-              <div className="flex gap-3 sm:gap-4">
+              <div className="flex gap-3 sm:gap-4 mb-3">
                 <button
                   onClick={() => handleAnswer('hadRecentCardiacEvent', true)}
                   className={buttonSecondaryClasses}
@@ -433,6 +457,18 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   No
                 </button>
               </div>
+              <button
+                onClick={handleSkipToContact}
+                className={clsx(
+                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
+                  {
+                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
+                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
+                  }
+                )}
+              >
+                Skip Questionnaire & Fill Interest Form
+              </button>
             </div>
           </motion.div>
         )}
