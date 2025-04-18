@@ -61,7 +61,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-navy-deep font-heading tracking-wide">Duration</h3>
               <p className="text-base text-gray-700 font-body leading-relaxed">
-              Study duration time varies, but typically lasts about 7 years. There will be
+              This is a long-term study, typically lasting several years. There will be
 different amounts of time that pass between each visit throughout the study (example: every 6 weeks). Some visits may be conducted remotely. The
 study team will go over the appointment schedule with you and address any questions you may
 have.
