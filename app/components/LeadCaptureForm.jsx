@@ -10,6 +10,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
   const [currentStep, setCurrentStep] = useState('initial');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [skippedPrescreen, setSkippedPrescreen] = useState(false);
   const [formData, setFormData] = useState({
     hasDiagnosis: null,
     hasOtherLiverDisease: null,
@@ -54,6 +55,18 @@ export default function LeadCaptureForm({ context = 'default' }) {
     }
   };
 
+  const handleSkipToContact = () => {
+    setSkippedPrescreen(true);
+    setFormData({
+      ...formData,
+      hasDiagnosis: null,
+      hasOtherLiverDisease: null,
+      pregnancyStatus: null,
+      hadRecentCardiacEvent: null,
+    });
+    setCurrentStep('contactInfo');
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -95,10 +108,11 @@ export default function LeadCaptureForm({ context = 'default' }) {
           source: "Website Eligibility Form",
           notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
-Has MASH/NASH Diagnosis: ${formData.hasDiagnosis ? "Yes/Maybe" : "Definitely Not"}
-Has Other Liver Disease: ${formData.hasOtherLiverDisease ? "Yes" : "No"}
-Pregnancy Status (if applicable): ${formData.pregnancyStatus ? "Yes" : "No"}
-Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
+Did Prescreen: ${!skippedPrescreen}
+Has MASH/NASH Diagnosis: ${formData.hasDiagnosis !== null ? (formData.hasDiagnosis ? "Yes/Maybe" : "Definitely Not") : "Skipped"}
+Has Other Liver Disease: ${formData.hasOtherLiverDisease !== null ? (formData.hasOtherLiverDisease ? "Yes" : "No") : "Skipped"}
+Pregnancy Status (if applicable): ${formData.pregnancyStatus !== null ? (formData.pregnancyStatus ? "Yes" : "No") : "Skipped"}
+Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadRecentCardiacEvent ? "Yes" : "No") : "Skipped"}`
         };
         
         // Use API key directly - this is what works in testing
@@ -192,6 +206,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
 
   const restart = () => {
     setCurrentStep('initial');
+    setSkippedPrescreen(false);
     setFormData({
       hasDiagnosis: null,
       hasOtherLiverDisease: null,
@@ -256,10 +271,10 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
   );
 
   const buttonSecondaryClasses = clsx(
-      "flex-1 py-2.5 sm:py-3 rounded-lg font-medium text-base font-heading",
+      "flex-1 py-2.5 sm:py-3 rounded-lg font-medium text-base font-heading transition-colors duration-150 ease-in-out",
       {
-          'bg-blue-light-bg hover:bg-blue-light-bg/80 text-navy-deep': context === 'default' || context === 'consultation',
-          'bg-white/20 hover:bg-white/30 text-white': context === 'hero' // Lighter secondary button for hero
+          'bg-white text-blue-primary border border-blue-200 hover:bg-blue-50': context === 'default' || context === 'consultation',
+          'bg-white/20 hover:bg-white/30 text-white border border-white/30': context === 'hero'
       }
   );
 
@@ -292,22 +307,24 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
           >
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-              Have you been diagnosed with Fatty Liver Disease or Non-Alcoholic Steatohepatitis (NASH/MASH)?
+              Have you received a diagnosis of MASH or NASH (nonalcoholic steatohepatitis), or suspect you might have it?
               </p>
-              <div className="flex gap-3 sm:gap-4">
-                <button
-                  onClick={() => handleAnswer('hasDiagnosis', true)}
-                  className={buttonPrimaryClasses}
-                >
-                  Yes/Maybe
-                </button>
-                <button
-                  onClick={() => handleAnswer('hasDiagnosis', false)}
-                  className={buttonSecondaryClasses}
-                >
-                  Definitely Not
-                </button>
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 mb-3"> 
+                <button onClick={() => handleAnswer('hasDiagnosis', true)} className={buttonPrimaryClasses}>Yes / Maybe</button>
+                <button onClick={() => handleAnswer('hasDiagnosis', false)} className={buttonSecondaryClasses}>Definitely Not</button>
               </div>
+              <button
+                onClick={handleSkipToContact}
+                className={clsx(
+                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
+                  {
+                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
+                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
+                  }
+                )}
+              >
+                Skip Questionnaire & Fill Interest Form
+              </button>
             </div>
           </motion.div>
         )}
