@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { GoogleTagManager } from '@next/third-parties/google'
 
 export const metadata = {
-  title: "Ulcerative Colitis (UC) & IBD Clinical Trials | Access Research Institute",
-  description: "Explore clinical trials and studies for Ulcerative Colitis (UC) and IBD treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+  title: "Fatty Liver & NASH/MASH Clinical Trials | Access Research Institute",
+  description: "Explore clinical trials and studies for Fatty Liver and NASH/MASH treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
 };
 
 export default function RootLayout({ children }) {
@@ -48,8 +48,8 @@ export default function RootLayout({ children }) {
                   "@type": "MedicalWebPage",
                   "@id": "YOUR_WEBSITE_URL", // <-- Replace with your actual URL
                   "url": "YOUR_WEBSITE_URL", // <-- Replace with your actual URL
-                  "name": metadata.title,
-                  "description": metadata.description,
+                  "name": "Fatty Liver & NASH/MASH Clinical Trials | Access Research Institute",
+                  "description": "Explore clinical trials and studies for Fatty Liver and NASH/MASH treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
                   "publisher": {
                     "@type": "Organization",
                     "name": "Access Research Institute"

@@ -61,7 +61,7 @@ export async function POST(request) {
         lastName: formData.lastName || '',
         email: formData.email || '',
         phone: formData.phone || '',
-        tags: ["UC Study", "Website Lead"],
+        tags: ["MASH Study", "Website Lead"],
         source: "Website Form"
       },
       customFields: [

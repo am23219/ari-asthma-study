@@ -123,14 +123,14 @@ export async function POST(request) {
     let customFields = [];
     
     // Process different form types
-    switch (formType) {
-      case 'uc-study':
-        // Format for the uc study form
+    switch (formData.formType) {
+      case 'mash-study':
+        // Format for the mash study form
         contactData.firstName = formData.firstName || '';
         contactData.lastName = formData.lastName || '';
         contactData.email = formData.email || '';
         contactData.phone = formData.phone || '';
-        contactData.tags.push("UC Study");
+        contactData.tags.push("MASH Study");
         
         // Add custom fields
         if (formData.hasUlcer !== undefined) {
