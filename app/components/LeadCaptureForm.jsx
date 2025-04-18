@@ -358,7 +358,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   onClick={() => handleAnswer('hasOtherLiverDisease', false)}
                   className={buttonPrimaryClasses}
                 >
-                  No
+                  No / Unsure
                 </button>
               </div>
               <button
@@ -406,7 +406,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   onClick={() => handleAnswer('pregnancyStatus', false)}
                   className={buttonPrimaryClasses}
                 >
-                  No
+                  No / Unsure
                 </button>
               </div>
               <button
@@ -454,7 +454,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   onClick={() => handleAnswer('hadRecentCardiacEvent', false)}
                   className={buttonPrimaryClasses}
                 >
-                  No
+                  No / Unsure
                 </button>
               </div>
               <button
