@@ -11,12 +11,10 @@ export default function Navbar() {
   
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
+    
+    handleScroll();
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -37,30 +35,32 @@ export default function Navbar() {
                   alt="Logo"
                   width={200}
                   height={30}
-                  className="h-auto w-auto max-w-[180px] md:max-w-[250px]"
+                  className={`h-auto w-auto max-w-[180px] md:max-w-[250px] transition-all duration-300 ${
+                    isScrolled ? '' : 'brightness-0 invert'
+                  }`}
                   priority
                 />
               </Link>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="/#about" className="text-primary hover:text-secondary transition-colors duration-200 font-medium nav-link" data-nav-link="true">
+              <Link href="/#about" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 About
               </Link>
-              <Link href="/#benefits" className="text-primary hover:text-secondary transition-colors duration-200 font-medium nav-link" data-nav-link="true">
+              <Link href="/#benefits" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 Benefits
               </Link>
-              <Link href="/#pi" className="text-primary hover:text-secondary transition-colors duration-200 font-medium nav-link" data-nav-link="true">
+              <Link href="/#pi" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 Meet the PI
               </Link>
-              <Link href="/#enroll" className="text-primary hover:text-secondary transition-colors duration-200 font-medium nav-link" data-nav-link="true">
+              <Link href="/#enroll" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 How to Enroll
               </Link>
-              <Link href="/#contact" className="text-primary hover:text-secondary transition-colors duration-200 font-medium nav-link" data-nav-link="true">
+              <Link href="/#contact" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 Contact
               </Link>
-              <Link href="/forms" className="text-primary hover:text-secondary transition-colors duration-200 font-medium nav-link" data-nav-link="true">
-                Forms
+              <Link href="/#consultationsection" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
+                Schedule
               </Link>
               
               <motion.div
@@ -81,7 +81,7 @@ export default function Navbar() {
             </div>
             
             <button 
-              className={`md:hidden p-2 rounded-md absolute right-4 top-1/2 transform -translate-y-1/2 ${isScrolled ? 'text-primary bg-gray-100' : 'text-white bg-white/20'}`}
+              className={`md:hidden p-2 rounded-md absolute right-4 top-1/2 transform -translate-y-1/2 ${isScrolled ? 'text-navy-deep bg-blue-light-bg' : 'text-white bg-white/20'}`}
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
@@ -121,50 +121,50 @@ export default function Navbar() {
                 boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)"
               }}
             >
-              <div className="flex flex-col divide-y divide-gray-100">
+              <div className="flex flex-col divide-y divide-blue-light-bg">
                 <Link 
                   href="/#about" 
-                  className="px-6 py-4 text-primary hover:bg-gray-50 transition-colors duration-200 font-medium flex items-center"
+                  className="px-6 py-4 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
                   <span>About</span>
                 </Link>
                 <Link 
                   href="/#benefits" 
-                  className="px-6 py-4 text-primary hover:bg-gray-50 transition-colors duration-200 font-medium flex items-center"
+                  className="px-6 py-4 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
                   <span>Benefits</span>
                 </Link>
                 <Link 
                   href="/#pi" 
-                  className="px-6 py-4 text-primary hover:bg-gray-50 transition-colors duration-200 font-medium flex items-center"
+                  className="px-6 py-4 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
                   <span>Meet the PI</span>
                 </Link>
                 <Link 
                   href="/#enroll" 
-                  className="px-6 py-4 text-primary hover:bg-gray-50 transition-colors duration-200 font-medium flex items-center"
+                  className="px-6 py-4 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
                   <span>How to Enroll</span>
                 </Link>
                 <Link 
                   href="/#contact" 
-                  className="px-6 py-4 text-primary hover:bg-gray-50 transition-colors duration-200 font-medium flex items-center"
+                  className="px-6 py-4 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
                   <span>Contact</span>
                 </Link>
                 <Link 
-                  href="/forms" 
-                  className="px-6 py-3 text-primary hover:bg-gray-50 transition-colors duration-200 font-medium flex items-center"
+                  href="/#consultationsection" 
+                  className="px-6 py-3 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
-                  <span>Forms</span>
+                  <span>Schedule</span>
                 </Link>
-                <div className="px-6 py-4 bg-gray-50">
+                <div className="px-6 py-4 bg-blue-light-bg">
                   <a 
                     href="tel:813-796-6716" 
                     className="btn-primary w-full text-center flex items-center justify-center"

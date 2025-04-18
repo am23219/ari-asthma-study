@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendGTMEvent } from '@next/third-parties/google';
+import clsx from 'clsx';
 
-export default function LeadCaptureForm() {
+export default function LeadCaptureForm({ context = 'default' }) {
   const [currentStep, setCurrentStep] = useState('initial');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -201,14 +202,84 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
     });
   };
 
+  const rootClasses = clsx(
+    "relative overflow-hidden w-full"
+  );
+
+  const headingClasses = clsx(
+    "text-xl md:text-2xl font-bold text-center mb-2 font-heading",
+    {
+      'text-navy-deep': context === 'default' || context === 'consultation',
+      'text-white': context === 'hero',
+    }
+  );
+  
+  const captionClasses = clsx(
+    "text-center mb-6 text-sm md:text-base font-body",
+    {
+      'text-text-sub': context === 'default' || context === 'consultation',
+      'text-white/90': context === 'hero',
+    }
+  );
+
+  const questionTextClasses = clsx(
+      "text-lg sm:text-xl font-bold mb-2 sm:mb-3 border-l-4 pl-3 py-1 font-heading",
+      {
+          'text-navy-deep border-teal-accent': context === 'default' || context === 'consultation',
+          'text-white border-teal-400': context === 'hero'
+      }
+  );
+
+  const inputLabelClasses = clsx(
+      "block text-base font-medium mb-1 font-heading",
+      {
+          'text-gray-700': context === 'default' || context === 'consultation',
+          'text-white': context === 'hero' // White text for hero
+      }
+  );
+
+  const inputTextClasses = clsx(
+      "mt-1 block w-full rounded-md shadow-sm text-base font-body",
+      {
+          'border-gray-300 focus:border-blue-primary focus:ring-blue-primary px-4 py-3': context === 'default' || context === 'consultation',
+          'bg-white/20 border-white/30 text-white placeholder-white focus:border-teal-400 focus:ring-teal-400 rounded-lg px-4 py-3': context === 'hero'
+      }
+  );
+
+  const buttonPrimaryClasses = clsx(
+      "flex-1 text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-base font-heading",
+      {
+          'bg-gradient-to-r from-blue-primary to-navy-deep hover:from-navy-deep hover:to-blue-primary': context === 'default' || context === 'consultation',
+          'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700': context === 'hero' // Teal/Cyan buttons for hero
+      }
+  );
+
+  const buttonSecondaryClasses = clsx(
+      "flex-1 py-2.5 sm:py-3 rounded-lg font-medium text-base font-heading",
+      {
+          'bg-blue-light-bg hover:bg-blue-light-bg/80 text-navy-deep': context === 'default' || context === 'consultation',
+          'bg-white/20 hover:bg-white/30 text-white': context === 'hero' // Lighter secondary button for hero
+      }
+  );
+
+  const notQualifiedTextClasses = clsx(
+      "text-center",
+      {
+          'text-red-600': context === 'default' || context === 'consultation',
+          'text-red-400': context === 'hero' // Lighter red for hero
+      }
+  );
+
+  const successTextClasses = clsx(
+      "text-center",
+      {
+          'text-green-600': context === 'default' || context === 'consultation',
+          'text-green-400': context === 'hero' // Lighter green for hero
+      }
+  );
+
   return (
-    <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-sm border border-amber-100 dark:border-amber-600 relative overflow-hidden backdrop-blur-sm">
-      <div className="absolute -right-12 -top-12 w-24 h-24 bg-yellow-100/50 rounded-full"></div>
-      
-      <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-center text-slate-800 dark:text-white">
-        Quick Screening Questions
-      </h3>
-      
+    <div className={rootClasses}>
       <AnimatePresence mode="wait">
         {currentStep === 'initial' && (
           <motion.div
@@ -218,23 +289,20 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4 text-center">
-              Just 30 seconds to see if you qualify - no commitment required!
-            </p>
-            <div className="mb-3 sm:mb-4">
-              <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Have you been diagnosed with ulcerative colitis and are actively experiencing symptoms?
+            <div className="mb-4 sm:mb-5">
+              <p className={questionTextClasses}>
+                Have you been diagnosed with ulcerative colitis and are actively experiencing symptoms?
               </p>
-              <div className="flex gap-2 sm:gap-3">
+              <div className="flex gap-3 sm:gap-4">
                 <button
                   onClick={() => handleAnswer('hasUcDiagnosis', true)}
-                  className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
+                  className={buttonPrimaryClasses}
                 >
                   Yes/Maybe
                 </button>
                 <button
                   onClick={() => handleAnswer('hasUcDiagnosis', false)}
-                  className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
+                  className={buttonSecondaryClasses}
                 >
                   Definitely Not
                 </button>
@@ -251,23 +319,26 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4 text-center">
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
+              { 'text-white/90': context === 'hero' }
+            )}>
               Question 2 of 4 - almost halfway there!
             </p>
-            <div className="mb-3 sm:mb-4">
-              <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Do you have a history of Crohn's disease or indeterminate colitis?
+            <div className="mb-4 sm:mb-5">
+              <p className={questionTextClasses}>
+                Have you been diagnosed with Crohn's disease or indeterminate colitis?
               </p>
-              <div className="flex gap-2 sm:gap-3">
+              <div className="flex gap-3 sm:gap-4">
                 <button
                   onClick={() => handleAnswer('hasCrohnsOrIndeterminate', true)}
-                  className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
+                  className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
                   onClick={() => handleAnswer('hasCrohnsOrIndeterminate', false)}
-                  className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
+                  className={buttonPrimaryClasses}
                 >
                   No
                 </button>
@@ -284,23 +355,26 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4 text-center">
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
+              { 'text-white/90': context === 'hero' }
+            )}>
               Question 3 of 4 - you're making great progress!
             </p>
-            <div className="mb-3 sm:mb-4">
-              <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Have you had a colectomy (surgical removal of the colon) or do you have an ostomy or ileoanal pouch?
+            <div className="mb-4 sm:mb-5">
+              <p className={questionTextClasses}>
+                Have you had a colectomy (removal of the colon), ostomy, or ileal pouch?
               </p>
-              <div className="flex gap-2 sm:gap-3">
+              <div className="flex gap-3 sm:gap-4">
                 <button
                   onClick={() => handleAnswer('hasColectomyOrOstomy', true)}
-                  className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
+                  className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
                   onClick={() => handleAnswer('hasColectomyOrOstomy', false)}
-                  className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
+                  className={buttonPrimaryClasses}
                 >
                   No
                 </button>
@@ -317,23 +391,26 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4 text-center">
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
+              { 'text-white/90': context === 'hero' }
+            )}>
               Final question - you're almost done!
             </p>
-            <div className="mb-3 sm:mb-4">
-              <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-white mb-2 sm:mb-3 border-l-4 border-[#00A896] pl-3 py-1">
-              Have you been hospitalized for your ulcerative colitis within the last two weeks?
+            <div className="mb-4 sm:mb-5">
+              <p className={questionTextClasses}>
+                Have you been hospitalized for UC or IBD in the past 3 months?
               </p>
-              <div className="flex gap-2 sm:gap-3">
+              <div className="flex gap-3 sm:gap-4">
                 <button
                   onClick={() => handleAnswer('recentlyHospitalized', true)}
-                  className="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
+                  className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
                   onClick={() => handleAnswer('recentlyHospitalized', false)}
-                  className="flex-1 bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base"
+                  className={buttonPrimaryClasses}
                 >
                   No
                 </button>
@@ -350,110 +427,71 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4 text-center">
-              Great news! Based on your answers, you may qualify for our study.
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-5 sm:mb-7 text-center font-body",
+              { 'text-white/90': context === 'hero' }
+            )}>
+              Great! You may qualify. Please provide your contact information so we can follow up.
             </p>
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Full Name
-                </label>
+                <label htmlFor="name" className={inputLabelClasses}>Full Name</label>
                 <input
                   type="text"
-                  id="name"
                   name="name"
+                  id="name"
+                  required
                   value={formData.name}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00A896] focus:border-transparent dark:bg-slate-700 dark:text-white"
-                  placeholder="John Smith"
+                  className={clsx(inputTextClasses, "mt-2")}
+                  placeholder="Enter your full name"
                 />
               </div>
-              
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Phone Number
-                </label>
+                <label htmlFor="phone" className={inputLabelClasses}>Phone Number</label>
                 <input
                   type="tel"
-                  id="phone"
                   name="phone"
+                  id="phone"
+                  required
                   value={formData.phone}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00A896] focus:border-transparent dark:bg-slate-700 dark:text-white"
-                  placeholder="(123) 456-7890"
+                  className={clsx(inputTextClasses, "mt-2")}
+                  placeholder="(555) 123-4567"
                 />
               </div>
-              
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Email Address
-                </label>
+                <label htmlFor="email" className={inputLabelClasses}>Email Address</label>
                 <input
                   type="email"
-                  id="email"
                   name="email"
+                  id="email"
+                  required
                   value={formData.email}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00A896] focus:border-transparent dark:bg-slate-700 dark:text-white"
-                  placeholder="john@example.com"
+                  className={clsx(inputTextClasses, "mt-2")}
+                  placeholder="you@example.com"
                 />
               </div>
-              
-              {errorMessage && (
-                <div className="text-red-500 text-sm mt-2">
-                  {errorMessage}
-                </div>
-              )}
-              
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base disabled:opacity-70 disabled:cursor-not-allowed"
+                className={clsx(
+                  "w-full py-3.5 sm:py-4 rounded-lg text-white font-semibold transition-all flex items-center justify-center font-heading",
+                  {
+                    'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700': context === 'hero'
+                  }
+                )}
               >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                {isSubmitting ? (
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : null}
+                {isSubmitting ? 'Submitting...' : 'Submit Eligibility Check'}
               </button>
             </form>
-          </motion.div>
-        )}
-        
-        {currentStep === 'notQualified' && (
-          <motion.div
-            key="notQualified"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="text-center"
-          >
-            <svg className="w-16 h-16 mx-auto mb-3 sm:mb-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-            <h4 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-slate-800 dark:text-white">
-              You may not qualify at this time
-            </h4>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4">
-              Based on your answers, you may not qualify for this particular study. However, we may have other studies that are a better fit.
-            </p>
-            <div className="flex flex-col space-y-2 sm:space-y-3">
-              <a
-                href="tel:3526911140"
-                className="bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base flex items-center justify-center"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                Call to Discuss Options
-              </a>
-              <button
-                onClick={restart}
-                className="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base"
-              >
-                Start Over
-              </button>
-            </div>
           </motion.div>
         )}
         
@@ -464,35 +502,62 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="text-center"
+            className={successTextClasses}
           >
-            <div className="flex justify-center mb-4">
-              <div className="bg-green-100 p-3 rounded-full">
-                <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-              </div>
+            <div className="mx-auto mb-4 bg-gradient-to-br from-teal-accent to-blue-primary rounded-full p-3 w-16 h-16 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
             </div>
-            <h4 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
-              Thank You!
-            </h4>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
-              Your information has been submitted successfully. One of our team members will contact you shortly to discuss next steps.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="tel:8136966716"
-                className="bg-gradient-to-r from-[#00A896] to-[#028090] hover:from-[#028090] hover:to-[#00A896] text-white py-2.5 px-6 rounded-lg font-medium transition-all text-sm sm:text-base"
-              >
-                Call Us Now
-              </a>
-              <button
-                onClick={restart}
-                className="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2.5 px-6 rounded-lg font-medium text-sm sm:text-base"
-              >
-                Start Over
-              </button>
+            <h4 className={clsx(
+              "text-lg sm:text-xl font-semibold text-navy-deep mb-2 font-heading",
+              { 'text-white': context === 'hero' }
+            )}>Thank You!</h4>
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-4 font-body",
+              { 'text-white/90': context === 'hero' }
+            )}>We've received your information. A study coordinator will contact you soon to discuss the next steps.</p>
+            <button
+              onClick={restart}
+              className={clsx("text-sm sm:text-base text-blue-primary hover:underline font-medium font-heading", {
+                  'text-teal-400': context === 'hero'
+              })}
+            >
+              Start Over
+            </button>
+          </motion.div>
+        )}
+
+        {currentStep === 'notQualified' && (
+          <motion.div
+            key="notQualified"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className={notQualifiedTextClasses}
+          >
+            <div className="mx-auto mb-4 bg-gradient-to-br from-orange-400 to-red-500 rounded-full p-3 w-16 h-16 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </div>
+            <h4 className={clsx(
+              "text-lg sm:text-xl font-semibold text-navy-deep mb-2 font-heading",
+              { 'text-white': context === 'hero' }
+            )}>Qualification Status</h4>
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-4 font-body",
+               { 'text-white/90': context === 'hero' }
+             )}>Based on your answers, you may not qualify for this specific study at this time. Requirements can change, so feel free to check back later or contact us for other potential opportunities.</p>
+            <button
+              onClick={restart}
+              className={clsx("text-sm sm:text-base text-blue-primary hover:underline font-medium font-heading", {
+                  'text-teal-400': context === 'hero'
+              })}
+            >
+              Start Over
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

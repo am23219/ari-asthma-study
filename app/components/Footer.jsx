@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-[#1F3B57] to-[#152A3F] py-10 md:py-16 relative overflow-hidden">
+    <footer className="bg-gradient-to-br from-[#003F73] to-[#0077CC] py-10 md:py-16 relative overflow-hidden">
       {/* Background wave pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-divider"></div>
@@ -13,19 +13,19 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12">
           <div>
-            <h3 className="text-xl md:text-2xl font-serif font-bold text-white mb-4 md:mb-6">UC Study</h3>
-            <p className="text-white text-sm md:text-base">
+            <h3 className="text-xl md:text-2xl font-heading font-bold text-white mb-4 md:mb-6">UC Study</h3>
+            <p className="text-white text-sm md:text-base font-body">
               Advancing treatment options for patients with ulcerative colitis.
             </p>
           </div>
           
           <div>
-            <h3 className="text-lg md:text-xl font-serif font-bold text-white mb-4 md:mb-6">Quick Links</h3>
+            <h3 className="text-lg md:text-xl font-heading font-bold text-white mb-4 md:mb-6">Quick Links</h3>
             <ul className="space-y-2 md:space-y-4">
               <li>
                 <Link 
                   href="/#about" 
-                  className="text-white hover:text-[#00A896] transition-colors duration-200 text-sm md:text-base" style={{ color: 'white !important' }}
+                  className="text-white hover:text-teal-accent transition-colors duration-200 text-sm md:text-base font-body footer-link"
                 >
                   About the Study
                 </Link>
@@ -33,7 +33,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#pi" 
-                  className="text-white hover:text-[#00A896] transition-colors duration-200 text-sm md:text-base" style={{ color: 'white !important' }}
+                  className="text-white hover:text-teal-accent transition-colors duration-200 text-sm md:text-base font-body footer-link"
                 >
                   Meet the PI
                 </Link>
@@ -41,7 +41,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#benefits" 
-                  className="text-white hover:text-[#00A896] transition-colors duration-200 text-sm md:text-base" style={{ color: 'white !important' }}
+                  className="text-white hover:text-teal-accent transition-colors duration-200 text-sm md:text-base font-body footer-link"
                 >
                   Benefits
                 </Link>
@@ -49,7 +49,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#enroll" 
-                  className="text-white hover:text-[#00A896] transition-colors duration-200 text-sm md:text-base" style={{ color: 'white !important' }}
+                  className="text-white hover:text-teal-accent transition-colors duration-200 text-sm md:text-base font-body footer-link"
                 >
                   How to Enroll
                 </Link>
@@ -57,7 +57,7 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/#faq" 
-                  className="text-white hover:text-[#00A896] transition-colors duration-200 text-sm md:text-base" style={{ color: 'white !important' }}
+                  className="text-white hover:text-teal-accent transition-colors duration-200 text-sm md:text-base font-body footer-link"
                 >
                   FAQ
                 </Link>
@@ -66,13 +66,13 @@ export default function Footer() {
           </div>
           
           <div>
-            <h3 className="text-lg md:text-xl font-serif font-bold text-white mb-4 md:mb-6">Contact Us</h3>
-            <p className="text-white mb-3 md:mb-4 text-sm md:text-base">
+            <h3 className="text-lg md:text-xl font-heading font-bold text-white mb-4 md:mb-6">Contact Us</h3>
+            <p className="text-white mb-3 md:mb-4 text-sm md:text-base font-body">
               Have questions about the study?
             </p>
             <Link 
               href="/#contact" 
-              className="inline-flex items-center text-white hover:text-[#00A896] transition-colors duration-200 text-sm md:text-base" style={{ color: 'white !important' }}
+              className="inline-flex items-center text-white hover:text-teal-accent transition-colors duration-200 text-sm md:text-base font-body footer-link"
             >
               <span>Get in touch with our team</span>
               <svg 
@@ -91,37 +91,28 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-gray-700 pt-6 md:pt-8">
+        <div className="border-t border-white/20 pt-6 md:pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white text-xs md:text-sm mb-3 md:mb-0 text-center md:text-left">
+            <p className="text-white text-xs md:text-sm mb-3 md:mb-0 text-center md:text-left font-body">
               © {new Date().getFullYear()} Access Research Institute. All rights reserved.
             </p>
             <div className="flex space-x-4 md:space-x-6">
-              <a 
-                href="#" 
-                className="text-white hover:text-[#00A896] transition-colors duration-200 text-xs md:text-sm" style={{ color: 'white !important' }}
+              <Link 
+                href="/privacy" 
+                className="text-white hover:text-teal-accent transition-colors duration-200 text-xs md:text-sm font-body footer-link"
               >
                 Privacy Policy
-              </a>
-              <a 
-                href="#" 
-                className="text-white hover:text-[#00A896] transition-colors duration-200 text-xs md:text-sm" style={{ color: 'white !important' }}  
+              </Link>
+              <Link 
+                href="/terms" 
+                className="text-white hover:text-teal-accent transition-colors duration-200 text-xs md:text-sm font-body footer-link"
               >
                 Terms of Service
-              </a>
+              </Link>
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        a {
-          color: white !important;
-        }
-        a:hover {
-          color: #00A896 !important;
-        }
-      `}</style>
     </footer>
   );
 } 

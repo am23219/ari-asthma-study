@@ -1,11 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Button Styles */
+
 .btn-primary {
-  @apply bg-amber-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-amber-600 transition-colors shadow-md;
+  @apply bg-blue-primary text-white font-heading font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-navy-deep transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
 }
 
 .btn-secondary {
-  @apply text-amber-500 border border-amber-500 font-semibold px-6 py-3 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors shadow-md;
+  @apply bg-white text-blue-primary border-2 border-blue-primary font-heading font-semibold px-6 py-3 rounded-lg shadow-sm hover:bg-bg-alt-2 transition-all duration-300 hover:shadow-md hover:-translate-y-1;
 }
 
+.btn-accent {
+  @apply bg-teal-accent text-white font-heading font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-navy-deep transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+.btn-outline {
+  @apply bg-transparent text-blue-primary border-2 border-blue-primary font-heading font-semibold px-6 py-3 rounded-lg shadow-sm hover:bg-bg-alt-2 transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+}
+
+.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+
+.btn-lg {
+  @apply px-8 py-4 text-lg;
+}
+
+.btn-rounded {
+  @apply rounded-full;
+}
+
+/* CTA Button Animation */
 .btn-cta {
-  @apply bg-amber-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-amber-600 transition-colors shadow-lg transform hover:scale-[1.02] border-b-4 border-amber-600;
+  @apply relative overflow-hidden bg-blue-primary text-white font-heading font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
+}
+
+.btn-cta::after {
+  content: '';
+  @apply absolute inset-0 w-full h-full bg-white opacity-0 transition-opacity duration-300;
+}
+
+.btn-cta:hover::after {
+  @apply opacity-10;
+}
+
+/* Link Button */
+.link-btn {
+  @apply inline-flex items-center text-blue-primary font-heading font-medium transition-all duration-300 hover:text-navy-deep;
+}
+
+.link-btn svg {
+  @apply ml-1 transition-transform duration-300;
+}
+
+.link-btn:hover svg {
+  @apply transform translate-x-1;
 } 
