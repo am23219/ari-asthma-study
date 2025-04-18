@@ -18,11 +18,11 @@ export default function AboutSection() {
           className="text-center mb-10 md:mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-5 text-navy-deep font-heading tracking-tight">
-            About this Study
+            About the Study
           </h2> 
           <div className="w-24 h-1 bg-gradient-to-r from-blue-primary to-navy-deep mx-auto mb-6"></div>
           <p className="text-lg text-gray-800 max-w-3xl mx-auto font-body leading-relaxed">
-          This study evaluates whether a new medication that blocks the TL1A protein can effectively treat moderate to severe ulcerative colitis when other treatments have not worked adequately.</p>
+          This is a clinical research study to identify new treatments for metabolic dysfunction-associated steatohepatitis (MASH), also known as nonalcoholic steatohepatitis (NASH) and Fibrosis.</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -41,7 +41,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-navy-deep font-heading tracking-wide">Study Purpose</h3>
               <p className="text-base text-gray-700 font-body leading-relaxed">
-              This study tests a medication that works through a <strong>completely new mechanism - blocking the TL1A protein</strong> that plays a key role in gut inflammation - potentially offering a new option for patients who haven't found relief with existing therapies.
+              This study tests survodutide, a dual-action medication that may not only improve liver health by reducing inflammation and scarring but also address underlying metabolic issues through weight loss and improved blood sugar control.
               </p>
             </div>
           </motion.div>
@@ -61,7 +61,10 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-navy-deep font-heading tracking-wide">Duration</h3>
               <p className="text-base text-gray-700 font-body leading-relaxed">
-              The main part of the study lasts about <strong>one year (52 weeks)</strong>. This includes a <strong>12-week initial treatment phase</strong> followed by a <strong>40-week maintenance phase</strong>. After that, there's an opportunity to continue in an open-label extension phase.
+              Study duration time varies, but typically lasts about 7 years. There will be
+different amounts of time that pass between each visit throughout the study (example: every 6 weeks). Some visits may be conducted remotely. The
+study team will go over the appointment schedule with you and address any questions you may
+have.
               </p>
             </div>
           </motion.div>
@@ -94,7 +97,7 @@ export default function AboutSection() {
             className="btn-primary inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-primary rounded-full hover:bg-navy-deep transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             <FontAwesomeIcon icon={faClipboardCheck} className="h-5 w-5 mr-2" />
-            <span className="tracking-wide">See If You Qualify</span>
+            <span className="tracking-wide">Schedule Your Consultation</span>
           </Link>
         </div>
       </div>

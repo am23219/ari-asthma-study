@@ -6,14 +6,15 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import clsx from 'clsx';
 
 export default function LeadCaptureForm({ context = 'default' }) {
+  console.log('LeadCaptureForm context:', context);
   const [currentStep, setCurrentStep] = useState('initial');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
-    hasUcDiagnosis: null,
-    hasCrohnsOrIndeterminate: null,
-    hasColectomyOrOstomy: null,
-    recentlyHospitalized: null,
+    hasDiagnosis: null,
+    hasOtherLiverDisease: null,
+    pregnancyStatus: null,
+    hadRecentCardiacEvent: null,
     name: '',
     phone: '',
     email: ''
@@ -24,31 +25,31 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setFormData(newFormData);
 
     // Determine next step based on answer
-    if (question === 'hasUcDiagnosis' && answer === false) {
+    if (question === 'hasDiagnosis' && answer === false) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'hasCrohnsOrIndeterminate' && answer === true) {
+    if (question === 'hasOtherLiverDisease' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'hasColectomyOrOstomy' && answer === true) {
+    if (question === 'pregnancyStatus' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'recentlyHospitalized' && answer === true) {
+    if (question === 'hadRecentCardiacEvent' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
 
     // Advance to next question or contact info
-    if (question === 'hasUcDiagnosis') {
-      setCurrentStep('crohnsQuestion');
-    } else if (question === 'hasCrohnsOrIndeterminate') {
-      setCurrentStep('colectomyQuestion');
-    } else if (question === 'hasColectomyOrOstomy') {
-      setCurrentStep('hospitalizedQuestion');
-    } else if (question === 'recentlyHospitalized') {
+    if (question === 'hasDiagnosis') {
+      setCurrentStep('otherLiverDisease');
+    } else if (question === 'hasOtherLiverDisease') {
+      setCurrentStep('pregnancyStatus');
+    } else if (question === 'pregnancyStatus') {
+      setCurrentStep('recentCardiacEvent');
+    } else if (question === 'hadRecentCardiacEvent') {
       setCurrentStep('contactInfo');
     }
   };
@@ -64,20 +65,20 @@ export default function LeadCaptureForm({ context = 'default' }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    
+
     try {
       setIsSubmitting(true);
       // Format data for API submission
       const apiFormData = {
-        formType: 'uc-study',
+        formType: 'mash-study',
         firstName: formData.name?.split(' ')[0] || '',
         lastName: formData.name?.split(' ').slice(1).join(' ') || '',
         email: formData.email,
         phone: formData.phone,
-        hasUcDiagnosis: formData.hasUcDiagnosis,
-        hasCrohnsOrIndeterminate: formData.hasCrohnsOrIndeterminate,
-        hasColectomyOrOstomy: formData.hasColectomyOrOstomy,
-        recentlyHospitalized: formData.recentlyHospitalized
+        hasDiagnosis: formData.hasDiagnosis,
+        hasOtherLiverDisease: formData.hasOtherLiverDisease,
+        pregnancyStatus: formData.pregnancyStatus,
+        hadRecentCardiacEvent: formData.hadRecentCardiacEvent
       };
       
       console.log('Submitting Lead Capture form data:', apiFormData);
@@ -85,19 +86,19 @@ export default function LeadCaptureForm({ context = 'default' }) {
       // Try direct API call to GoHighLevel first (this is what works reliably)
       try {
         // Format the data for GoHighLevel direct API call
-        const contactData = {
+         const contactData = {
           firstName: apiFormData.firstName,
           lastName: apiFormData.lastName,
           email: apiFormData.email,
           phone: apiFormData.phone,
-          tags: ["UC Study", "Website Lead"],
+          tags: ["NASH/MASH Study", "Website Lead"],
           source: "Website Eligibility Form",
           notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
-Has UC Diagnosis: ${formData.hasUcDiagnosis ? "Yes/Maybe" : "Definitely Not"}
-Has Crohn's or Indeterminate Colitis: ${formData.hasCrohnsOrIndeterminate ? "Yes" : "No"}
-Has Colectomy/Ostomy/Pouch: ${formData.hasColectomyOrOstomy ? "Yes" : "No"}
-Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
+Has MASH/NASH Diagnosis: ${formData.hasDiagnosis ? "Yes/Maybe" : "Definitely Not"}
+Has Other Liver Disease: ${formData.hasOtherLiverDisease ? "Yes" : "No"}
+Pregnancy Status (if applicable): ${formData.pregnancyStatus ? "Yes" : "No"}
+Recent Cardiac Event: ${formData.hadRecentCardiacEvent ? "Yes" : "No"}`
         };
         
         // Use API key directly - this is what works in testing
@@ -192,10 +193,10 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
   const restart = () => {
     setCurrentStep('initial');
     setFormData({
-      hasUcDiagnosis: null,
-      hasCrohnsOrIndeterminate: null,
-      hasColectomyOrOstomy: null,
-      recentlyHospitalized: null,
+      hasDiagnosis: null,
+      hasOtherLiverDisease: null,
+      pregnancyStatus: null,
+      hadRecentCardiacEvent: null,
       name: '',
       phone: '',
       email: ''
@@ -291,17 +292,17 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
           >
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-                Have you been diagnosed with ulcerative colitis and are actively experiencing symptoms?
+              Have you been diagnosed with Fatty Liver Disease or Non-Alcoholic Steatohepatitis (NASH/MASH)?
               </p>
               <div className="flex gap-3 sm:gap-4">
                 <button
-                  onClick={() => handleAnswer('hasUcDiagnosis', true)}
+                  onClick={() => handleAnswer('hasDiagnosis', true)}
                   className={buttonPrimaryClasses}
                 >
                   Yes/Maybe
                 </button>
                 <button
-                  onClick={() => handleAnswer('hasUcDiagnosis', false)}
+                  onClick={() => handleAnswer('hasDiagnosis', false)}
                   className={buttonSecondaryClasses}
                 >
                   Definitely Not
@@ -311,9 +312,9 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
           </motion.div>
         )}
         
-        {currentStep === 'crohnsQuestion' && (
+        {currentStep === 'otherLiverDisease' && (
           <motion.div
-            key="crohnsQuestion"
+            key="otherLiverDisease"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -327,17 +328,17 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-                Have you been diagnosed with Crohn's disease or indeterminate colitis?
+              Do you have any history of other liver diseases besides MASH?
               </p>
               <div className="flex gap-3 sm:gap-4">
                 <button
-                  onClick={() => handleAnswer('hasCrohnsOrIndeterminate', true)}
+                  onClick={() => handleAnswer('hasOtherLiverDisease', true)}
                   className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('hasCrohnsOrIndeterminate', false)}
+                  onClick={() => handleAnswer('hasOtherLiverDisease', false)}
                   className={buttonPrimaryClasses}
                 >
                   No
@@ -347,9 +348,9 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
           </motion.div>
         )}
         
-        {currentStep === 'colectomyQuestion' && (
+        {currentStep === 'pregnancyStatus' && (
           <motion.div
-            key="colectomyQuestion"
+            key="pregnancyStatus"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -363,17 +364,17 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-                Have you had a colectomy (removal of the colon), ostomy, or ileal pouch?
+              For women: Are you pregnant, breastfeeding, or planning pregnancy in the next 7 years?
               </p>
               <div className="flex gap-3 sm:gap-4">
                 <button
-                  onClick={() => handleAnswer('hasColectomyOrOstomy', true)}
+                  onClick={() => handleAnswer('pregnancyStatus', true)}
                   className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('hasColectomyOrOstomy', false)}
+                  onClick={() => handleAnswer('pregnancyStatus', false)}
                   className={buttonPrimaryClasses}
                 >
                   No
@@ -383,9 +384,9 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
           </motion.div>
         )}
         
-        {currentStep === 'hospitalizedQuestion' && (
+        {currentStep === 'recentCardiacEvent' && (
           <motion.div
-            key="hospitalizedQuestion"
+            key="recentCardiacEvent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -399,17 +400,17 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-                Have you been hospitalized for UC or IBD in the past 3 months?
+              Have you had a heart attack stroke or mini stroke in the last 6 months?
               </p>
               <div className="flex gap-3 sm:gap-4">
                 <button
-                  onClick={() => handleAnswer('recentlyHospitalized', true)}
+                  onClick={() => handleAnswer('hadRecentCardiacEvent', true)}
                   className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('recentlyHospitalized', false)}
+                  onClick={() => handleAnswer('hadRecentCardiacEvent', false)}
                   className={buttonPrimaryClasses}
                 >
                   No
@@ -479,6 +480,7 @@ Recently Hospitalized: ${formData.recentlyHospitalized ? "Yes" : "No"}`
                 className={clsx(
                   "w-full py-3.5 sm:py-4 rounded-lg text-white font-semibold transition-all flex items-center justify-center font-heading",
                   {
+                    'bg-gradient-to-r from-blue-primary to-navy-deep hover:from-navy-deep hover:to-blue-primary': context === 'default' || context === 'consultation',
                     'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700': context === 'hero'
                   }
                 )}

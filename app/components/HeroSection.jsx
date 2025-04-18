@@ -1,8 +1,6 @@
 'use client';
 
 import { useCallback, useState, useEffect } from 'react';
-import Particles from 'react-tsparticles';
-import { loadSlim } from 'tsparticles-slim';
 import Link from "next/link";
 import { motion } from "framer-motion";
 import LeadCaptureForm from "./LeadCaptureForm";
@@ -14,130 +12,8 @@ export default function HeroSection() {
     setIsClient(true);
   }, []);
 
-  const particlesInit = useCallback(async (engine) => {
-    console.log("Initializing particles engine...");
-    await loadSlim(engine);
-    console.log("Particles engine loaded.");
-  }, []);
-
-  const particlesLoaded = useCallback(async (container) => {
-    console.log("Particles container loaded:", container);
-  }, []);
-
-  const particlesOptions = {
-    fullScreen: {
-      enable: false,
-      zIndex: 0,
-    },
-    background: {
-    },
-    particles: {
-      number: {
-        value: 60,
-        density: {
-          enable: true,
-          value_area: 800,
-        },
-      },
-      color: {
-        value: ['#ffffff', '#00B3A6', '#0077CC'],
-      },
-      shape: {
-        type: 'circle',
-      },
-      opacity: {
-        value: 0.6,
-        random: true,
-        anim: {
-          enable: true,
-          speed: 0.5,
-          opacity_min: 0.1,
-          sync: false,
-        },
-      },
-      size: {
-        value: 3,
-        random: true,
-        anim: {
-          enable: false,
-        },
-      },
-      line_linked: {
-        enable: true,
-        distance: 150,
-        color: '#ffffff',
-        opacity: 0.4,
-        width: 1,
-      },
-      move: {
-        enable: true,
-        speed: 1.5,
-        direction: 'none',
-        random: true,
-        straight: false,
-        out_mode: 'out',
-        bounce: false,
-        attract: {
-          enable: false,
-          rotateX: 600,
-          rotateY: 1200,
-        },
-      },
-    },
-    interactivity: {
-      detect_on: 'canvas',
-      events: {
-        onhover: {
-          enable: true,
-          mode: 'repulse',
-        },
-        onclick: {
-          enable: true,
-          mode: 'push',
-        },
-        resize: true,
-      },
-      modes: {
-        grab: {
-          distance: 400,
-          line_linked: {
-            opacity: 1,
-          },
-        },
-        bubble: {
-          distance: 400,
-          size: 40,
-          duration: 2,
-          opacity: 8,
-          speed: 3,
-        },
-        repulse: {
-          distance: 100,
-          duration: 0.4,
-        },
-        push: {
-          particles_nb: 4,
-        },
-        remove: {
-          particles_nb: 2,
-        },
-      },
-    },
-    detectRetina: true,
-  };
-
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-24 pb-12 md:py-20 overflow-hidden">
-      {isClient && (
-        <Particles
-          id="tsparticles"
-          init={particlesInit}
-          loaded={particlesLoaded}
-          options={particlesOptions}
-          className="absolute inset-0 z-[-1]"
-        />
-      )}
-
       <div
         className="absolute inset-0 bg-[url('/treatment-image.jpg')] bg-cover bg-center opacity-100 z-[0]"
       ></div>
@@ -154,10 +30,10 @@ export default function HeroSection() {
               transition={{ duration: 0.5 }}
             >
               <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 text-white leading-tight tracking-tight" style={{ textShadow: '0 2px 15px rgba(0,0,0,0.8)' }}>
-                Have you been <span className="block">struggling with</span> <span className="text-[#00B3A6] drop-shadow-lg">Ulcerative Colitis or IBD?</span>
+                Have you been <span className="block">struggling with</span> <span className="text-[#00B3A6] drop-shadow-lg">Fatty Liver Disease?</span>
               </h1>
               <p className="font-body text-lg md:text-xl text-white mb-6 md:mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.6)' }}>
-                Join our clinical research study evaluating whether a new medication that blocks the TL1A protein can effectively treat moderate to severe ulcerative colitis.
+              Join our clinical research study evaluating whether survodutide, an injectable medication, can prevent liver complications and potentially improve liver health in patients with compensated cirrhosis due to MASH.
               </p>
               
               <div className="mb-6 md:mb-10">

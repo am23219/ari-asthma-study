@@ -13,9 +13,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12">
           <div>
-            <h3 className="text-xl md:text-2xl font-heading font-bold text-white mb-4 md:mb-6">UC Study</h3>
+            <h3 className="text-xl md:text-2xl font-heading font-bold text-white mb-4 md:mb-6">NASH/MASH Study</h3>
             <p className="text-white text-sm md:text-base font-body">
-              Advancing treatment options for patients with ulcerative colitis.
+            Advancing treatment options for patients with NASH/MASH through clinical research.
             </p>
           </div>
           
