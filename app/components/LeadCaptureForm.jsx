@@ -527,6 +527,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   placeholder="you@example.com"
                 />
               </div>
+              <p className={clsx("text-xs mt-4 mb-2 text-center", { "text-gray-500": context === 'default' || context === 'consultation', "text-white/70": context === 'hero' })}>
+                By submitting this form, you agree to receive text messages from Access Research Institute about clinical trial opportunities and appointment reminders. Message and data rates may apply. Reply STOP to opt out at any time.
+              </p>
               <button
                 type="submit"
                 disabled={isSubmitting}

@@ -1,6 +1,5 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
-import GoogleAnalytics from "./components/GoogleAnalytics";
 import Script from 'next/script';
 import Image from 'next/image';
 import { GoogleTagManager } from '@next/third-parties/google'
@@ -63,7 +62,6 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="antialiased bg-white-soft text-text-main font-body" suppressHydrationWarning>
-        <GoogleAnalytics />
         <Navbar />
         {children}
       </body>
