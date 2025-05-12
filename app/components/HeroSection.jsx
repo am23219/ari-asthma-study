@@ -33,7 +33,7 @@ export default function HeroSection() {
                 Have you been <span className="block">struggling with</span> <span className="text-[#00B3A6] drop-shadow-lg">Fatty Liver Disease?</span>
               </h1>
               <p className="font-body text-lg md:text-xl text-white mb-6 md:mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.6)' }}>
-              Join our clinical research study evaluating whether survodutide, an injectable medication, can prevent liver complications and potentially improve liver health in patients with MASH featuring moderate to advanced liver fibrosis (stages F2-F3).
+              Join our clinical research study evaluating whether survodutide, an injectable medication, can prevent liver complications and potentially improve liver health in patients with MASH featuring moderate to advanced liver fibrosis or cirrhosis (stages F2-F4).
               </p>
               
               <div className="mb-6 md:mb-10">
