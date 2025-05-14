@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { sendGTMEvent } from '@next/third-parties/google';
 import clsx from 'clsx';
+import { trackFbPixelEvent } from './FacebookPixel';
 
 export default function LeadCaptureForm({ context = 'default' }) {
   console.log('LeadCaptureForm context:', context);
@@ -134,7 +134,11 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
           );
           console.log('GoHighLevel direct API call successful:', directResponse.data);
           setCurrentStep('success');
-          sendGTMEvent({ event: 'buttonClicked', value: 'Eligibility Check' });
+          // Track Facebook Pixel Lead event
+          trackFbPixelEvent('Lead', { 
+            content_name: 'MASH Study Form Submission',
+            content_category: 'Clinical Trial'
+          });
           directApiSuccess = true;
         }
       } catch (directApiError) {
@@ -172,7 +176,11 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
         
         if (result.success) {
           setCurrentStep('success');
-          sendGTMEvent({ event: 'buttonClicked', value: 'Eligibility Check' });
+          // Track Facebook Pixel Lead event
+          trackFbPixelEvent('Lead', { 
+            content_name: 'MASH Study Form Submission',
+            content_category: 'Clinical Trial'
+          });
         } else {
           throw new Error(result.message || 'Failed to submit form via fallback');
         }
