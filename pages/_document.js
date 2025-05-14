@@ -6,7 +6,9 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* Meta Pixel Code */}
-        <script
+        <Script
+          id="fb-pixel-script"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
