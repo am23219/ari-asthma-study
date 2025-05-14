@@ -32,10 +32,10 @@ export default function PixelTest() {
         <h2 className="text-xl font-semibold mb-2">About This Page</h2>
         <p className="mb-4">
           This page is designed to test if the Facebook Pixel is properly implemented on your website.
-          Open your browser's developer console to see debugging information.
+          Open your browser&apos;s developer console to see debugging information.
         </p>
         <p className="mb-4">
-          You should also use Facebook's Pixel Helper browser extension to verify events are being sent.
+          You should also use Facebook&apos;s Pixel Helper browser extension to verify events are being sent.
         </p>
       </div>
 
