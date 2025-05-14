@@ -78,129 +78,126 @@ export default function LeadCaptureForm({ context = 'default' }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
+    setIsSubmitting(true);
 
-    try {
-      setIsSubmitting(true);
-      // Format data for API submission
-      const apiFormData = {
-        formType: 'mash-study',
-        firstName: formData.name?.split(' ')[0] || '',
-        lastName: formData.name?.split(' ').slice(1).join(' ') || '',
-        email: formData.email,
-        phone: formData.phone,
-        hasDiagnosis: formData.hasDiagnosis,
-        hasOtherLiverDisease: formData.hasOtherLiverDisease,
-        pregnancyStatus: formData.pregnancyStatus,
-        hadRecentCardiacEvent: formData.hadRecentCardiacEvent
-      };
-      
-      console.log('Submitting Lead Capture form data:', apiFormData);
-      
-      // Try direct API call to GoHighLevel first (this is what works reliably)
-      try {
-        // Format the data for GoHighLevel direct API call
-         const contactData = {
-          firstName: apiFormData.firstName,
-          lastName: apiFormData.lastName,
-          email: apiFormData.email,
-          phone: apiFormData.phone,
-          tags: ["NASH/MASH Study", "Website Lead"],
-          source: "Website Eligibility Form",
-          notes: `Quick Eligibility Form Submission
+    // Format data for API submission
+    const apiFormData = {
+      formType: 'mash-study',
+      firstName: formData.name?.split(' ')[0] || '',
+      lastName: formData.name?.split(' ').slice(1).join(' ') || '',
+      email: formData.email,
+      phone: formData.phone,
+      hasDiagnosis: formData.hasDiagnosis,
+      hasOtherLiverDisease: formData.hasOtherLiverDisease,
+      pregnancyStatus: formData.pregnancyStatus,
+      hadRecentCardiacEvent: formData.hadRecentCardiacEvent
+    };
+    
+    const contactData = {
+      firstName: apiFormData.firstName,
+      lastName: apiFormData.lastName,
+      email: apiFormData.email,
+      phone: apiFormData.phone,
+      tags: ["NASH/MASH Study", "Website Lead"],
+      source: "Website Eligibility Form",
+      notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
 Did Prescreen: ${!skippedPrescreen}
 Has MASH/NASH Diagnosis: ${formData.hasDiagnosis !== null ? (formData.hasDiagnosis ? "Yes/Maybe" : "Definitely Not") : "Skipped"}
 Has Other Liver Disease: ${formData.hasOtherLiverDisease !== null ? (formData.hasOtherLiverDisease ? "Yes" : "No") : "Skipped"}
 Pregnancy Status (if applicable): ${formData.pregnancyStatus !== null ? (formData.pregnancyStatus ? "Yes" : "No") : "Skipped"}
 Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadRecentCardiacEvent ? "Yes" : "No") : "Skipped"}`
-        };
-        
-        // Use API key directly - this is what works in testing
-        const apiKey = "";
-        
-        console.log('Making direct API call to GoHighLevel with data:', contactData);
-        
-        // Use axios for direct API call
-        const axios = await import('axios');
-        
-        // Make direct API call to GoHighLevel
-        const directResponse = await axios.default.post(
-          'https://rest.gohighlevel.com/v1/contacts/',
-          contactData,
-          {
-            headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json'
-            },
-            timeout: 15000
-          }
-        );
-        
-        console.log('GoHighLevel direct API call successful:', directResponse.data);
-        
-        // On success, show success step
-        setCurrentStep('success');
-        sendGTMEvent({ event: 'buttonClicked', value: 'Eligibility Check' })
-        
-        // Track Google Ads conversion
-        if (typeof window !== 'undefined' && window.gtag) {
-          window.gtag('event', 'conversion', {
-            'send_to': 'AW-16915520694/H9CmCMHnlKoaELa5-YE_',
-            'value': 1.0,
-            'currency': 'USD'
-          });
-          console.log('Google Ads conversion tracked for Eligibility Check');
+    };
+
+    try {
+      // Attempt 1: Direct API call to GoHighLevel
+      let directApiSuccess = false;
+      try {
+        const apiKey = process.env.NEXT_PUBLIC_GOHIGHLEVEL_API_KEY;
+        if (!apiKey) {
+          console.error('GoHighLevel API key is not configured. Please set NEXT_PUBLIC_GOHIGHLEVEL_API_KEY in your .env.local file.');
+          // We don't throw a user-facing error here, will proceed to fallback.
+          // Or, you could throw: throw new Error('Service configuration error. Please contact support.');
+        } else {
+          console.log('Making direct API call to GoHighLevel with data:', contactData);
+          const axios = await import('axios');
+          const directResponse = await axios.default.post(
+            'https://rest.gohighlevel.com/v1/contacts/',
+            contactData,
+            {
+              headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+              },
+              timeout: 15000 // 15 second timeout
+            }
+          );
+          console.log('GoHighLevel direct API call successful:', directResponse.data);
+          setCurrentStep('success');
+          sendGTMEvent({ event: 'buttonClicked', value: 'Eligibility Check' });
+          directApiSuccess = true;
         }
-        
-        return; // Exit early since direct call succeeded
       } catch (directApiError) {
-        console.error('Direct API call failed, falling back to server API:', directApiError);
-        // Continue to server API as fallback
+        console.warn('Direct GoHighLevel API call failed. Error:', directApiError.message ? directApiError.message : directApiError);
+        // Do not set error message yet, proceed to fallback.
+        // If API key was missing and we didn't throw, this log will show the attempt still failed.
       }
-      
-      // Submit to GoHighLevel CRM via centralized API route with timeout (fallback)
+
+      if (directApiSuccess) {
+        setIsSubmitting(false);
+        return; // Successfully submitted via direct call, exit
+      }
+
+      // Attempt 2: Fallback to centralized API route (if direct call failed or was skipped)
+      console.log('Attempting fallback API call to /api/gohighlevel with data:', apiFormData);
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
         
         const response = await fetch('/api/gohighlevel', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(apiFormData),
           signal: controller.signal
         });
-        
         clearTimeout(timeoutId);
-        
+
         if (!response.ok) {
-          const errorData = await response.json();
+          const errorData = await response.json().catch(() => ({})); // Gracefully handle if response.json() also fails
           throw new Error(errorData.message || `Server error: ${response.status}`);
         }
         
         const result = await response.json();
-        console.log('API response:', result);
+        console.log('Fallback API response:', result);
         
         if (result.success) {
           setCurrentStep('success');
+          sendGTMEvent({ event: 'buttonClicked', value: 'Eligibility Check' });
         } else {
-          throw new Error(result.message || 'Failed to submit form');
+          throw new Error(result.message || 'Failed to submit form via fallback');
         }
       } catch (fetchError) {
+        console.error('Fallback /api/gohighlevel call failed:', fetchError);
+        let finalErrorMessage = 'There was an error submitting your information. ';
         if (fetchError.name === 'AbortError') {
-          throw new Error('Request timed out. Please try again or contact us directly.');
-        } else if (fetchError.message.includes('Failed to fetch')) {
-          throw new Error('Network error. Please check your connection and try again.');
-        } else {
-          throw fetchError;
+          finalErrorMessage += 'The request timed out. ';
+        } else if (fetchError.message && (fetchError.message.includes('Failed to fetch') || fetchError.message.includes('NetworkError'))) {
+          finalErrorMessage += 'A network error occurred. Please check your connection. ';
         }
+        finalErrorMessage += 'Please try again or contact us directly.';
+        setErrorMessage(finalErrorMessage);
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setErrorMessage(error.message || 'There was an error submitting your information. Please try again or contact us directly.');
+    } catch (error) { // Catch unexpected errors from data formatting or logic errors
+      console.error('Outer catch: Unexpected error during form submission process:', error);
+      setErrorMessage(error.message || 'An unexpected error occurred. Please try again or contact us directly.');
     } finally {
-      setIsSubmitting(false);
+      // Set isSubmitting to false if not already successful (currentStep would be 'success')
+      if (currentStep !== 'success') {
+        setIsSubmitting(false);
+      } else {
+         // If success, ensure isSubmitting is false from directApiSuccess block or here
+         setIsSubmitting(false);
+      }
     }
   };
 

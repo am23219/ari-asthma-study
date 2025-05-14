@@ -42,3 +42,4 @@ next-env.d.ts
 
 # local lead data
 /leads/
+.env.local
