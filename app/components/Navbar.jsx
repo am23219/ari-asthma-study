@@ -69,7 +69,7 @@ export default function Navbar() {
                 className="ml-2"
               >
                 <a 
-                  href="tel:3526911140" 
+                  href="tel:3526677237" 
                   className="btn-primary flex items-center"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -166,7 +166,7 @@ export default function Navbar() {
                 </Link>
                 <div className="px-6 py-4 bg-blue-light-bg">
                   <a 
-                    href="tel:813-796-6716" 
+                    href="tel:3526677237" 
                     className="btn-primary w-full text-center flex items-center justify-center"
                     onClick={() => setIsOpen(false)}
                   >
