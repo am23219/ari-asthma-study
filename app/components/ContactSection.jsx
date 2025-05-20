@@ -82,7 +82,7 @@ export default function ContactSection() {
             </div>
             <div className="mt-4"> 
               <a 
-                href="tel:3526911140" 
+                href="tel:3526677237" 
                 className="btn-secondary w-full flex items-center justify-center gap-2 py-3 text-sm md:text-base"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
