@@ -2,10 +2,14 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { useFacebookTracking } from '../hooks/useFacebookTracking';
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(0); // Start with first FAQ open
+  const { trackCallButtonClick, trackPhoneInteraction } = useFacebookTracking();
 
   const faqs = [
     {
@@ -37,6 +41,23 @@ export default function FAQSection() {
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const handleCallClick = async () => {
+    await trackCallButtonClick({
+      location: 'faq_section',
+      customData: {
+        button_text: 'Call Our Friendly Team',
+        component: 'FAQSection'
+      }
+    });
+
+    await trackPhoneInteraction('3526677237', {
+      location: 'faq_section',
+      customData: {
+        component: 'FAQSection'
+      }
+    });
   };
 
   return (
@@ -234,6 +255,7 @@ export default function FAQSection() {
             href="/#contact" 
             className="inline-flex items-center justify-center px-7 py-4 bg-gradient-to-r from-blue-primary to-blue-primary/90 text-white hover:from-blue-primary/90 hover:to-blue-primary rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-primary/20 text-base md:text-lg group font-heading no-underline hover:no-underline"
             style={{ textDecoration: 'none' }}
+            onClick={handleCallClick}
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 

@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { trackFbPixelEvent } from './FacebookPixel';
+import { useFacebookTracking } from '../hooks/useFacebookTracking';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 export default function LeadCaptureForm({ context = 'default' }) {
   console.log('LeadCaptureForm context:', context);
@@ -11,6 +13,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [skippedPrescreen, setSkippedPrescreen] = useState(false);
+  const [contactFormStarted, setContactFormStarted] = useState(false);
   const [formData, setFormData] = useState({
     hasDiagnosis: null,
     hasOtherLiverDisease: null,
@@ -21,9 +24,20 @@ export default function LeadCaptureForm({ context = 'default' }) {
     email: ''
   });
 
+  // Enhanced Facebook tracking
+  const { trackFormSubmission, trackEvent, isTracking, trackingError } = useFacebookTracking();
+
   const handleAnswer = (question, answer) => {
     const newFormData = { ...formData, [question]: answer };
     setFormData(newFormData);
+
+    // Track user engagement with questionnaire
+    trackEvent('QuestionAnswered', {
+      question,
+      answer: answer ? 'yes' : 'no',
+      step: currentStep,
+      study_type: 'NASH/MASH'
+    });
 
     // Determine next step based on answer
     if (question === 'hasDiagnosis' && answer === false) {
@@ -64,6 +78,13 @@ export default function LeadCaptureForm({ context = 'default' }) {
       pregnancyStatus: null,
       hadRecentCardiacEvent: null,
     });
+    
+    // Track questionnaire skip
+    trackEvent('QuestionnaireSkipped', {
+      from_step: currentStep,
+      study_type: 'NASH/MASH'
+    });
+    
     setCurrentStep('contactInfo');
   };
 
@@ -73,6 +94,17 @@ export default function LeadCaptureForm({ context = 'default' }) {
       ...formData,
       [name]: value
     });
+  };
+
+  const handleContactFormStart = () => {
+    if (!contactFormStarted) {
+      setContactFormStarted(true);
+      trackEvent('ContactFormStarted', {
+        form_type: 'MASH_Study_Eligibility',
+        completed_prescreen: !skippedPrescreen,
+        study_type: 'NASH/MASH'
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -117,7 +149,6 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
         if (!apiKey) {
           console.error('GoHighLevel API key is not configured. Please set NEXT_PUBLIC_GOHIGHLEVEL_API_KEY in your .env.local file.');
           // We don't throw a user-facing error here, will proceed to fallback.
-          // Or, you could throw: throw new Error('Service configuration error. Please contact support.');
         } else {
           console.log('Making direct API call to GoHighLevel with data:', contactData);
           const axios = await import('axios');
@@ -134,17 +165,30 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
           );
           console.log('GoHighLevel direct API call successful:', directResponse.data);
           setCurrentStep('success');
-          // Track Facebook Pixel Lead event
-          trackFbPixelEvent('Lead', { 
-            content_name: 'MASH Study Form Submission',
-            content_category: 'Clinical Trial'
+          
+          // Enhanced Facebook tracking with user data
+          await trackFormSubmission({
+            firstName: apiFormData.firstName,
+            lastName: apiFormData.lastName,
+            email: apiFormData.email,
+            phone: apiFormData.phone
+          }, {
+            formName: 'MASH Study Eligibility Form',
+            value: 100, // Higher value for qualified leads
+            currency: 'USD',
+            contentCategory: 'Clinical Trial Lead',
+            customData: {
+              eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
+              has_diagnosis: formData.hasDiagnosis,
+              study_type: 'NASH/MASH'
+            }
           });
+          
           directApiSuccess = true;
         }
       } catch (directApiError) {
         console.warn('Direct GoHighLevel API call failed. Error:', directApiError.message ? directApiError.message : directApiError);
         // Do not set error message yet, proceed to fallback.
-        // If API key was missing and we didn't throw, this log will show the attempt still failed.
       }
 
       if (directApiSuccess) {
@@ -176,10 +220,23 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
         
         if (result.success) {
           setCurrentStep('success');
-          // Track Facebook Pixel Lead event
-          trackFbPixelEvent('Lead', { 
-            content_name: 'MASH Study Form Submission',
-            content_category: 'Clinical Trial'
+          
+          // Enhanced Facebook tracking with user data
+          await trackFormSubmission({
+            firstName: apiFormData.firstName,
+            lastName: apiFormData.lastName,
+            email: apiFormData.email,
+            phone: apiFormData.phone
+          }, {
+            formName: 'MASH Study Eligibility Form',
+            value: 100, // Higher value for qualified leads
+            currency: 'USD',
+            contentCategory: 'Clinical Trial Lead',
+            customData: {
+              eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
+              has_diagnosis: formData.hasDiagnosis,
+              study_type: 'NASH/MASH'
+            }
           });
         } else {
           throw new Error(result.message || 'Failed to submit form via fallback');
@@ -212,6 +269,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
   const restart = () => {
     setCurrentStep('initial');
     setSkippedPrescreen(false);
+    setContactFormStarted(false);
     setFormData({
       hasDiagnosis: null,
       hasOtherLiverDisease: null,
@@ -492,6 +550,34 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             )}>
               Great! You may qualify. Please provide your contact information so we can follow up.
             </p>
+            
+            {/* Error Messages */}
+            {errorMessage && (
+              <div className={clsx(
+                "mb-4 p-3 rounded border border-red-200",
+                {
+                  'bg-red-50 text-red-700': context === 'default' || context === 'consultation',
+                  'bg-red-900/20 text-red-300 border-red-400/30': context === 'hero'
+                }
+              )}>
+                <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
+                {errorMessage}
+              </div>
+            )}
+            
+            {trackingError && (
+              <div className={clsx(
+                "mb-4 p-3 rounded border border-orange-200",
+                {
+                  'bg-orange-50 text-orange-700': context === 'default' || context === 'consultation',
+                  'bg-orange-900/20 text-orange-300 border-orange-400/30': context === 'hero'
+                }
+              )}>
+                <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
+                Tracking Warning: {trackingError}
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
               <div>
                 <label htmlFor="name" className={inputLabelClasses}>Full Name</label>
@@ -502,6 +588,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   required
                   value={formData.name}
                   onChange={handleInputChange}
+                  onFocus={handleContactFormStart}
                   className={clsx(inputTextClasses, "mt-2")}
                   placeholder="Enter your full name"
                 />
@@ -515,6 +602,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   required
                   value={formData.phone}
                   onChange={handleInputChange}
+                  onFocus={handleContactFormStart}
                   className={clsx(inputTextClasses, "mt-2")}
                   placeholder="(555) 123-4567"
                 />
@@ -528,6 +616,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                   required
                   value={formData.email}
                   onChange={handleInputChange}
+                  onFocus={handleContactFormStart}
                   className={clsx(inputTextClasses, "mt-2")}
                   placeholder="you@example.com"
                 />
@@ -547,10 +636,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
                 )}
               >
                 {isSubmitting ? (
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
                 ) : null}
                 {isSubmitting ? 'Submitting...' : 'Submit Eligibility Check'}
               </button>
@@ -568,9 +654,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             className={successTextClasses}
           >
             <div className="mx-auto mb-4 bg-gradient-to-br from-teal-accent to-blue-primary rounded-full p-3 w-16 h-16 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+              <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
             </div>
             <h4 className={clsx(
               "text-lg sm:text-xl font-semibold text-navy-deep mb-2 font-heading",
@@ -601,9 +685,7 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             className={notQualifiedTextClasses}
           >
             <div className="mx-auto mb-4 bg-gradient-to-br from-orange-400 to-red-500 rounded-full p-3 w-16 h-16 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <FontAwesomeIcon icon={faExclamationTriangle} className="h-8 w-8 text-white" />
             </div>
             <h4 className={clsx(
               "text-lg sm:text-xl font-semibold text-navy-deep mb-2 font-heading",
