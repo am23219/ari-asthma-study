@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const facebookAPI = require('../../../lib/facebook-conversions-api');
+const FacebookConversionsAPI = require('../../../lib/facebook-conversions-api');
 
 export async function POST(request) {
   try {
@@ -29,6 +29,17 @@ export async function POST(request) {
       return NextResponse.json(
         { error: 'eventName is required' },
         { status: 400 }
+      );
+    }
+
+    // Create Facebook API instance
+    const facebookAPI = new FacebookConversionsAPI();
+    
+    // Check if the API instance is valid
+    if (!facebookAPI.isValid) {
+      return NextResponse.json(
+        { error: 'Facebook API not properly configured' },
+        { status: 500 }
       );
     }
 

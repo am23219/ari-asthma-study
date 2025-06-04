@@ -145,9 +145,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
       // Attempt 1: Direct API call to GoHighLevel
       let directApiSuccess = false;
       try {
-        const apiKey = process.env.NEXT_PUBLIC_GOHIGHLEVEL_API_KEY;
+        const apiKey = process.env.GOHIGHLEVEL_API_KEY;
         if (!apiKey) {
-          console.error('GoHighLevel API key is not configured. Please set NEXT_PUBLIC_GOHIGHLEVEL_API_KEY in your .env.local file.');
+          console.error('GoHighLevel API key is not configured. Please set GOHIGHLEVEL_API_KEY in your .env.local file.');
           // We don't throw a user-facing error here, will proceed to fallback.
         } else {
           console.log('Making direct API call to GoHighLevel with data:', contactData);

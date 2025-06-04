@@ -2,17 +2,47 @@ const bizSdk = require('facebook-nodejs-business-sdk');
 
 class FacebookConversionsAPI {
   constructor() {
+    // Debug all Facebook-related environment variables
+    console.log('All environment variables:', {
+      FACEBOOK_ACCESS_TOKEN: process.env.FACEBOOK_ACCESS_TOKEN ? 'SET' : 'NOT SET',
+      NEXT_PUBLIC_FACEBOOK_PIXEL_ID: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID,
+      FACEBOOK_TEST_EVENT_CODE: process.env.FACEBOOK_TEST_EVENT_CODE ? 'SET' : 'NOT SET',
+      NODE_ENV: process.env.NODE_ENV
+    });
+    
     this.accessToken = process.env.FACEBOOK_ACCESS_TOKEN;
     this.pixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
     this.testEventCode = process.env.FACEBOOK_TEST_EVENT_CODE;
     
+    // Debug logging
+    console.log('Facebook Conversions API initialized with:', {
+      hasAccessToken: !!this.accessToken,
+      pixelId: this.pixelId,
+      hasTestEventCode: !!this.testEventCode
+    });
+    
     if (!this.accessToken || !this.pixelId) {
-      console.warn('Facebook Conversions API: Missing required environment variables');
-      return;
+      console.warn('Facebook Conversions API: Missing required environment variables', {
+        accessToken: !!this.accessToken,
+        pixelId: this.pixelId
+      });
+      // Don't return early - continue with initialization but mark as invalid
+      this.isValid = false;
+    } else {
+      this.isValid = true;
     }
 
-    // Initialize the SDK once with the access token
-    this.api = bizSdk.FacebookAdsApi.init(this.accessToken);
+    // Initialize the SDK with explicit configuration
+    if (this.accessToken) {
+      try {
+        const api = bizSdk.FacebookAdsApi.init(this.accessToken);
+        this.api = api;
+        console.log('Facebook Ads API initialized successfully');
+      } catch (error) {
+        console.error('Failed to initialize Facebook Ads API:', error);
+        this.isValid = false;
+      }
+    }
   }
 
   /**
@@ -27,8 +57,17 @@ class FacebookConversionsAPI {
    * @param {string} eventData.clientIpAddress - Client IP address
    */
   async sendEvent(eventData) {
+    // First check if the API is properly configured
+    if (!this.isValid) {
+      console.error('Facebook Conversions API not properly configured');
+      return { success: false, error: 'API not properly configured' };
+    }
+    
     if (!this.accessToken || !this.pixelId) {
-      console.error('Facebook Conversions API not initialized - missing credentials');
+      console.error('Facebook Conversions API not initialized - missing credentials', {
+        hasAccessToken: !!this.accessToken,
+        pixelId: this.pixelId
+      });
       return { success: false, error: 'Missing credentials' };
     }
 
@@ -80,20 +119,26 @@ class FacebookConversionsAPI {
       if (eventId) serverEvent.setEventId(eventId);
       if (sourceUrl) serverEvent.setEventSourceUrl(sourceUrl);
 
-      // Create event request
+      // Ensure pixelId is a string and clean it
+      const cleanPixelId = String(this.pixelId).trim();
+      if (!cleanPixelId) {
+        throw new Error('AdsPixel Id is empty after cleaning');
+      }
+
+      console.log('About to execute Facebook event request with pixelId:', cleanPixelId, 'type:', typeof cleanPixelId);
+
+      // Create event request with proper array format
       const eventsData = [serverEvent];
-      const eventRequest = new bizSdk.EventRequest(
-        this.accessToken,
-        this.pixelId
-      );
-      // ensure the request uses the correct token and pixel ID
-      eventRequest.setAccessToken(this.accessToken);
+      const eventRequest = new bizSdk.EventRequest(cleanPixelId);
       eventRequest.setEvents(eventsData);
       
       // Add test event code if in development
       if (this.testEventCode && process.env.NODE_ENV === 'development') {
         eventRequest.setTestEventCode(this.testEventCode);
       }
+
+      // Debug the eventRequest before execution
+      console.log('EventRequest created successfully, about to execute...');
 
       // Send event
       const response = await eventRequest.execute();
@@ -170,4 +215,4 @@ class FacebookConversionsAPI {
   }
 }
 
-module.exports = new FacebookConversionsAPI(); 
+module.exports = FacebookConversionsAPI; 

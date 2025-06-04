@@ -15,7 +15,7 @@ export async function POST(request) {
     }
 
     // Get API key from environment
-    const apiKey = process.env.NEXT_PUBLIC_GOHIGHLEVEL_API_KEY;
+    const apiKey = process.env.GOHIGHLEVEL_API_KEY;
     
     if (!apiKey) {
       console.error('GoHighLevel API key not configured');
