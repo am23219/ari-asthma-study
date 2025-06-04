@@ -11,8 +11,7 @@ class FacebookConversionsAPI {
       return;
     }
 
-    // Initialize the SDK
-    bizSdk.FacebookAdsApi.init(this.accessToken);
+    // Initialize the SDK once with the access token
     this.api = bizSdk.FacebookAdsApi.init(this.accessToken);
   }
 
@@ -83,7 +82,12 @@ class FacebookConversionsAPI {
 
       // Create event request
       const eventsData = [serverEvent];
-      const eventRequest = new bizSdk.EventRequest(this.pixelId);
+      const eventRequest = new bizSdk.EventRequest(
+        this.accessToken,
+        this.pixelId
+      );
+      // ensure the request uses the correct token and pixel ID
+      eventRequest.setAccessToken(this.accessToken);
       eventRequest.setEvents(eventsData);
       
       // Add test event code if in development
