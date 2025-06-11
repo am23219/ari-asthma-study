@@ -4,6 +4,8 @@ import Script from 'next/script';
 import Image from 'next/image';
 import FacebookPixel from './components/FacebookPixel';
 
+const SITE_URL = process.env.SITE_URL || 'https://amarimash.netlify.app';
+
 export const metadata = {
   title: "Fatty Liver & NASH/MASH Clinical Trials | Access Research Institute",
   description: "Explore clinical trials and studies for Fatty Liver and NASH/MASH treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
@@ -30,7 +32,7 @@ export default function RootLayout({ children }) {
                 {
                   "@type": "Organization",
                   "name": "Access Research Institute",
-                  "url": "YOUR_WEBSITE_URL", // <-- Replace with your actual URL
+                  "url": SITE_URL,
                   // Optional: Add logo, address, telephone etc.
                   // "logo": "URL_TO_YOUR_LOGO.png",
                   // "address": {
@@ -45,8 +47,8 @@ export default function RootLayout({ children }) {
                 },
                 {
                   "@type": "MedicalWebPage",
-                  "@id": "YOUR_WEBSITE_URL", // <-- Replace with your actual URL
-                  "url": "YOUR_WEBSITE_URL", // <-- Replace with your actual URL
+                  "@id": SITE_URL,
+                  "url": SITE_URL,
                   "name": "Fatty Liver & NASH/MASH Clinical Trials | Access Research Institute",
                   "description": "Explore clinical trials and studies for Fatty Liver and NASH/MASH treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
                   "publisher": {
