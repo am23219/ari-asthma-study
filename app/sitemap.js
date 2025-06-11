@@ -1,12 +1,11 @@
 // app/sitemap.js
 
-// Replace 'YOUR_WEBSITE_URL' with your actual domain, e.g., 'https://www.yourdomain.com'
-const URL = 'YOUR_WEBSITE_URL'; 
+const SITE_URL = process.env.SITE_URL || 'https://amarimash.netlify.app';
 
 export default function sitemap() {
   return [
     {
-      url: URL,
+      url: SITE_URL,
       lastModified: new Date(),
       changeFrequency: 'monthly', // Adjust as needed ('yearly', 'daily', 'weekly', 'always', 'never')
       priority: 1, // Priority from 0.0 to 1.0
