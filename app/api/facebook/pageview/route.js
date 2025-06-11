@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const facebookAPI = require('../../../lib/facebook-conversions-api');
+const FacebookConversionsAPI = require('../../../lib/facebook-conversions-api');
 
 export async function POST(request) {
   try {
@@ -12,12 +12,15 @@ export async function POST(request) {
     const sourceUrl = pageUrl || request.headers.get('referer') || request.url;
     
     // Get client IP (handling various proxy scenarios)
-    const clientIpAddress = 
+    const clientIpAddress =
       request.headers.get('x-forwarded-for')?.split(',')[0] ||
       request.headers.get('x-real-ip') ||
       request.headers.get('cf-connecting-ip') ||
       request.ip ||
       '127.0.0.1';
+
+    // Initialize Facebook API client
+    const facebookAPI = new FacebookConversionsAPI();
 
     // Track page view using the dedicated method
     const result = await facebookAPI.trackPageView(

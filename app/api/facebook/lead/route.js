@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const facebookAPI = require('../../../lib/facebook-conversions-api');
+const FacebookConversionsAPI = require('../../../lib/facebook-conversions-api');
 
 export async function POST(request) {
   try {
@@ -45,6 +45,9 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
+    // Initialize Facebook API client
+    const facebookAPI = new FacebookConversionsAPI();
 
     // Track lead using the dedicated method
     const result = await facebookAPI.trackLead(
