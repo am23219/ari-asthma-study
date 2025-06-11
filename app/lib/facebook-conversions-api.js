@@ -129,7 +129,7 @@ class FacebookConversionsAPI {
 
       // Create event request with proper array format
       const eventsData = [serverEvent];
-      const eventRequest = new bizSdk.EventRequest(cleanPixelId);
+      const eventRequest = new bizSdk.EventRequest(this.accessToken, cleanPixelId);
       eventRequest.setEvents(eventsData);
       
       // Add test event code if in development
