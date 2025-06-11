@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 export default function EnrollmentSection() {
   return (
-    <section id="enroll" className="py-12 md:py-24 bg-bg-alt-2">
+    <section id="enroll" className="py-12 md:py-24 bg-bg-alt-2 scroll-mt-24">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 tracking-tight text-navy-deep font-heading">How to Enroll</h2>

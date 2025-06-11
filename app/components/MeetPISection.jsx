@@ -8,7 +8,7 @@ import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function MeetPISection() {
   return (
-    <section id="pi" className="py-12 md:py-24 bg-bg-alt-3 relative overflow-hidden">
+    <section id="pi" className="py-12 md:py-24 bg-bg-alt-3 relative overflow-hidden scroll-mt-24">
       {/* Background wave pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="wave-divider"></div>
