@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function ConsultationSection() {
   return (
-    <section id="consultationsection" className="py-12 md:py-24 bg-bg-alt-1 relative overflow-hidden">
+    <section id="consultationsection" className="py-12 md:py-24 bg-bg-alt-1 relative overflow-hidden scroll-mt-24">
       {/* Background wave pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-divider"></div>

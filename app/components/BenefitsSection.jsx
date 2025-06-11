@@ -7,7 +7,7 @@ import { faUserCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function BenefitsSection() {
   return (
-    <section id="benefits" className="py-12 md:py-24 bg-bg-alt-1 relative overflow-hidden">
+    <section id="benefits" className="py-12 md:py-24 bg-bg-alt-1 relative overflow-hidden scroll-mt-24">
       {/* Background wave pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-divider"></div>

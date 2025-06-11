@@ -61,7 +61,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="py-16 md:py-28 bg-gradient-to-b from-bg-alt-3 to-white relative overflow-hidden">
+    <section id="faq" className="py-16 md:py-28 bg-gradient-to-b from-bg-alt-3 to-white relative overflow-hidden scroll-mt-24">
       {/* Subtle background patterns */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-primary blur-3xl"></div>
