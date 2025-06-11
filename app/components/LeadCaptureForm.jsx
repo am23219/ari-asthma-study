@@ -15,10 +15,10 @@ export default function LeadCaptureForm({ context = 'default' }) {
   const [skippedPrescreen, setSkippedPrescreen] = useState(false);
   const [contactFormStarted, setContactFormStarted] = useState(false);
   const [formData, setFormData] = useState({
-    hasDiagnosis: null,
-    hasOtherLiverDisease: null,
-    pregnancyStatus: null,
-    hadRecentCardiacEvent: null,
+    onSpecificMedications: null,
+    onOtherMedications: null,
+    hasAutoimmuneLiverTreatment: null,
+    hasCancerHistory: null,
     name: '',
     phone: '',
     email: ''
@@ -36,35 +36,35 @@ export default function LeadCaptureForm({ context = 'default' }) {
       question,
       answer: answer ? 'yes' : 'no',
       step: currentStep,
-      study_type: 'NASH/MASH'
+      study_type: 'Clinical Trial Screening'
     });
 
-    // Determine next step based on answer
-    if (question === 'hasDiagnosis' && answer === false) {
+    // Determine next step based on answer - all questions should be "no" to qualify
+    if (question === 'onSpecificMedications' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'hasOtherLiverDisease' && answer === true) {
+    if (question === 'onOtherMedications' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'pregnancyStatus' && answer === true) {
+    if (question === 'hasAutoimmuneLiverTreatment' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
-    if (question === 'hadRecentCardiacEvent' && answer === true) {
+    if (question === 'hasCancerHistory' && answer === true) {
       setCurrentStep('notQualified');
       return;
     }
 
     // Advance to next question or contact info
-    if (question === 'hasDiagnosis') {
-      setCurrentStep('otherLiverDisease');
-    } else if (question === 'hasOtherLiverDisease') {
-      setCurrentStep('pregnancyStatus');
-    } else if (question === 'pregnancyStatus') {
-      setCurrentStep('recentCardiacEvent');
-    } else if (question === 'hadRecentCardiacEvent') {
+    if (question === 'onSpecificMedications') {
+      setCurrentStep('otherMedications');
+    } else if (question === 'onOtherMedications') {
+      setCurrentStep('autoimmuneLiverTreatment');
+    } else if (question === 'hasAutoimmuneLiverTreatment') {
+      setCurrentStep('cancerHistory');
+    } else if (question === 'hasCancerHistory') {
       setCurrentStep('contactInfo');
     }
   };
@@ -73,16 +73,16 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setSkippedPrescreen(true);
     setFormData({
       ...formData,
-      hasDiagnosis: null,
-      hasOtherLiverDisease: null,
-      pregnancyStatus: null,
-      hadRecentCardiacEvent: null,
+      onSpecificMedications: null,
+      onOtherMedications: null,
+      hasAutoimmuneLiverTreatment: null,
+      hasCancerHistory: null,
     });
     
     // Track questionnaire skip
     trackEvent('QuestionnaireSkipped', {
       from_step: currentStep,
-      study_type: 'NASH/MASH'
+      study_type: 'Clinical Trial Screening'
     });
     
     setCurrentStep('contactInfo');
@@ -100,9 +100,9 @@ export default function LeadCaptureForm({ context = 'default' }) {
     if (!contactFormStarted) {
       setContactFormStarted(true);
       trackEvent('ContactFormStarted', {
-        form_type: 'MASH_Study_Eligibility',
+        form_type: 'Clinical_Trial_Screening',
         completed_prescreen: !skippedPrescreen,
-        study_type: 'NASH/MASH'
+        study_type: 'Clinical Trial Screening'
       });
     }
   };
@@ -114,15 +114,15 @@ export default function LeadCaptureForm({ context = 'default' }) {
 
     // Format data for API submission
     const apiFormData = {
-      formType: 'mash-study',
+      formType: 'clinical-trial-screening',
       firstName: formData.name?.split(' ')[0] || '',
       lastName: formData.name?.split(' ').slice(1).join(' ') || '',
       email: formData.email,
       phone: formData.phone,
-      hasDiagnosis: formData.hasDiagnosis,
-      hasOtherLiverDisease: formData.hasOtherLiverDisease,
-      pregnancyStatus: formData.pregnancyStatus,
-      hadRecentCardiacEvent: formData.hadRecentCardiacEvent
+      onSpecificMedications: formData.onSpecificMedications,
+      onOtherMedications: formData.onOtherMedications,
+      hasAutoimmuneLiverTreatment: formData.hasAutoimmuneLiverTreatment,
+      hasCancerHistory: formData.hasCancerHistory
     };
     
     const contactData = {
@@ -130,15 +130,15 @@ export default function LeadCaptureForm({ context = 'default' }) {
       lastName: apiFormData.lastName,
       email: apiFormData.email,
       phone: apiFormData.phone,
-      tags: ["NASH/MASH Study", "Website Lead"],
+      tags: ["Clinical Trial Screening", "Website Lead"],
       source: "Website Eligibility Form",
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
 Did Prescreen: ${!skippedPrescreen}
-Has MASH/NASH Diagnosis: ${formData.hasDiagnosis !== null ? (formData.hasDiagnosis ? "Yes/Maybe" : "Definitely Not") : "Skipped"}
-Has Other Liver Disease: ${formData.hasOtherLiverDisease !== null ? (formData.hasOtherLiverDisease ? "Yes" : "No") : "Skipped"}
-Pregnancy Status (if applicable): ${formData.pregnancyStatus !== null ? (formData.pregnancyStatus ? "Yes" : "No") : "Skipped"}
-Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadRecentCardiacEvent ? "Yes" : "No") : "Skipped"}`
+On Ozempic/Wegovy/Mounjaro/Phentermine: ${formData.onSpecificMedications !== null ? (formData.onSpecificMedications ? "Yes" : "No") : "Skipped"}
+On Methotrexate/Amiodarone/Prednisone: ${formData.onOtherMedications !== null ? (formData.onOtherMedications ? "Yes" : "No") : "Skipped"}
+Has Autoimmune Liver Treatment: ${formData.hasAutoimmuneLiverTreatment !== null ? (formData.hasAutoimmuneLiverTreatment ? "Yes" : "No") : "Skipped"}
+Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHistory ? "Yes" : "No") : "Skipped"}`
     };
 
     try {
@@ -173,14 +173,14 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             email: apiFormData.email,
             phone: apiFormData.phone
           }, {
-            formName: 'MASH Study Eligibility Form',
+            formName: 'Clinical Trial Screening Form',
             value: 100, // Higher value for qualified leads
             currency: 'USD',
             contentCategory: 'Clinical Trial Lead',
             customData: {
               eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
-              has_diagnosis: formData.hasDiagnosis,
-              study_type: 'NASH/MASH'
+              on_specific_medications: formData.onSpecificMedications,
+              study_type: 'Clinical Trial Screening'
             }
           });
           
@@ -228,14 +228,14 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             email: apiFormData.email,
             phone: apiFormData.phone
           }, {
-            formName: 'MASH Study Eligibility Form',
+            formName: 'Clinical Trial Screening Form',
             value: 100, // Higher value for qualified leads
             currency: 'USD',
             contentCategory: 'Clinical Trial Lead',
             customData: {
               eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
-              has_diagnosis: formData.hasDiagnosis,
-              study_type: 'NASH/MASH'
+              on_specific_medications: formData.onSpecificMedications,
+              study_type: 'Clinical Trial Screening'
             }
           });
         } else {
@@ -271,10 +271,10 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
     setSkippedPrescreen(false);
     setContactFormStarted(false);
     setFormData({
-      hasDiagnosis: null,
-      hasOtherLiverDisease: null,
-      pregnancyStatus: null,
-      hadRecentCardiacEvent: null,
+      onSpecificMedications: null,
+      onOtherMedications: null,
+      hasAutoimmuneLiverTreatment: null,
+      hasCancerHistory: null,
       name: '',
       phone: '',
       email: ''
@@ -370,11 +370,11 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
           >
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-              Have you received a diagnosis of MASH or NASH (nonalcoholic steatohepatitis), or suspect you might have it?
+              Are you currently on Ozempic, Wegovy, Mounjaro, or Phentermine?
               </p>
               <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 mb-3"> 
-                <button onClick={() => handleAnswer('hasDiagnosis', true)} className={buttonPrimaryClasses}>Yes / Maybe</button>
-                <button onClick={() => handleAnswer('hasDiagnosis', false)} className={buttonSecondaryClasses}>Definitely Not</button>
+                <button onClick={() => handleAnswer('onSpecificMedications', true)} className={buttonSecondaryClasses}>Yes</button>
+                <button onClick={() => handleAnswer('onSpecificMedications', false)} className={buttonPrimaryClasses}>No</button>
               </div>
               <button
                 onClick={handleSkipToContact}
@@ -392,9 +392,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
           </motion.div>
         )}
         
-        {currentStep === 'otherLiverDisease' && (
+        {currentStep === 'otherMedications' && (
           <motion.div
-            key="otherLiverDisease"
+            key="otherMedications"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -408,20 +408,20 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-              Do you have any history of other liver diseases besides MASH?
+              Are you currently on Methotrexate, Amiodarone, or Prednisone?
               </p>
               <div className="flex gap-3 sm:gap-4 mb-3">
                 <button
-                  onClick={() => handleAnswer('hasOtherLiverDisease', true)}
+                  onClick={() => handleAnswer('onOtherMedications', true)}
                   className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('hasOtherLiverDisease', false)}
+                  onClick={() => handleAnswer('onOtherMedications', false)}
                   className={buttonPrimaryClasses}
                 >
-                  No / Unsure
+                  No
                 </button>
               </div>
               <button
@@ -440,9 +440,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
           </motion.div>
         )}
         
-        {currentStep === 'pregnancyStatus' && (
+        {currentStep === 'autoimmuneLiverTreatment' && (
           <motion.div
-            key="pregnancyStatus"
+            key="autoimmuneLiverTreatment"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -456,20 +456,20 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-              For women: Are you pregnant, breastfeeding, or planning pregnancy in the next 7 years?
+              Are you currently receiving treatment for autoimmune liver disease?
               </p>
               <div className="flex gap-3 sm:gap-4 mb-3">
                 <button
-                  onClick={() => handleAnswer('pregnancyStatus', true)}
+                  onClick={() => handleAnswer('hasAutoimmuneLiverTreatment', true)}
                   className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('pregnancyStatus', false)}
+                  onClick={() => handleAnswer('hasAutoimmuneLiverTreatment', false)}
                   className={buttonPrimaryClasses}
                 >
-                  No / Unsure
+                  No
                 </button>
               </div>
               <button
@@ -488,9 +488,9 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
           </motion.div>
         )}
         
-        {currentStep === 'recentCardiacEvent' && (
+        {currentStep === 'cancerHistory' && (
           <motion.div
-            key="recentCardiacEvent"
+            key="cancerHistory"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -504,20 +504,20 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
-              Have you had a heart attack stroke or mini stroke in the last 6 months?
+              Do you have any history with cancer (other than skin cancer) within the past 5 years or are you currently being evaluated for a malignant disease?
               </p>
               <div className="flex gap-3 sm:gap-4 mb-3">
                 <button
-                  onClick={() => handleAnswer('hadRecentCardiacEvent', true)}
+                  onClick={() => handleAnswer('hasCancerHistory', true)}
                   className={buttonSecondaryClasses}
                 >
                   Yes
                 </button>
                 <button
-                  onClick={() => handleAnswer('hadRecentCardiacEvent', false)}
+                  onClick={() => handleAnswer('hasCancerHistory', false)}
                   className={buttonPrimaryClasses}
                 >
-                  No / Unsure
+                  No
                 </button>
               </div>
               <button
@@ -688,17 +688,63 @@ Recent Cardiac Event: ${formData.hadRecentCardiacEvent !== null ? (formData.hadR
               <FontAwesomeIcon icon={faExclamationTriangle} className="h-8 w-8 text-white" />
             </div>
             <h4 className={clsx(
-              "text-lg sm:text-xl font-semibold text-navy-deep mb-2 font-heading",
+              "text-lg sm:text-xl font-semibold text-navy-deep mb-4 font-heading",
               { 'text-white': context === 'hero' }
-            )}>Qualification Status</h4>
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-4 font-body",
-               { 'text-white/90': context === 'hero' }
-             )}>Based on your answers, you may not qualify for this specific study at this time. Requirements can change, so feel free to check back later or contact us for other potential opportunities.</p>
+            )}>Current Qualification Status</h4>
+            
+            <div className={clsx(
+              "text-left mb-6 space-y-4 text-sm sm:text-base font-body",
+              { 'text-white/90': context === 'hero', 'text-text-sub': context === 'default' || context === 'consultation' }
+            )}>
+              <p className="font-medium">Based on your answers, here's what you need to know:</p>
+              
+              <div className="space-y-3">
+                <p>
+                  <span className="font-semibold">Medications:</span> If you are on any of the medications listed (Ozempic, Wegovy, Mounjaro, Phentermine, Methotrexate, Amiodarone, or Prednisone), we require a 3-6 month washout period before we can look further into eligibility.
+                </p>
+                
+                <p>
+                  <span className="font-semibold">Autoimmune Treatment:</span> Treatment for autoimmune liver disease may conflict with the study medication and could affect your safety.
+                </p>
+                
+                <p>
+                  <span className="font-semibold">Cancer History:</span> Any cancer history other than skin cancer within the past 5 years would be deemed unsafe to proceed forward with for the trial.
+                </p>
+              </div>
+              
+              <div className={clsx(
+                "p-4 rounded-lg border-l-4 mt-6",
+                {
+                  'bg-blue-50 border-blue-400': context === 'default' || context === 'consultation',
+                  'bg-white/10 border-teal-400': context === 'hero'
+                }
+              )}>
+                <p className={clsx(
+                  "font-semibold mb-2",
+                  { 'text-blue-800': context === 'default' || context === 'consultation', 'text-white': context === 'hero' }
+                )}>
+                  Still Interested?
+                </p>
+                <p>
+                  If you still want to look deeper into your eligibility or discuss your specific situation, please call us at{' '}
+                  <a 
+                    href="tel:+18883174950" 
+                    className={clsx(
+                      "font-semibold hover:underline",
+                      { 'text-blue-600': context === 'default' || context === 'consultation', 'text-teal-300': context === 'hero' }
+                    )}
+                  >
+                    (888) 317-4950
+                  </a>
+                </p>
+              </div>
+            </div>
+            
             <button
               onClick={restart}
-              className={clsx("text-sm sm:text-base text-blue-primary hover:underline font-medium font-heading", {
-                  'text-teal-400': context === 'hero'
+              className={clsx("text-sm sm:text-base hover:underline font-medium font-heading", {
+                'text-blue-primary': context === 'default' || context === 'consultation',
+                'text-teal-400': context === 'hero'
               })}
             >
               Start Over
