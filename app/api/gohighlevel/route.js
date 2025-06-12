@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -67,7 +69,9 @@ Recent Cardiac Event: ${body.hadRecentCardiacEvent !== null ? (body.hadRecentCar
     }
 
     const result = await ghlResponse.json();
-    console.log('GoHighLevel API success:', result);
+    if (isDev) {
+      console.log('GoHighLevel API success:', result);
+    }
 
     return NextResponse.json({
       success: true,

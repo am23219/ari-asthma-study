@@ -5,10 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useFacebookTracking } from '../hooks/useFacebookTracking';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+const isDev = process.env.NODE_ENV !== 'production';
 import { faSpinner, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 export default function LeadCaptureForm({ context = 'default' }) {
-  console.log('LeadCaptureForm context:', context);
+  if (isDev) {
+    console.log('LeadCaptureForm context:', context);
+  }
   const [currentStep, setCurrentStep] = useState('initial');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -150,7 +154,9 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
           console.error('GoHighLevel API key is not configured. Please set GOHIGHLEVEL_API_KEY in your .env.local file.');
           // We don't throw a user-facing error here, will proceed to fallback.
         } else {
-          console.log('Making direct API call to GoHighLevel with data:', contactData);
+          if (isDev) {
+            console.log('Making direct API call to GoHighLevel');
+          }
           const axios = await import('axios');
           const directResponse = await axios.default.post(
             'https://rest.gohighlevel.com/v1/contacts/',
@@ -163,7 +169,9 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
               timeout: 15000 // 15 second timeout
             }
           );
-          console.log('GoHighLevel direct API call successful:', directResponse.data);
+          if (isDev) {
+            console.log('GoHighLevel direct API call successful');
+          }
           setCurrentStep('success');
           
           // Enhanced Facebook tracking with user data
@@ -197,7 +205,9 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
       }
 
       // Attempt 2: Fallback to centralized API route (if direct call failed or was skipped)
-      console.log('Attempting fallback API call to /api/gohighlevel with data:', apiFormData);
+      if (isDev) {
+        console.log('Attempting fallback API call to /api/gohighlevel');
+      }
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
@@ -216,7 +226,9 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
         }
         
         const result = await response.json();
-        console.log('Fallback API response:', result);
+        if (isDev) {
+          console.log('Fallback API response:', result);
+        }
         
         if (result.success) {
           setCurrentStep('success');

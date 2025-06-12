@@ -3,6 +3,8 @@
 import { useState, useCallback } from 'react';
 import { trackLead, trackCustomEvent, trackFbPixelEvent } from '../components/FacebookPixel';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 /**
  * Custom hook for Facebook tracking with easy form integration
  */
@@ -71,7 +73,9 @@ export function useFacebookTracking() {
       }
 
       const result = await response.json();
-      console.log('FORM SUBMISSION tracked successfully (PRIMARY GOAL):', result);
+      if (isDev) {
+        console.log('FORM SUBMISSION tracked successfully (PRIMARY GOAL):', result);
+      }
 
       return { success: true, eventId: result.eventId };
 
@@ -157,7 +161,9 @@ export function useFacebookTracking() {
       trackCustomEvent('Contact', eventData);
       
       // Note: NOT tracking as InitiateCheckout since form submission is preferred
-      console.log('Call button tracking (SECONDARY goal):', eventData);
+      if (isDev) {
+        console.log('Call button tracking (SECONDARY goal):', eventData);
+      }
       setTrackingError(null);
     } catch (error) {
       console.error('Call button tracking error:', error);
@@ -192,8 +198,10 @@ export function useFacebookTracking() {
       };
 
       trackCustomEvent('Contact', eventData);
-      
-      console.log('Phone interaction tracking (SECONDARY goal):', eventData);
+
+      if (isDev) {
+        console.log('Phone interaction tracking (SECONDARY goal):', eventData);
+      }
       setTrackingError(null);
     } catch (error) {
       console.error('Phone interaction tracking error:', error);

@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { trackFbPixelEvent } from './components/FacebookPixel';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 export default function PixelTest() {
   const [eventFired, setEventFired] = useState(false);
 
@@ -10,7 +12,9 @@ export default function PixelTest() {
     // Fire a test PageView event when the component mounts
     if (typeof window !== 'undefined' && window.fbq) {
       window.fbq('track', 'PageView');
-      console.log('Test page loaded - PageView event fired');
+      if (isDev) {
+        console.log('Test page loaded - PageView event fired');
+      }
     } else {
       console.error('Facebook Pixel not available on test page load');
     }
