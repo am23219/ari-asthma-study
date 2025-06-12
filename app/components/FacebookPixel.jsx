@@ -3,12 +3,16 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 export default function FacebookPixel() {
   useEffect(() => {
     // Only run on client side
     if (typeof window !== 'undefined') {
       // Log for debugging
-      console.log('Initializing Facebook Pixel...');
+      if (isDev) {
+        console.log('Initializing Facebook Pixel...');
+      }
       
       // Initialize Facebook Pixel only if not already initialized
       if (!window.fbq) {
@@ -25,7 +29,9 @@ export default function FacebookPixel() {
         window.fbq('init', process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || '1398933401301342');
       
       // Log for debugging
-        console.log('Facebook Pixel initialized with ID:', process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || '1398933401301342');
+        if (isDev) {
+          console.log('Facebook Pixel initialized with ID:', process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || '1398933401301342');
+        }
       }
 
       // Track initial page view with event ID for deduplication
@@ -62,7 +68,9 @@ async function sendToConversionsAPI(eventName, userData = {}, customData = {}, e
       console.error('Failed to send event to Conversions API:', response.statusText);
     } else {
       const result = await response.json();
-      console.log('Event sent to Conversions API:', result);
+      if (isDev) {
+        console.log('Event sent to Conversions API:', result);
+      }
     }
   } catch (error) {
     console.error('Error sending event to Conversions API:', error);
@@ -82,7 +90,9 @@ export function trackFbPixelEvent(eventName, params = {}, userData = {}, customD
   const eventId = `${eventName.toLowerCase()}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   
   if (typeof window !== 'undefined' && window.fbq) {
-    console.log(`Tracking FB Pixel event: ${eventName}`, params);
+    if (isDev) {
+      console.log(`Tracking FB Pixel event: ${eventName}`, params);
+    }
     
     // Send to client-side pixel with event ID
     window.fbq('track', eventName, params, { eventID: eventId });

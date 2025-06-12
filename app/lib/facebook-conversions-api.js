@@ -1,30 +1,35 @@
 const bizSdk = require('facebook-nodejs-business-sdk');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 class FacebookConversionsAPI {
   constructor() {
     // Debug all Facebook-related environment variables
-    console.log('All environment variables:', {
-      FACEBOOK_ACCESS_TOKEN: process.env.FACEBOOK_ACCESS_TOKEN ? 'SET' : 'NOT SET',
-      NEXT_PUBLIC_FACEBOOK_PIXEL_ID: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID,
-      FACEBOOK_TEST_EVENT_CODE: process.env.FACEBOOK_TEST_EVENT_CODE ? 'SET' : 'NOT SET',
-      NODE_ENV: process.env.NODE_ENV
-    });
+    if (isDev) {
+      console.log('All environment variables:', {
+        FACEBOOK_ACCESS_TOKEN: process.env.FACEBOOK_ACCESS_TOKEN ? 'SET' : 'NOT SET',
+        NEXT_PUBLIC_FACEBOOK_PIXEL_ID: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID,
+        FACEBOOK_TEST_EVENT_CODE: process.env.FACEBOOK_TEST_EVENT_CODE ? 'SET' : 'NOT SET',
+        NODE_ENV: process.env.NODE_ENV
+      });
+    }
     
     this.accessToken = process.env.FACEBOOK_ACCESS_TOKEN;
     this.pixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
     this.testEventCode = process.env.FACEBOOK_TEST_EVENT_CODE;
     
     // Debug logging
-    console.log('Facebook Conversions API initialized with:', {
-      hasAccessToken: !!this.accessToken,
-      pixelId: this.pixelId,
-      hasTestEventCode: !!this.testEventCode
-    });
+    if (isDev) {
+      console.log('Facebook Conversions API initialized with:', {
+        hasAccessToken: !!this.accessToken,
+        pixelId: this.pixelId,
+        hasTestEventCode: !!this.testEventCode
+      });
+    }
     
     if (!this.accessToken || !this.pixelId) {
       console.warn('Facebook Conversions API: Missing required environment variables', {
-        accessToken: !!this.accessToken,
-        pixelId: this.pixelId
+        accessToken: !!this.accessToken
       });
       // Don't return early - continue with initialization but mark as invalid
       this.isValid = false;
@@ -37,7 +42,9 @@ class FacebookConversionsAPI {
       try {
         const api = bizSdk.FacebookAdsApi.init(this.accessToken);
         this.api = api;
-        console.log('Facebook Ads API initialized successfully');
+        if (isDev) {
+          console.log('Facebook Ads API initialized successfully');
+        }
       } catch (error) {
         console.error('Failed to initialize Facebook Ads API:', error);
         this.isValid = false;
@@ -64,10 +71,7 @@ class FacebookConversionsAPI {
     }
     
     if (!this.accessToken || !this.pixelId) {
-      console.error('Facebook Conversions API not initialized - missing credentials', {
-        hasAccessToken: !!this.accessToken,
-        pixelId: this.pixelId
-      });
+      console.error('Facebook Conversions API not initialized - missing credentials');
       return { success: false, error: 'Missing credentials' };
     }
 
@@ -125,7 +129,9 @@ class FacebookConversionsAPI {
         throw new Error('AdsPixel Id is empty after cleaning');
       }
 
-      console.log('About to execute Facebook event request with pixelId:', cleanPixelId, 'type:', typeof cleanPixelId);
+      if (isDev) {
+        console.log('About to execute Facebook event request with pixelId:', cleanPixelId, 'type:', typeof cleanPixelId);
+      }
 
       // Create event request with proper array format
       const eventsData = [serverEvent];
@@ -138,16 +144,20 @@ class FacebookConversionsAPI {
       }
 
       // Debug the eventRequest before execution
-      console.log('EventRequest created successfully, about to execute...');
+      if (isDev) {
+        console.log('EventRequest created successfully, about to execute...');
+      }
 
       // Send event
       const response = await eventRequest.execute();
       
-      console.log('Facebook Conversions API event sent successfully:', {
-        eventName,
-        eventId,
-        pixelId: this.pixelId
-      });
+      if (isDev) {
+        console.log('Facebook Conversions API event sent successfully:', {
+          eventName,
+          eventId,
+          pixelId: this.pixelId
+        });
+      }
 
       return { 
         success: true, 
