@@ -13,12 +13,13 @@ export default function LeadCaptureForm({ context = 'default' }) {
   if (isDev) {
     console.log('LeadCaptureForm context:', context);
   }
-  const [currentStep, setCurrentStep] = useState('initial');
+  const [currentStep, setCurrentStep] = useState('fattyLiverType');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [skippedPrescreen, setSkippedPrescreen] = useState(false);
   const [contactFormStarted, setContactFormStarted] = useState(false);
   const [formData, setFormData] = useState({
+    isNonAlcoholicFattyLiver: null,
     onSpecificMedications: null,
     onOtherMedications: null,
     hasAutoimmuneLiverTreatment: null,
@@ -43,7 +44,13 @@ export default function LeadCaptureForm({ context = 'default' }) {
       study_type: 'Clinical Trial Screening'
     });
 
-    // Determine next step based on answer - all questions should be "no" to qualify
+    // Determine next step based on answer
+    // For fatty liver question, we need "yes" (non-alcoholic) to qualify
+    if (question === 'isNonAlcoholicFattyLiver' && answer === false) {
+      setCurrentStep('notQualified');
+      return;
+    }
+    // For other questions, we need "no" to qualify
     if (question === 'onSpecificMedications' && answer === true) {
       setCurrentStep('notQualified');
       return;
@@ -62,7 +69,9 @@ export default function LeadCaptureForm({ context = 'default' }) {
     }
 
     // Advance to next question or contact info
-    if (question === 'onSpecificMedications') {
+    if (question === 'isNonAlcoholicFattyLiver') {
+      setCurrentStep('initial');
+    } else if (question === 'onSpecificMedications') {
       setCurrentStep('otherMedications');
     } else if (question === 'onOtherMedications') {
       setCurrentStep('autoimmuneLiverTreatment');
@@ -77,6 +86,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setSkippedPrescreen(true);
     setFormData({
       ...formData,
+      isNonAlcoholicFattyLiver: null,
       onSpecificMedications: null,
       onOtherMedications: null,
       hasAutoimmuneLiverTreatment: null,
@@ -123,6 +133,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
       lastName: formData.name?.split(' ').slice(1).join(' ') || '',
       email: formData.email,
       phone: formData.phone,
+      isNonAlcoholicFattyLiver: formData.isNonAlcoholicFattyLiver,
       onSpecificMedications: formData.onSpecificMedications,
       onOtherMedications: formData.onOtherMedications,
       hasAutoimmuneLiverTreatment: formData.hasAutoimmuneLiverTreatment,
@@ -139,6 +150,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
 Did Prescreen: ${!skippedPrescreen}
+Is Non-Alcoholic Fatty Liver: ${formData.isNonAlcoholicFattyLiver !== null ? (formData.isNonAlcoholicFattyLiver ? "Yes" : "No") : "Skipped"}
 On Ozempic/Wegovy/Mounjaro/Phentermine: ${formData.onSpecificMedications !== null ? (formData.onSpecificMedications ? "Yes" : "No") : "Skipped"}
 On Methotrexate/Amiodarone/Prednisone: ${formData.onOtherMedications !== null ? (formData.onOtherMedications ? "Yes" : "No") : "Skipped"}
 Has Autoimmune Liver Treatment: ${formData.hasAutoimmuneLiverTreatment !== null ? (formData.hasAutoimmuneLiverTreatment ? "Yes" : "No") : "Skipped"}
@@ -187,6 +199,7 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
             contentCategory: 'Clinical Trial Lead',
             customData: {
               eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
+              is_non_alcoholic_fatty_liver: formData.isNonAlcoholicFattyLiver,
               on_specific_medications: formData.onSpecificMedications,
               study_type: 'Clinical Trial Screening'
             }
@@ -246,6 +259,7 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
             contentCategory: 'Clinical Trial Lead',
             customData: {
               eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
+              is_non_alcoholic_fatty_liver: formData.isNonAlcoholicFattyLiver,
               on_specific_medications: formData.onSpecificMedications,
               study_type: 'Clinical Trial Screening'
             }
@@ -279,10 +293,11 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
   };
 
   const restart = () => {
-    setCurrentStep('initial');
+    setCurrentStep('fattyLiverType');
     setSkippedPrescreen(false);
     setContactFormStarted(false);
     setFormData({
+      isNonAlcoholicFattyLiver: null,
       onSpecificMedications: null,
       onOtherMedications: null,
       hasAutoimmuneLiverTreatment: null,
@@ -372,6 +387,44 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
   return (
     <div className={rootClasses}>
       <AnimatePresence mode="wait">
+        {currentStep === 'fattyLiverType' && (
+          <motion.div
+            key="fattyLiverType"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p className={clsx(
+              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
+              { 'text-white/90': context === 'hero' }
+            )}>
+              Question 1 of 5 - let's get started!
+            </p>
+            <div className="mb-4 sm:mb-5">
+              <p className={questionTextClasses}>
+                Is your fatty liver non-alcoholic?
+              </p>
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 mb-3"> 
+                <button onClick={() => handleAnswer('isNonAlcoholicFattyLiver', true)} className={buttonPrimaryClasses}>Yes</button>
+                <button onClick={() => handleAnswer('isNonAlcoholicFattyLiver', false)} className={buttonSecondaryClasses}>No</button>
+              </div>
+              <button
+                onClick={handleSkipToContact}
+                className={clsx(
+                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
+                  {
+                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
+                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
+                  }
+                )}
+              >
+                Skip Questionnaire & Fill Interest Form
+              </button>
+            </div>
+          </motion.div>
+        )}
+        
         {currentStep === 'initial' && (
           <motion.div
             key="initial"
@@ -381,6 +434,12 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
             transition={{ duration: 0.3 }}
           >
             <div className="mb-4 sm:mb-5">
+              <p className={clsx(
+                "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
+                { 'text-white/90': context === 'hero' }
+              )}>
+                Question 2 of 5 - making progress!
+              </p>
               <p className={questionTextClasses}>
               Are you currently on Ozempic, Wegovy, Mounjaro, or Phentermine?
               </p>
@@ -416,7 +475,7 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
               "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
               { 'text-white/90': context === 'hero' }
             )}>
-              Question 2 of 4 - almost halfway there!
+              Question 3 of 5 - halfway there!
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
@@ -464,7 +523,7 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
               "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
               { 'text-white/90': context === 'hero' }
             )}>
-              Question 3 of 4 - you're making great progress!
+              Question 4 of 5 - almost there!
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
@@ -512,7 +571,7 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
               "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
               { 'text-white/90': context === 'hero' }
             )}>
-              Final question - you're almost done!
+              Final question (5 of 5) - you're almost done!
             </p>
             <div className="mb-4 sm:mb-5">
               <p className={questionTextClasses}>
@@ -711,6 +770,10 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
               <p className="font-medium">Based on your answers, here's what you need to know:</p>
               
               <div className="space-y-3">
+                <p>
+                  <span className="font-semibold">Fatty Liver Type:</span> This clinical trial is specifically designed for patients with non-alcoholic fatty liver disease (NAFLD). If your fatty liver is alcoholic in nature, you would not qualify for this particular study.
+                </p>
+                
                 <p>
                   <span className="font-semibold">Medications:</span> If you are on any of the medications listed (Ozempic, Wegovy, Mounjaro, Phentermine, Methotrexate, Amiodarone, or Prednisone), we require a 3-6 month washout period before we can look further into eligibility.
                 </p>
