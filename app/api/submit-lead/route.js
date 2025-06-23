@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import IPGeolocationAPI from 'ip-geolocation-api-javascript-sdk';
 import GeolocationParams from 'ip-geolocation-api-javascript-sdk/GeolocationParams.js';
 import FacebookConversionsAPI from '../../lib/facebook-conversions-api';
@@ -98,6 +99,10 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
 
 
     // --- 3. Submit to Facebook Conversions API ---
+    const cookieStore = cookies();
+    const fbp = cookieStore.get('_fbp')?.value;
+    const fbc = cookieStore.get('_fbc')?.value;
+
     const userData = {
       email: formData.email,
       phone: formData.phone,
@@ -106,7 +111,9 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
       city: locationData.city,
       state: locationData.state,
       zipCode: locationData.postalCode,
-      country: locationData.country
+      country: locationData.country,
+      fbp: fbp,
+      fbc: fbc
     };
     
     const customData = {

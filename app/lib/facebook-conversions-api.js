@@ -100,6 +100,8 @@ class FacebookConversionsAPI {
       if (userData.country) fbUserData.setCountry(userData.country);
       if (clientIpAddress) fbUserData.setClientIpAddress(clientIpAddress);
       if (userAgent) fbUserData.setClientUserAgent(userAgent);
+      if (userData.fbp) fbUserData.setFbp(userData.fbp);
+      if (userData.fbc) fbUserData.setFbc(userData.fbc);
 
       // Create custom data object
       const fbCustomData = new bizSdk.CustomData();

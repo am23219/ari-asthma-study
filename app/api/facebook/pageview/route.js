@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 const FacebookConversionsAPI = require('../../../lib/facebook-conversions-api');
 
@@ -6,6 +7,18 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const { userData = {}, pageUrl } = body;
+
+    // Get fbp and fbc from cookies
+    const cookieStore = cookies();
+    const fbp = cookieStore.get('_fbp')?.value;
+    const fbc = cookieStore.get('_fbc')?.value;
+
+    if (fbp) {
+      userData.fbp = fbp;
+    }
+    if (fbc) {
+      userData.fbc = fbc;
+    }
 
     // Get client information from request headers
     const userAgent = request.headers.get('user-agent') || '';
