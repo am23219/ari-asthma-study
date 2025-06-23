@@ -97,7 +97,7 @@ class FacebookConversionsAPI {
       if (userData.city) fbUserData.setCity(userData.city);
       if (userData.state) fbUserData.setState(userData.state);
       if (userData.zipCode) fbUserData.setZipCode(userData.zipCode);
-      if (userData.country) fbUserData.setCountryCode(userData.country);
+      if (userData.country) fbUserData.setCountry(userData.country);
       if (clientIpAddress) fbUserData.setClientIpAddress(clientIpAddress);
       if (userAgent) fbUserData.setClientUserAgent(userAgent);
 

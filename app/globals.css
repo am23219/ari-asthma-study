@@ -619,3 +619,32 @@ nav.bg-white .nav-link:hover {
   color: var(--secondary) !important;
   text-decoration: none !important;
 }
+
+.PhoneInputInput {
+  background-color: transparent !important;
+  color: inherit !important;
+  height: 100%;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Custom styles for the phone input component */
+.phone-input-hero {
+  @apply bg-white/20 border border-white/30 text-white rounded-lg;
+}
+
+.phone-input-hero .PhoneInputInput::placeholder {
+  @apply text-white/70;
+}
+
+.phone-input-hero .PhoneInputCountrySelectArrow {
+  color: white;
+}
+
+.phone-input-hero .PhoneInputCountryIcon--border {
+  box-shadow: none;
+}
+
+.phone-input-default {
+  @apply border border-gray-300;
+}

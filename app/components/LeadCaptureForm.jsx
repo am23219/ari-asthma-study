@@ -5,9 +5,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useFacebookTracking } from '../hooks/useFacebookTracking';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import { trackFbPixelEvent } from './FacebookPixel';
 
 const isDev = process.env.NODE_ENV !== 'production';
 import { faSpinner, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
+/**
+ * Converts a string to proper case (e.g., "john doe" -> "John Doe").
+ * This also handles hyphenated names like "Mary-Anne" and names with apostrophes.
+ * @param {string} str - The input string.
+ * @returns {string} The string in proper case.
+ */
+const toProperCase = (str) => {
+  if (!str) return '';
+  return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+};
 
 export default function LeadCaptureForm({ context = 'default' }) {
   if (isDev) {
@@ -30,7 +44,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
   });
 
   // Enhanced Facebook tracking
-  const { trackFormSubmission, trackEvent, isTracking, trackingError } = useFacebookTracking();
+  const { trackEvent, trackingError } = useFacebookTracking();
 
   const handleAnswer = (question, answer) => {
     const newFormData = { ...formData, [question]: answer };
@@ -110,10 +124,17 @@ export default function LeadCaptureForm({ context = 'default' }) {
     });
   };
 
+  const handlePhoneChange = (value) => {
+    setFormData({
+      ...formData,
+      phone: value
+    });
+  };
+
   const handleContactFormStart = () => {
     if (!contactFormStarted) {
       setContactFormStarted(true);
-      trackEvent('ContactFormStarted', {
+      trackEvent('BeganContactForm', {
         form_type: 'Clinical_Trial_Screening',
         completed_prescreen: !skippedPrescreen,
         study_type: 'Clinical Trial Screening'
@@ -126,169 +147,54 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setErrorMessage('');
     setIsSubmitting(true);
 
-    // Format data for API submission
-    const apiFormData = {
-      formType: 'clinical-trial-screening',
-      firstName: formData.name?.split(' ')[0] || '',
-      lastName: formData.name?.split(' ').slice(1).join(' ') || '',
-      email: formData.email,
+    const submissionData = {
+      firstName: toProperCase(formData.name?.split(' ')[0] || ''),
+      lastName: toProperCase(formData.name?.split(' ').slice(1).join(' ') || ''),
+      email: formData.email.toLowerCase(),
       phone: formData.phone,
-      isNonAlcoholicFattyLiver: formData.isNonAlcoholicFattyLiver,
-      onSpecificMedications: formData.onSpecificMedications,
-      onOtherMedications: formData.onOtherMedications,
-      hasAutoimmuneLiverTreatment: formData.hasAutoimmuneLiverTreatment,
-      hasCancerHistory: formData.hasCancerHistory
+      skippedPrescreen,
+      ...formData
     };
     
-    const contactData = {
-      firstName: apiFormData.firstName,
-      lastName: apiFormData.lastName,
-      email: apiFormData.email,
-      phone: apiFormData.phone,
-      tags: ["Clinical Trial Screening", "Website Lead"],
-      source: "Website Eligibility Form",
-      notes: `Quick Eligibility Form Submission
-Submitted at: ${new Date().toISOString()}
-Did Prescreen: ${!skippedPrescreen}
-Is Non-Alcoholic Fatty Liver: ${formData.isNonAlcoholicFattyLiver !== null ? (formData.isNonAlcoholicFattyLiver ? "Yes" : "No") : "Skipped"}
-On Ozempic/Wegovy/Mounjaro/Phentermine: ${formData.onSpecificMedications !== null ? (formData.onSpecificMedications ? "Yes" : "No") : "Skipped"}
-On Methotrexate/Amiodarone/Prednisone: ${formData.onOtherMedications !== null ? (formData.onOtherMedications ? "Yes" : "No") : "Skipped"}
-Has Autoimmune Liver Treatment: ${formData.hasAutoimmuneLiverTreatment !== null ? (formData.hasAutoimmuneLiverTreatment ? "Yes" : "No") : "Skipped"}
-Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHistory ? "Yes" : "No") : "Skipped"}`
-    };
+    // Generate a unique ID for this event, to be used by both client and server
+    const eventId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     try {
-      // Attempt 1: Direct API call to GoHighLevel
-      let directApiSuccess = false;
-      try {
-        const apiKey = process.env.GOHIGHLEVEL_API_KEY;
-        if (!apiKey) {
-          console.error('GoHighLevel API key is not configured. Please set GOHIGHLEVEL_API_KEY in your .env.local file.');
-          // We don't throw a user-facing error here, will proceed to fallback.
-        } else {
-          if (isDev) {
-            console.log('Making direct API call to GoHighLevel');
-          }
-          const axios = await import('axios');
-          const directResponse = await axios.default.post(
-            'https://rest.gohighlevel.com/v1/contacts/',
-            contactData,
-            {
-              headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-              },
-              timeout: 15000 // 15 second timeout
-            }
-          );
-          if (isDev) {
-            console.log('GoHighLevel direct API call successful');
-          }
-          setCurrentStep('success');
-          
-          // Enhanced Facebook tracking with user data
-          await trackFormSubmission({
-            firstName: apiFormData.firstName,
-            lastName: apiFormData.lastName,
-            email: apiFormData.email,
-            phone: apiFormData.phone
-          }, {
-            formName: 'Clinical Trial Screening Form',
-            value: 100, // Higher value for qualified leads
-            currency: 'USD',
-            contentCategory: 'Clinical Trial Lead',
-            customData: {
-              eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
-              is_non_alcoholic_fatty_liver: formData.isNonAlcoholicFattyLiver,
-              on_specific_medications: formData.onSpecificMedications,
-              study_type: 'Clinical Trial Screening'
-            }
-          });
-          
-          directApiSuccess = true;
-        }
-      } catch (directApiError) {
-        console.warn('Direct GoHighLevel API call failed. Error:', directApiError.message ? directApiError.message : directApiError);
-        // Do not set error message yet, proceed to fallback.
-      }
+      const response = await fetch('/api/submit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...submissionData, eventId }),
+      });
 
-      if (directApiSuccess) {
-        setIsSubmitting(false);
-        return; // Successfully submitted via direct call, exit
-      }
+      const result = await response.json();
 
-      // Attempt 2: Fallback to centralized API route (if direct call failed or was skipped)
-      if (isDev) {
-        console.log('Attempting fallback API call to /api/gohighlevel');
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'An error occurred during submission.');
       }
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-        
-        const response = await fetch('/api/gohighlevel', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(apiFormData),
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId);
+      
+      // On successful backend processing, fire the client-side pixel for deduplication
+      trackFbPixelEvent('Lead', {
+        content_name: 'Clinical Trial Screening Form',
+        value: 100,
+        currency: 'USD'
+      }, {
+        eventID: eventId
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({})); // Gracefully handle if response.json() also fails
-          throw new Error(errorData.message || `Server error: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        if (isDev) {
-          console.log('Fallback API response:', result);
-        }
-        
-        if (result.success) {
-          setCurrentStep('success');
-          
-          // Enhanced Facebook tracking with user data
-          await trackFormSubmission({
-            firstName: apiFormData.firstName,
-            lastName: apiFormData.lastName,
-            email: apiFormData.email,
-            phone: apiFormData.phone
-          }, {
-            formName: 'Clinical Trial Screening Form',
-            value: 100, // Higher value for qualified leads
-            currency: 'USD',
-            contentCategory: 'Clinical Trial Lead',
-            customData: {
-              eligibility_status: skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
-              is_non_alcoholic_fatty_liver: formData.isNonAlcoholicFattyLiver,
-              on_specific_medications: formData.onSpecificMedications,
-              study_type: 'Clinical Trial Screening'
-            }
-          });
-        } else {
-          throw new Error(result.message || 'Failed to submit form via fallback');
-        }
-      } catch (fetchError) {
-        console.error('Fallback /api/gohighlevel call failed:', fetchError);
-        let finalErrorMessage = 'There was an error submitting your information. ';
-        if (fetchError.name === 'AbortError') {
-          finalErrorMessage += 'The request timed out. ';
-        } else if (fetchError.message && (fetchError.message.includes('Failed to fetch') || fetchError.message.includes('NetworkError'))) {
-          finalErrorMessage += 'A network error occurred. Please check your connection. ';
-        }
-        finalErrorMessage += 'Please try again or contact us directly.';
-        setErrorMessage(finalErrorMessage);
+      setCurrentStep('success');
+
+    } catch (error) {
+      console.error('Error during form submission process:', error);
+      let finalErrorMessage = 'There was an error submitting your information. ';
+      if (error.name === 'AbortError') {
+        finalErrorMessage += 'The request timed out. ';
+      } else if (error.message && (error.message.includes('Failed to fetch') || error.message.includes('NetworkError'))) {
+        finalErrorMessage += 'A network error occurred. Please check your connection. ';
       }
-    } catch (error) { // Catch unexpected errors from data formatting or logic errors
-      console.error('Outer catch: Unexpected error during form submission process:', error);
-      setErrorMessage(error.message || 'An unexpected error occurred. Please try again or contact us directly.');
+      finalErrorMessage += 'Please try again or contact us directly.';
+      setErrorMessage(finalErrorMessage);
     } finally {
-      // Set isSubmitting to false if not already successful (currentStep would be 'success')
-      if (currentStep !== 'success') {
-        setIsSubmitting(false);
-      } else {
-         // If success, ensure isSubmitting is false from directApiSuccess block or here
-         setIsSubmitting(false);
-      }
+      setIsSubmitting(false);
     }
   };
 
@@ -666,16 +572,22 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
               </div>
               <div>
                 <label htmlFor="phone" className={inputLabelClasses}>Phone Number</label>
-                <input
-                  type="tel"
+                <PhoneInput
+                  defaultCountry="US"
                   name="phone"
                   id="phone"
                   required
                   value={formData.phone}
-                  onChange={handleInputChange}
+                  onChange={handlePhoneChange}
                   onFocus={handleContactFormStart}
-                  className={clsx(inputTextClasses, "mt-2")}
                   placeholder="(555) 123-4567"
+                  className={clsx(
+                    "mt-2 w-full flex items-center px-4 py-3 rounded-md shadow-sm text-base font-body",
+                    context === 'hero' ? 'phone-input-hero' : 'phone-input-default'
+                  )}
+                  inputProps={{
+                    className: "ml-2"
+                  }}
                 />
               </div>
               <div>
