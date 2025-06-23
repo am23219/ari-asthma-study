@@ -679,22 +679,22 @@ export default function LeadCaptureForm({ context = 'default' }) {
               "text-left mb-6 space-y-4 text-sm sm:text-base font-body",
               { 'text-white/90': context === 'hero', 'text-text-sub': context === 'default' || context === 'consultation' }
             )}>
-              <p className="font-medium">Based on your answers, here's what you need to know:</p>
+              <p className="font-medium !text-inherit">Based on your answers, here's what you need to know:</p>
               
               <div className="space-y-3">
-                <p>
+                <p className="!text-inherit">
                   <span className="font-semibold">Fatty Liver Type:</span> This clinical trial is specifically designed for patients with non-alcoholic fatty liver disease (NAFLD). If your fatty liver is alcoholic in nature, you would not qualify for this particular study.
                 </p>
                 
-                <p>
+                <p className="!text-inherit">
                   <span className="font-semibold">Medications:</span> If you are on any of the medications listed (Ozempic, Wegovy, Mounjaro, Phentermine, Methotrexate, Amiodarone, or Prednisone), we require a 3-6 month washout period before we can look further into eligibility.
                 </p>
                 
-                <p>
+                <p className="!text-inherit">
                   <span className="font-semibold">Autoimmune Treatment:</span> Treatment for autoimmune liver disease may conflict with the study medication and could affect your safety.
                 </p>
                 
-                <p>
+                <p className="!text-inherit">
                   <span className="font-semibold">Cancer History:</span> Any cancer history other than skin cancer within the past 5 years would be deemed unsafe to proceed forward with for the trial.
                 </p>
               </div>
@@ -707,21 +707,21 @@ export default function LeadCaptureForm({ context = 'default' }) {
                 }
               )}>
                 <p className={clsx(
-                  "font-semibold mb-2",
+                  "font-semibold mb-2 !text-inherit",
                   { 'text-blue-800': context === 'default' || context === 'consultation', 'text-white': context === 'hero' }
                 )}>
                   Still Interested?
                 </p>
-                <p>
+                <p className="!text-inherit">
                   If you still want to look deeper into your eligibility or discuss your specific situation, please call us at{' '}
                   <a 
-                    href="tel:+18883174950" 
+                    href="tel:+13526677237" 
                     className={clsx(
                       "font-semibold hover:underline",
                       { 'text-blue-600': context === 'default' || context === 'consultation', 'text-teal-300': context === 'hero' }
                     )}
                   >
-                    (888) 317-4950
+                    (352) 667-7237
                   </a>
                 </p>
               </div>
