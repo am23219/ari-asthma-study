@@ -28,7 +28,8 @@ export async function POST(request) {
 
     // --- 1. Get User Location from IP Address ---
     const headersList = request.headers;
-    const ip = headersList.get('x-forwarded-for') || '8.8.8.8';
+    const forwardedFor = headersList.get('x-forwarded-for');
+    const ip = headersList.get('x-nf-client-connection-ip') || (forwardedFor ? forwardedFor.split(',')[0].trim() : null) || '8.8.8.8';
     const userAgent = headersList.get('user-agent');
     const referer = headersList.get('referer');
     
