@@ -67,7 +67,7 @@ export async function POST(request) {
     const contactData = {
       ...formData,
       ...locationData,
-      tags: ["Clinical Trial Screening", "Website Lead"],
+      tags: ["NASH/MASH Study", "Website Lead"],
       source: "Website Eligibility Form",
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
