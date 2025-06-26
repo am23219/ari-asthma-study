@@ -24,7 +24,6 @@
     "facebook-nodejs-business-sdk": "^20.0.3",
     "framer-motion": "^12.5.0",
     "geoip-country": "^5.0.202506202343",
-    "gh": "^2.8.9",
     "ip-geolocation-api-javascript-sdk": "^1.0.9",
     "next": "^15.2.4",
     "postcss": "^8.4.35",
