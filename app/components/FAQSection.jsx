@@ -18,25 +18,24 @@ export default function FAQSection() {
     },
     {
       question: "What are the benefits of participating?",
-      answer: "You'll receive close monitoring of your liver condition at no cost, including specialized tests that might not be part of regular care. If you receive the active medication and it works, you may experience improvement in your liver condition and possibly weight loss. However, there's no guarantee you'll receive the active medication or that it will work for you."
+      answer: "You'll receive close monitoring of your health condition at no cost, including specialized tests that might not be part of regular care. If you receive the active medication and it works, you may experience improvement in your condition. However, there's no guarantee you'll receive the active medication or that it will work for you."
     },
     {
       question: "What happens after my screening call?",
-      answer: "If you appear eligible and are interested, a study coordinator will contact you to schedule an in-person screening visit. This will include blood tests, a review of your medical history, and imaging tests to confirm if you qualify for the study."
+      answer: "If you appear eligible and are interested, a study coordinator will contact you to schedule an in-person screening visit. This will include blood tests, a review of your medical history, and other tests to confirm if you qualify for the study."
     },
     {
       question: "What does participation involve?",
-      answer: "Participation involves visits to our clinic in Brooksville, FL. During the first few months, visits will be more frequent (approximately every 1-2 weeks) as you start the medication. After that, visits will be less frequent during the long-term follow-up period. You will be compensated for your time and travel."
+      answer: "Participation involves visits to our clinic in Brooksville, FL. The main part of the study lasts about one year (52 weeks). You can be compensated for your time and travel."
     },
     {
-      question: "Is the treatment safe?",
-      answer: "The treatment being studied has undergone initial safety testing and is approved for this clinical trial. Throughout the study, our medical team closely monitors all participants for any potential side effects or complications. Your safety is our top priority."
+      question: "What is the study medication and how does it work?",
+      answer: "This study tests a medication that works through a completely new mechanism - blocking the TL1A protein that plays a key role in gut inflammation - potentially offering a new option for patients who haven't found relief with existing therapies."
     },
     {
       question: "Do I need insurance to participate?",
       answer: "No, you do not need insurance to participate. All study-related care is provided at no cost to qualified participants."
     },
-
   ];
 
   const toggleFAQ = (index) => {

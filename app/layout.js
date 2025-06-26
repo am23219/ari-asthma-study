@@ -1,14 +1,69 @@
+import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Script from 'next/script';
 import Image from 'next/image';
 import FacebookPixel from './components/FacebookPixel';
 
-const SITE_URL = process.env.SITE_URL || 'https://amarimash.netlify.app';
+const SITE_URL = process.env.SITE_URL || 'https://amariuc.netlify.app';
 
 export const metadata = {
-  title: "Fatty Liver & NASH/MASH Clinical Trials | Access Research Institute",
-  description: "Explore clinical trials and studies for Fatty Liver and NASH/MASH treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+  metadataBase: new URL(SITE_URL),
+  title: "Ulcerative Colitis Clinical Trials | Access Research Institute",
+  description: "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: "Ulcerative Colitis Clinical Trials | Access Research Institute",
+    description: "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    url: '/',
+    siteName: 'Access Research Institute',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'A doctor and patient discussing Ulcerative Colitis treatment options.',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Ulcerative Colitis Clinical Trials | Access Research Institute",
+    description: "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  structuredData: {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "Ulcerative Colitis Clinical Trials | Access Research Institute",
+    "description": "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    "url": SITE_URL,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Access Research Institute",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${SITE_URL}/logo.png`
+      }
+    }
+  }
 };
 
 export default function RootLayout({ children }) {
@@ -49,8 +104,8 @@ export default function RootLayout({ children }) {
                   "@type": "MedicalWebPage",
                   "@id": SITE_URL,
                   "url": SITE_URL,
-                  "name": "Fatty Liver & NASH/MASH Clinical Trials | Access Research Institute",
-                  "description": "Explore clinical trials and studies for Fatty Liver and NASH/MASH treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+                  "name": "Ulcerative Colitis Clinical Trials | Access Research Institute",
+                  "description": "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
                   "publisher": {
                     "@type": "Organization",
                     "name": "Access Research Institute"

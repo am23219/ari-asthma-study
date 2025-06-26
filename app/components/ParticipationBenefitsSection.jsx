@@ -15,7 +15,7 @@ export default function ParticipationBenefitsSection() {
   const benefits = [
     {
       icon: faHeartPulse,
-      text: 'Have <span class="text-teal-accent font-semibold">in-depth, long-term monitoring of your liver health</span> (as well as any associated conditions such as type 2 diabetes and high blood pressure by experts in this field of medicine). This includes access to specialist medical tests that would not be part of standard care outside of a clinical study.'
+      text: 'Have <span class="text-teal-accent font-semibold">in-depth, long-term monitoring of your health</span>. This includes access to specialist medical tests that would not be part of standard care outside of a clinical study.'
     },
     {
       icon: faAppleWhole,
@@ -27,11 +27,11 @@ export default function ParticipationBenefitsSection() {
     },
     {
       icon: faHandshake,
-      text: 'Be a <span class="text-teal-accent font-semibold">partner</span> in this quest to help improve understanding of MASH.'
+      text: 'Be a <span class="text-teal-accent font-semibold">partner</span> in this quest to help improve understanding of Ulcerative Colitis.'
     },
     {
       icon: faUserGroup,
-      text: 'Potentially <span class="text-teal-accent font-semibold">help other people with MASH</span> in the future.'
+      text: 'Potentially <span class="text-teal-accent font-semibold">help other people with Ulcerative Colitis</span> in the future.'
     }
   ];
 

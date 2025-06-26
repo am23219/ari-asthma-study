@@ -78,7 +78,7 @@ export default function Navbar() {
               <Link href="/#contact" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 Contact
               </Link>
-              <Link href="/#consultationsection" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
+              <Link href="/#schedule" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 Schedule
               </Link>
               
@@ -178,7 +178,7 @@ export default function Navbar() {
                   <span>Contact</span>
                 </Link>
                 <Link 
-                  href="/#consultationsection" 
+                  href="/#schedule" 
                   className="px-6 py-3 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >

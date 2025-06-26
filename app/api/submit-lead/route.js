@@ -67,17 +67,16 @@ export async function POST(request) {
     const contactData = {
       ...formData,
       ...locationData,
-      tags: ["NASH/MASH Study", "Website Lead"],
+      tags: ["UC Study", "Website Lead"],
       source: "Website Eligibility Form",
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
 Location: ${locationData.city}, ${locationData.state}, ${locationData.postalCode}
 Did Prescreen: ${!formData.skippedPrescreen}
-Is Non-Alcoholic Fatty Liver: ${formData.isNonAlcoholicFattyLiver !== null ? (formData.isNonAlcoholicFattyLiver ? "Yes" : "No") : "Skipped"}
-On Ozempic/Wegovy/Mounjaro/Phentermine: ${formData.onSpecificMedications !== null ? (formData.onSpecificMedications ? "Yes" : "No") : "Skipped"}
-On Methotrexate/Amiodarone/Prednisone: ${formData.onOtherMedications !== null ? (formData.onOtherMedications ? "Yes" : "No") : "Skipped"}
-Has Autoimmune Liver Treatment: ${formData.hasAutoimmuneLiverTreatment !== null ? (formData.hasAutoimmuneLiverTreatment ? "Yes" : "No") : "Skipped"}
-Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHistory ? "Yes" : "No") : "Skipped"}`
+Are you between the ages of 18-80?: ${formData.isOfAge !== null ? (formData.isOfAge ? "Yes" : "No") : "Skipped"}
+Have you been diagnosed with ulcerative colitis?: ${formData.hasUcDiagnosis !== null ? (formData.hasUcDiagnosis ? "Yes" : "No") : "Skipped"}
+Are you currently experiencing symptoms of your ulcerative colitis?: ${formData.hasUcSymptoms !== null ? (formData.hasUcSymptoms ? "Yes" : "No") : "Skipped"}
+Despite previous treatments, are you currently experiencing symptoms of active ulcerative colitis?: ${formData.hasActiveUcSymptoms !== null ? (formData.hasActiveUcSymptoms ? "Yes" : "No") : "Skipped"}`
     };
 
     const ghlResponse = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
@@ -96,7 +95,6 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
     }
     const ghlResult = await ghlResponse.json();
     if (isDev) console.log('GoHighLevel API success:', ghlResult);
-
 
     // --- 3. Submit to Facebook Conversions API ---
     const cookieStore = cookies();
@@ -122,9 +120,11 @@ Has Cancer History: ${formData.hasCancerHistory !== null ? (formData.hasCancerHi
         currency: 'USD',
         contentCategory: 'Clinical Trial Lead',
         eligibility_status: formData.skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
-        is_non_alcoholic_fatty_liver: formData.isNonAlcoholicFattyLiver,
-        on_specific_medications: formData.onSpecificMedications,
-        study_type: 'Clinical Trial Screening'
+        is_of_age: formData.isOfAge,
+        has_uc_diagnosis: formData.hasUcDiagnosis,
+        has_uc_symptoms: formData.hasUcSymptoms,
+        has_active_uc_symptoms: formData.hasActiveUcSymptoms,
+        study_type: 'UC Clinical Trial Screening'
     };
     
     await fbAPI.sendEvent({

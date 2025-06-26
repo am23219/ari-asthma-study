@@ -8,127 +8,176 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { trackFbPixelEvent } from './FacebookPixel';
+import { faSpinner, faCheckCircle, faExclamationTriangle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const isDev = process.env.NODE_ENV !== 'production';
-import { faSpinner, faCheckCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-/**
- * Converts a string to proper case (e.g., "john doe" -> "John Doe").
- * This also handles hyphenated names like "Mary-Anne" and names with apostrophes.
- * @param {string} str - The input string.
- * @returns {string} The string in proper case.
- */
 const toProperCase = (str) => {
   if (!str) return '';
   return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
+// Questions configuration
+const QUESTIONS = [
+  {
+    id: 'q1_age_weight',
+    text: 'Are you between 18 and 80 years old and weigh at least 88 pounds (40 kg)?',
+    qualifyingAnswer: true,
+    disqualifyMessage: 'You must be between 18 and 80 years old and meet the weight requirements.'
+  },
+  {
+    id: 'q2_uc_diagnosis',
+    text: 'Have you been diagnosed with ulcerative colitis (not Crohn\'s disease or indeterminate colitis)?',
+    qualifyingAnswer: true,
+    disqualifyMessage: 'A formal diagnosis of Ulcerative Colitis is required.'
+  },
+  {
+    id: 'q3_uc_symptoms',
+    text: 'Are you currently experiencing moderate to severe UC symptoms, such as:',
+    bullets: [
+      'Frequent loose or bloody stools',
+      'Urgent bowel movements',
+      'Abdominal pain or cramping'
+    ],
+    qualifyingAnswer: true,
+    disqualifyMessage: 'The study requires participants to be experiencing active UC symptoms.'
+  },
+  {
+    id: 'q4_tried_treatments',
+    text: 'Have you tried any of the following treatments for UC and either didn\'t improve, got worse, or had side effects?',
+    bullets: [
+      'Steroids (e.g., prednisone, budesonide)',
+      '5-ASA medications (e.g., mesalamine, sulfasalazine)',
+      'Immunosuppressants (e.g., azathioprine, 6-MP, methotrexate)',
+      'Biologics (e.g., Remicade, Humira, Entyvio, Stelara)',
+      'JAK inhibitors (e.g., Xeljanz, Rinvoq)',
+      'S1P modulators (e.g., Zeposia, etrasimod)'
+    ],
+    qualifyingAnswer: true,
+    disqualifyMessage: 'Participants should have tried other UC treatments without success.'
+  },
+  {
+    id: 'q5_had_surgery',
+    text: 'Have you ever had a colectomy, ostomy, or pouch surgery (such as an ileoanal pouch)?',
+    qualifyingAnswer: false,
+    disqualifyMessage: 'Patients who have had a colectomy, ostomy, or pouch surgery are not eligible.'
+  },
+  {
+    id: 'q6_other_diagnosis',
+    text: 'Have you ever been diagnosed with any of the following?',
+    bullets: [
+      'Crohn\'s disease',
+      'Microscopic colitis',
+      'Indeterminate colitis',
+      'Primary sclerosing cholangitis'
+    ],
+    qualifyingAnswer: false,
+    disqualifyMessage: 'A diagnosis of Crohn\'s, microscopic colitis, or other specific conditions may exclude you.'
+  },
+  {
+    id: 'q7_hospitalized_or_surgery',
+    text: 'Have you been hospitalized for a UC flare within the past 2 weeks or do you currently need surgery for UC?',
+    qualifyingAnswer: false,
+    disqualifyMessage: 'Recent hospitalization or currently needing surgery for UC are exclusion criteria.'
+  },
+  {
+    id: 'q8_recent_infections',
+    text: 'Have you had any of the following infections recently (within the past 2–3 months)?',
+    bullets: [
+      'C. difficile',
+      'Cytomegalovirus (CMV) colitis',
+      'Tuberculosis (TB)',
+      'Hepatitis B or C',
+      'HIV/AIDS'
+    ],
+    qualifyingAnswer: false,
+    disqualifyMessage: 'Certain recent infections (like C. difficile, TB, Hepatitis) can prevent participation.'
+  },
+  {
+    id: 'q9_substance_abuse',
+    text: 'In the past year, have you had any issues with alcohol, drug, or substance abuse?',
+    qualifyingAnswer: false,
+    disqualifyMessage: 'Recent substance abuse issues may be an exclusion criterion.'
+  },
+  {
+    id: 'q10_willing_for_endoscopy',
+    text: 'Are you able and willing to undergo a colonoscopy or flexible sigmoidoscopy if needed?',
+    qualifyingAnswer: true,
+    disqualifyMessage: 'Willingness to undergo a potential endoscopy is required for the study.'
+  },
+  {
+    id: 'q11_pregnant_or_breastfeeding',
+    text: 'Are you currently pregnant or breastfeeding, or planning to become pregnant in the next 3 months?',
+    qualifyingAnswer: false,
+    disqualifyMessage: 'Participants cannot be pregnant, breastfeeding, or planning to become pregnant soon.'
+  }
+];
+
 export default function LeadCaptureForm({ context = 'default' }) {
   if (isDev) {
     console.log('LeadCaptureForm context:', context);
   }
-  const [currentStep, setCurrentStep] = useState('fattyLiverType');
+
+  const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [skippedPrescreen, setSkippedPrescreen] = useState(false);
   const [contactFormStarted, setContactFormStarted] = useState(false);
-  const [formData, setFormData] = useState({
-    isNonAlcoholicFattyLiver: null,
-    onSpecificMedications: null,
-    onOtherMedications: null,
-    hasAutoimmuneLiverTreatment: null,
-    hasCancerHistory: null,
+  const [answers, setAnswers] = useState({});
+  const [contactInfo, setContactInfo] = useState({
     name: '',
     phone: '',
     email: ''
   });
+  const [disqualifyingStep, setDisqualifyingStep] = useState(null);
 
-  // Enhanced Facebook tracking
-  const { trackEvent, trackingError } = useFacebookTracking();
+  const { trackEvent } = useFacebookTracking();
 
-  const handleAnswer = (question, answer) => {
-    const newFormData = { ...formData, [question]: answer };
-    setFormData(newFormData);
+  const totalQuestions = QUESTIONS.length;
+  const isQuestionStep = currentStep < totalQuestions;
+  const currentQuestion = isQuestionStep ? QUESTIONS[currentStep] : null;
 
-    // Track user engagement with questionnaire
+  const handleAnswer = (answer) => {
+    const question = currentQuestion;
+    const newAnswers = { ...answers, [question.id]: answer };
+    setAnswers(newAnswers);
+
     trackEvent('QuestionAnswered', {
-      question,
+      question: question.id,
       answer: answer ? 'yes' : 'no',
       step: currentStep,
-      study_type: 'Clinical Trial Screening'
+      study_type: 'UC Clinical Trial Screening'
     });
 
-    // Determine next step based on answer
-    // For fatty liver question, we need "yes" (non-alcoholic) to qualify
-    if (question === 'isNonAlcoholicFattyLiver' && answer === false) {
-      setCurrentStep('notQualified');
-      return;
-    }
-    // For other questions, we need "no" to qualify
-    if (question === 'onSpecificMedications' && answer === true) {
-      setCurrentStep('notQualified');
-      return;
-    }
-    if (question === 'onOtherMedications' && answer === true) {
-      setCurrentStep('notQualified');
-      return;
-    }
-    if (question === 'hasAutoimmuneLiverTreatment' && answer === true) {
-      setCurrentStep('notQualified');
-      return;
-    }
-    if (question === 'hasCancerHistory' && answer === true) {
+    // Check if this answer disqualifies the user
+    if (answer !== question.qualifyingAnswer) {
+      setDisqualifyingStep(currentStep); // Track which step disqualified them
       setCurrentStep('notQualified');
       return;
     }
 
-    // Advance to next question or contact info
-    if (question === 'isNonAlcoholicFattyLiver') {
-      setCurrentStep('initial');
-    } else if (question === 'onSpecificMedications') {
-      setCurrentStep('otherMedications');
-    } else if (question === 'onOtherMedications') {
-      setCurrentStep('autoimmuneLiverTreatment');
-    } else if (question === 'hasAutoimmuneLiverTreatment') {
-      setCurrentStep('cancerHistory');
-    } else if (question === 'hasCancerHistory') {
+    // Move to next question or contact form
+    if (currentStep < totalQuestions - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
       setCurrentStep('contactInfo');
     }
   };
 
   const handleSkipToContact = () => {
     setSkippedPrescreen(true);
-    setFormData({
-      ...formData,
-      isNonAlcoholicFattyLiver: null,
-      onSpecificMedications: null,
-      onOtherMedications: null,
-      hasAutoimmuneLiverTreatment: null,
-      hasCancerHistory: null,
-    });
+    setAnswers({});
     
-    // Track questionnaire skip
     trackEvent('QuestionnaireSkipped', {
       from_step: currentStep,
-      study_type: 'Clinical Trial Screening'
+      study_type: 'UC Clinical Trial Screening'
     });
     
     setCurrentStep('contactInfo');
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handlePhoneChange = (value) => {
-    setFormData({
-      ...formData,
-      phone: value
-    });
+  const handleContactChange = (field, value) => {
+    setContactInfo(prev => ({ ...prev, [field]: value }));
   };
 
   const handleContactFormStart = () => {
@@ -137,7 +186,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
       trackEvent('BeganContactForm', {
         form_type: 'Clinical_Trial_Screening',
         completed_prescreen: !skippedPrescreen,
-        study_type: 'Clinical Trial Screening'
+        study_type: 'UC Clinical Trial Screening'
       });
     }
   };
@@ -148,15 +197,15 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setIsSubmitting(true);
 
     const submissionData = {
-      firstName: toProperCase(formData.name?.split(' ')[0] || ''),
-      lastName: toProperCase(formData.name?.split(' ').slice(1).join(' ') || ''),
-      email: formData.email.toLowerCase(),
-      phone: formData.phone,
+      firstName: toProperCase(contactInfo.name?.split(' ')[0] || ''),
+      lastName: toProperCase(contactInfo.name?.split(' ').slice(1).join(' ') || ''),
+      email: contactInfo.email.toLowerCase(),
+      phone: contactInfo.phone,
       skippedPrescreen,
-      ...formData
+      ...answers,
+      ...contactInfo
     };
     
-    // Generate a unique ID for this event, to be used by both client and server
     const eventId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     try {
@@ -172,7 +221,6 @@ export default function LeadCaptureForm({ context = 'default' }) {
         throw new Error(result.message || 'An error occurred during submission.');
       }
       
-      // On successful backend processing, fire the client-side pixel for deduplication
       trackFbPixelEvent('Lead', {
         content_name: 'Clinical Trial Screening Form',
         value: 100,
@@ -185,559 +233,376 @@ export default function LeadCaptureForm({ context = 'default' }) {
 
     } catch (error) {
       console.error('Error during form submission process:', error);
-      let finalErrorMessage = 'There was an error submitting your information. ';
-      if (error.name === 'AbortError') {
-        finalErrorMessage += 'The request timed out. ';
-      } else if (error.message && (error.message.includes('Failed to fetch') || error.message.includes('NetworkError'))) {
-        finalErrorMessage += 'A network error occurred. Please check your connection. ';
-      }
-      finalErrorMessage += 'Please try again or contact us directly.';
-      setErrorMessage(finalErrorMessage);
+      setErrorMessage('There was an error submitting your information. Please try again or contact us directly.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const restart = () => {
-    setCurrentStep('fattyLiverType');
+    setCurrentStep(0);
     setSkippedPrescreen(false);
     setContactFormStarted(false);
-    setFormData({
-      isNonAlcoholicFattyLiver: null,
-      onSpecificMedications: null,
-      onOtherMedications: null,
-      hasAutoimmuneLiverTreatment: null,
-      hasCancerHistory: null,
-      name: '',
-      phone: '',
-      email: ''
-    });
+    setAnswers({});
+    setContactInfo({ name: '', phone: '', email: '' });
+    setErrorMessage('');
+    setDisqualifyingStep(null);
   };
 
-  const rootClasses = clsx(
-    "relative overflow-hidden w-full"
-  );
-
-  const headingClasses = clsx(
-    "text-xl md:text-2xl font-bold text-center mb-2 font-heading",
-    {
-      'text-navy-deep': context === 'default' || context === 'consultation',
-      'text-white': context === 'hero',
+  const goBackFromDisqualified = () => {
+    // Remove the disqualifying answer and go back to that question
+    if (disqualifyingStep !== null) {
+      const disqualifyingQuestion = QUESTIONS[disqualifyingStep];
+      const newAnswers = { ...answers };
+      delete newAnswers[disqualifyingQuestion.id];
+      setAnswers(newAnswers);
+      setCurrentStep(disqualifyingStep);
+      setDisqualifyingStep(null);
     }
-  );
-  
-  const captionClasses = clsx(
-    "text-center mb-6 text-sm md:text-base font-body",
-    {
-      'text-text-sub': context === 'default' || context === 'consultation',
-      'text-white/90': context === 'hero',
+  };
+
+  const goBack = () => {
+    if (currentStep > 0 && currentStep < totalQuestions) {
+      setCurrentStep(currentStep - 1);
     }
-  );
+  };
 
-  const questionTextClasses = clsx(
-      "text-lg sm:text-xl font-bold mb-2 sm:mb-3 border-l-4 pl-3 py-1 font-heading",
-      {
-          'text-navy-deep border-teal-accent': context === 'default' || context === 'consultation',
-          'text-white border-teal-400': context === 'hero'
-      }
-  );
+  // Style classes based on context
+  const getClasses = () => {
+    const isHero = context === 'hero';
+    
+    return {
+      container: "w-full max-w-full mx-auto",
+      
+      header: clsx(
+        "text-center mb-4 sm:mb-6",
+        isHero ? "text-white" : "text-navy-deep"
+      ),
+      
+      title: clsx(
+        "text-xl sm:text-2xl md:text-3xl font-bold mb-2 font-heading leading-tight",
+        isHero ? "text-white" : "text-navy-deep"
+      ),
+      
+      subtitle: clsx(
+        "text-sm sm:text-base opacity-90 font-body",
+        isHero ? "text-white/90" : "text-text-sub"
+      ),
+      
+      question: {
+        container: "mb-4 sm:mb-6",
+        text: clsx(
+          "text-base sm:text-lg font-bold mb-3 sm:mb-4 border-l-4 pl-3 py-1 font-heading leading-relaxed",
+          isHero ? "text-white border-teal-400" : "text-navy-deep border-teal-accent"
+        ),
+        bullets: clsx(
+          "list-disc list-inside ml-3 mt-2 space-y-1 text-xs sm:text-sm",
+          isHero ? "text-white" : "text-text-sub"
+        )
+      },
+      
+      buttons: {
+        container: "grid grid-cols-1 gap-2 sm:gap-3 mb-4",
+        primary: clsx(
+          "w-full px-4 py-3 sm:py-4 text-sm sm:text-base font-bold text-white rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 font-heading shadow-lg hover:shadow-xl",
+          isHero 
+            ? "bg-gradient-to-br from-teal-500 to-cyan-600 focus:ring-teal-400" 
+            : "bg-gradient-to-br from-blue-primary to-navy-deep focus:ring-blue-primary"
+        ),
+        secondary: clsx(
+          "w-full px-4 py-3 sm:py-4 text-sm sm:text-base font-bold text-white rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 font-heading",
+          isHero 
+            ? "bg-white/10 border border-white/20 hover:bg-white/20 focus:ring-teal-400" 
+            : "bg-blue-primary/50 border border-blue-primary/80 hover:bg-blue-primary/70 focus:ring-blue-primary"
+        ),
+        tertiary: clsx(
+          "w-full text-center px-4 py-3 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-1 font-body",
+          isHero 
+            ? "border border-white/50 text-white/90 hover:bg-white/10 focus:ring-teal-400" 
+            : "border border-blue-primary/80 text-blue-primary hover:bg-blue-primary/10 focus:ring-blue-primary"
+        ),
+        back: clsx(
+          "inline-flex items-center px-3 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 mb-3",
+          isHero 
+            ? "text-white/80 hover:text-white hover:bg-white/10 focus:ring-teal-400" 
+            : "text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:ring-blue-primary"
+        )
+      },
+      
+      form: {
+        container: "space-y-3 sm:space-y-4",
+        group: "space-y-1",
+        label: clsx(
+          "block text-sm sm:text-base font-medium font-heading",
+          isHero ? "text-white" : "text-gray-700"
+        ),
+        input: clsx(
+          "mt-1 block w-full px-3 py-2 sm:py-3 text-sm sm:text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 transition-all duration-200",
+          isHero 
+            ? "border-white/20 bg-white/10 text-white placeholder-white/70 focus:ring-teal-400 focus:border-teal-400" 
+            : "border-gray-300 bg-white text-gray-900 focus:ring-navy-accent focus:border-navy-accent"
+        )
+      },
+      
+      success: {
+        container: "text-center space-y-3 sm:space-y-4",
+        icon: "mx-auto mb-3 bg-gradient-to-br from-teal-accent to-blue-primary rounded-full p-3 w-16 h-16 flex items-center justify-center shadow-lg",
+        title: clsx(
+          "text-xl sm:text-2xl font-bold font-heading",
+          isHero ? "text-white" : "text-navy-deep"
+        ),
+        text: clsx(
+          "text-sm sm:text-base opacity-90 font-body",
+          isHero ? "text-white/90" : "text-text-sub"
+        )
+      },
+      
+      disqualified: {
+        container: "text-center space-y-3 sm:space-y-4",
+        icon: "mx-auto mb-3 bg-gradient-to-br from-orange-400 to-red-500 rounded-full p-3 w-16 h-16 flex items-center justify-center shadow-lg",
+        title: clsx(
+          "text-xl sm:text-2xl font-bold font-heading",
+          isHero ? "text-white" : "text-navy-deep"
+        ),
+        content: clsx(
+          "text-left space-y-2 text-xs sm:text-sm font-body",
+          isHero ? "text-white" : "text-text-sub"
+        )
+      },
+      
+      skip: clsx(
+        "text-center text-xs mt-3 opacity-70",
+        isHero ? "text-white/60" : "text-gray-400"
+      )
+    };
+  };
 
-  const inputLabelClasses = clsx(
-      "block text-base font-medium mb-1 font-heading",
-      {
-          'text-gray-700': context === 'default' || context === 'consultation',
-          'text-white': context === 'hero' // White text for hero
-      }
-  );
-
-  const inputTextClasses = clsx(
-      "mt-1 block w-full rounded-md shadow-sm text-base font-body",
-      {
-          'border-gray-300 focus:border-blue-primary focus:ring-blue-primary px-4 py-3': context === 'default' || context === 'consultation',
-          'bg-white/20 border-white/30 text-white placeholder-white focus:border-teal-400 focus:ring-teal-400 rounded-lg px-4 py-3': context === 'hero'
-      }
-  );
-
-  const buttonPrimaryClasses = clsx(
-      "flex-1 text-white py-2.5 sm:py-3 rounded-lg font-medium transition-all text-base font-heading",
-      {
-          'bg-gradient-to-r from-blue-primary to-navy-deep hover:from-navy-deep hover:to-blue-primary': context === 'default' || context === 'consultation',
-          'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700': context === 'hero' // Teal/Cyan buttons for hero
-      }
-  );
-
-  const buttonSecondaryClasses = clsx(
-      "flex-1 py-2.5 sm:py-3 rounded-lg font-medium text-base font-heading transition-colors duration-150 ease-in-out",
-      {
-          'bg-white text-blue-primary border border-blue-200 hover:bg-blue-50': context === 'default' || context === 'consultation',
-          'bg-white/20 hover:bg-white/30 text-white border border-white/30': context === 'hero'
-      }
-  );
-
-  const notQualifiedTextClasses = clsx(
-      "text-center",
-      {
-          'text-red-600': context === 'default' || context === 'consultation',
-          'text-red-400': context === 'hero' // Lighter red for hero
-      }
-  );
-
-  const successTextClasses = clsx(
-      "text-center",
-      {
-          'text-green-600': context === 'default' || context === 'consultation',
-          'text-green-400': context === 'hero' // Lighter green for hero
-      }
-  );
+  const classes = getClasses();
+  const phoneInputStyle = {
+    '--phone-input-background': context === 'hero' ? 'rgba(255, 255, 255, 0.1)' : '#fff',
+    '--phone-input-text-color': context === 'hero' ? '#fff' : '#111827',
+    '--phone-input-border-color': context === 'hero' ? 'rgba(255, 255, 255, 0.2)' : '#D1D5DB',
+    '--phone-input-focus-ring-color': context === 'hero' ? '#2DD4BF' : '#00528A'
+  };
 
   return (
-    <div className={rootClasses}>
+    <div className={classes.container} style={phoneInputStyle}>
       <AnimatePresence mode="wait">
-        {currentStep === 'fattyLiverType' && (
-          <motion.div
-            key="fattyLiverType"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
-              { 'text-white/90': context === 'hero' }
-            )}>
-              Question 1 of 5 - let's get started!
-            </p>
-            <div className="mb-4 sm:mb-5">
-              <p className={questionTextClasses}>
-                Is your fatty liver non-alcoholic?
-              </p>
-              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 mb-3"> 
-                <button onClick={() => handleAnswer('isNonAlcoholicFattyLiver', true)} className={buttonPrimaryClasses}>Yes</button>
-                <button onClick={() => handleAnswer('isNonAlcoholicFattyLiver', false)} className={buttonSecondaryClasses}>No</button>
-              </div>
-              <button
-                onClick={handleSkipToContact}
-                className={clsx(
-                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
-                  {
-                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
-                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
-                  }
-                )}
-              >
-                Skip Questionnaire & Fill Interest Form
-              </button>
-            </div>
-          </motion.div>
-        )}
-        
-        {currentStep === 'initial' && (
-          <motion.div
-            key="initial"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mb-4 sm:mb-5">
-              <p className={clsx(
-                "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
-                { 'text-white/90': context === 'hero' }
-              )}>
-                Question 2 of 5 - making progress!
-              </p>
-              <p className={questionTextClasses}>
-              Are you currently on Ozempic, Wegovy, Mounjaro, or Phentermine?
-              </p>
-              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 mb-3"> 
-                <button onClick={() => handleAnswer('onSpecificMedications', true)} className={buttonSecondaryClasses}>Yes</button>
-                <button onClick={() => handleAnswer('onSpecificMedications', false)} className={buttonPrimaryClasses}>No</button>
-              </div>
-              <button
-                onClick={handleSkipToContact}
-                className={clsx(
-                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
-                  {
-                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
-                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
-                  }
-                )}
-              >
-                Skip Questionnaire & Fill Interest Form
-              </button>
-            </div>
-          </motion.div>
-        )}
-        
-        {currentStep === 'otherMedications' && (
-          <motion.div
-            key="otherMedications"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
-              { 'text-white/90': context === 'hero' }
-            )}>
-              Question 3 of 5 - halfway there!
-            </p>
-            <div className="mb-4 sm:mb-5">
-              <p className={questionTextClasses}>
-              Are you currently on Methotrexate, Amiodarone, or Prednisone?
-              </p>
-              <div className="flex gap-3 sm:gap-4 mb-3">
-                <button
-                  onClick={() => handleAnswer('onOtherMedications', true)}
-                  className={buttonSecondaryClasses}
-                >
-                  Yes
-                </button>
-                <button
-                  onClick={() => handleAnswer('onOtherMedications', false)}
-                  className={buttonPrimaryClasses}
-                >
-                  No
-                </button>
-              </div>
-              <button
-                onClick={handleSkipToContact}
-                className={clsx(
-                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
-                  {
-                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
-                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
-                  }
-                )}
-              >
-                Skip Questionnaire & Fill Interest Form
-              </button>
-            </div>
-          </motion.div>
-        )}
-        
-        {currentStep === 'autoimmuneLiverTreatment' && (
-          <motion.div
-            key="autoimmuneLiverTreatment"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
-              { 'text-white/90': context === 'hero' }
-            )}>
-              Question 4 of 5 - almost there!
-            </p>
-            <div className="mb-4 sm:mb-5">
-              <p className={questionTextClasses}>
-              Are you currently receiving treatment for autoimmune liver disease?
-              </p>
-              <div className="flex gap-3 sm:gap-4 mb-3">
-                <button
-                  onClick={() => handleAnswer('hasAutoimmuneLiverTreatment', true)}
-                  className={buttonSecondaryClasses}
-                >
-                  Yes
-                </button>
-                <button
-                  onClick={() => handleAnswer('hasAutoimmuneLiverTreatment', false)}
-                  className={buttonPrimaryClasses}
-                >
-                  No
-                </button>
-              </div>
-              <button
-                onClick={handleSkipToContact}
-                className={clsx(
-                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
-                  {
-                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
-                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
-                  }
-                )}
-              >
-                Skip Questionnaire & Fill Interest Form
-              </button>
-            </div>
-          </motion.div>
-        )}
-        
-        {currentStep === 'cancerHistory' && (
-          <motion.div
-            key="cancerHistory"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-4 sm:mb-5 text-center font-body",
-              { 'text-white/90': context === 'hero' }
-            )}>
-              Final question (5 of 5) - you're almost done!
-            </p>
-            <div className="mb-4 sm:mb-5">
-              <p className={questionTextClasses}>
-              Do you have any history with cancer (other than skin cancer) within the past 5 years or are you currently being evaluated for a malignant disease?
-              </p>
-              <div className="flex gap-3 sm:gap-4 mb-3">
-                <button
-                  onClick={() => handleAnswer('hasCancerHistory', true)}
-                  className={buttonSecondaryClasses}
-                >
-                  Yes
-                </button>
-                <button
-                  onClick={() => handleAnswer('hasCancerHistory', false)}
-                  className={buttonPrimaryClasses}
-                >
-                  No
-                </button>
-              </div>
-              <button
-                onClick={handleSkipToContact}
-                className={clsx(
-                  "w-full text-sm py-2 rounded-lg font-medium transition-colors duration-150 ease-in-out mt-2",
-                  {
-                    'text-blue-primary hover:bg-blue-50 border border-blue-200': context === 'default' || context === 'consultation',
-                    'text-teal-300 hover:bg-white/10 border border-white/30': context === 'hero'
-                  }
-                )}
-              >
-                Skip Questionnaire & Fill Interest Form
-              </button>
-            </div>
-          </motion.div>
-        )}
-        
-        {currentStep === 'contactInfo' && (
-          <motion.div
-            key="contactInfo"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-5 sm:mb-7 text-center font-body",
-              { 'text-white/90': context === 'hero' }
-            )}>
-              Great! You may qualify. Please provide your contact information so we can follow up.
-            </p>
-            
-            {/* Error Messages */}
-            {errorMessage && (
-              <div className={clsx(
-                "mb-4 p-3 rounded border border-red-200",
-                {
-                  'bg-red-50 text-red-700': context === 'default' || context === 'consultation',
-                  'bg-red-900/20 text-red-300 border-red-400/30': context === 'hero'
-                }
-              )}>
-                <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-                {errorMessage}
-              </div>
-            )}
-            
-            {trackingError && (
-              <div className={clsx(
-                "mb-4 p-3 rounded border border-orange-200",
-                {
-                  'bg-orange-50 text-orange-700': context === 'default' || context === 'consultation',
-                  'bg-orange-900/20 text-orange-300 border-orange-400/30': context === 'hero'
-                }
-              )}>
-                <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
-                Tracking Warning: {trackingError}
-              </div>
-            )}
-            
-            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
-              <div>
-                <label htmlFor="name" className={inputLabelClasses}>Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  onFocus={handleContactFormStart}
-                  className={clsx(inputTextClasses, "mt-2")}
-                  placeholder="Enter your full name"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className={inputLabelClasses}>Phone Number</label>
-                <PhoneInput
-                  defaultCountry="US"
-                  name="phone"
-                  id="phone"
-                  required
-                  value={formData.phone}
-                  onChange={handlePhoneChange}
-                  onFocus={handleContactFormStart}
-                  placeholder="(555) 123-4567"
-                  className={clsx(
-                    "mt-2 w-full flex items-center px-4 py-3 rounded-md shadow-sm text-base font-body",
-                    context === 'hero' ? 'phone-input-hero' : 'phone-input-default'
-                  )}
-                  inputProps={{
-                    className: "ml-2"
-                  }}
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className={inputLabelClasses}>Email Address</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  onFocus={handleContactFormStart}
-                  className={clsx(inputTextClasses, "mt-2")}
-                  placeholder="you@example.com"
-                />
-              </div>
-              <p className={clsx("text-xs mt-4 mb-2 text-center", { "text-gray-500": context === 'default' || context === 'consultation', "text-white/70": context === 'hero' })}>
-                By submitting this form, you agree to receive text messages from Access Research Institute about clinical trial opportunities and appointment reminders. Message and data rates may apply. Reply STOP to opt out at any time.
-              </p>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={clsx(
-                  "w-full py-3.5 sm:py-4 rounded-lg text-white font-semibold transition-all flex items-center justify-center font-heading",
-                  {
-                    'bg-gradient-to-r from-blue-primary to-navy-deep hover:from-navy-deep hover:to-blue-primary': context === 'default' || context === 'consultation',
-                    'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700': context === 'hero'
-                  }
-                )}
-              >
-                {isSubmitting ? (
-                  <FontAwesomeIcon icon={faSpinner} className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
-                ) : null}
-                {isSubmitting ? 'Submitting...' : 'Submit Eligibility Check'}
-              </button>
-            </form>
-          </motion.div>
-        )}
-        
-        {currentStep === 'success' && (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className={successTextClasses}
-          >
-            <div className="mx-auto mb-4 bg-gradient-to-br from-teal-accent to-blue-primary rounded-full p-3 w-16 h-16 flex items-center justify-center">
-              <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
-            </div>
-            <h4 className={clsx(
-              "text-lg sm:text-xl font-semibold text-navy-deep mb-2 font-heading",
-              { 'text-white': context === 'hero' }
-            )}>Thank You!</h4>
-            <p className={clsx(
-              "text-sm sm:text-base text-text-sub mb-4 font-body",
-              { 'text-white/90': context === 'hero' }
-            )}>We've received your information. A study coordinator will contact you soon to discuss the next steps.</p>
-            <button
-              onClick={restart}
-              className={clsx("text-sm sm:text-base text-blue-primary hover:underline font-medium font-heading", {
-                  'text-teal-400': context === 'hero'
-              })}
-            >
-              Start Over
-            </button>
-          </motion.div>
-        )}
+        <motion.div
+          key={currentStep}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -30 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="w-full"
+        >
+          {/* Question Steps */}
+          {isQuestionStep && (
+            <>
+              {/* Only show header if NOT in hero context (hero already has its own header) */}
+              {context !== 'hero' && (
+                <div className={classes.header}>
+                  <h2 className={classes.title}>Quick 30-Second Eligibility Check</h2>
+                  <p className={classes.subtitle}>Answer a few simple questions to see if you qualify for the study.</p>
+                </div>
+              )}
 
-        {currentStep === 'notQualified' && (
-          <motion.div
-            key="notQualified"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className={notQualifiedTextClasses}
-          >
-            <div className="mx-auto mb-4 bg-gradient-to-br from-orange-400 to-red-500 rounded-full p-3 w-16 h-16 flex items-center justify-center">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="h-8 w-8 text-white" />
-            </div>
-            <h4 className={clsx(
-              "text-lg sm:text-xl font-semibold text-navy-deep mb-4 font-heading",
-              { 'text-white': context === 'hero' }
-            )}>Current Qualification Status</h4>
-            
-            <div className={clsx(
-              "text-left mb-6 space-y-4 text-sm sm:text-base font-body",
-              { 'text-white/90': context === 'hero', 'text-text-sub': context === 'default' || context === 'consultation' }
-            )}>
-              <p className="font-medium !text-inherit">Based on your answers, here's what you need to know:</p>
-              
-              <div className="space-y-3">
-                <p className="!text-inherit">
-                  <span className="font-semibold">Fatty Liver Type:</span> This clinical trial is specifically designed for patients with non-alcoholic fatty liver disease (NAFLD). If your fatty liver is alcoholic in nature, you would not qualify for this particular study.
+              {currentStep > 0 && (
+                <button 
+                  type="button" 
+                  onClick={goBack}
+                  className={classes.buttons.back}
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} className="mr-1" />
+                  Back
+                </button>
+              )}
+
+              <div className={classes.question.container}>
+                <p className={classes.question.text}>
+                  {currentQuestion.text}
                 </p>
-                
-                <p className="!text-inherit">
-                  <span className="font-semibold">Medications:</span> If you are on any of the medications listed (Ozempic, Wegovy, Mounjaro, Phentermine, Methotrexate, Amiodarone, or Prednisone), we require a 3-6 month washout period before we can look further into eligibility.
-                </p>
-                
-                <p className="!text-inherit">
-                  <span className="font-semibold">Autoimmune Treatment:</span> Treatment for autoimmune liver disease may conflict with the study medication and could affect your safety.
-                </p>
-                
-                <p className="!text-inherit">
-                  <span className="font-semibold">Cancer History:</span> Any cancer history other than skin cancer within the past 5 years would be deemed unsafe to proceed forward with for the trial.
-                </p>
+                {currentQuestion.bullets && (
+                  <ul className={classes.question.bullets}>
+                    {currentQuestion.bullets.map((bullet, index) => (
+                      <li 
+                        key={index} 
+                        className={context === 'hero' ? 'text-white' : ''} 
+                        dangerouslySetInnerHTML={{ __html: bullet }} 
+                      />
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className={classes.buttons.container}>
+                <button 
+                  type="button" 
+                  onClick={() => handleAnswer(true)} 
+                  className={currentQuestion.qualifyingAnswer === true ? classes.buttons.primary : classes.buttons.secondary}
+                >
+                  Yes
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => handleAnswer(false)} 
+                  className={currentQuestion.qualifyingAnswer === false ? classes.buttons.primary : classes.buttons.secondary}
+                >
+                  No
+                </button>
+              </div>
+
+              <div className="text-center mt-4">
+                <button 
+                  type="button" 
+                  onClick={handleSkipToContact} 
+                  className={classes.buttons.tertiary}
+                >
+                  Skip Questionnaire & Fill Interest Form
+                </button>
+                {/* Only show security message if NOT in hero context */}
+                {context !== 'hero' && (
+                  <p className={classes.skip}>
+                    Your information is secure and will only be used to determine study eligibility.
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Contact Info Form */}
+          {currentStep === 'contactInfo' && (
+            <form onSubmit={handleSubmit} onFocus={handleContactFormStart}>
+              <div className={classes.header}>
+                <h3 className={classes.title}>You may be eligible!</h3>
+                <p className={classes.subtitle}>Please provide your contact details to proceed.</p>
               </div>
               
-              <div className={clsx(
-                "p-4 rounded-lg border-l-4 mt-6",
-                {
-                  'bg-blue-50 border-blue-400': context === 'default' || context === 'consultation',
-                  'bg-white/10 border-teal-400': context === 'hero'
-                }
-              )}>
-                <p className={clsx(
-                  "font-semibold mb-2 !text-inherit",
-                  { 'text-blue-800': context === 'default' || context === 'consultation', 'text-white': context === 'hero' }
-                )}>
-                  Still Interested?
-                </p>
-                <p className="!text-inherit">
-                  If you still want to look deeper into your eligibility or discuss your specific situation, please call us at{' '}
-                  <a 
-                    href="tel:+13526677237" 
-                    className={clsx(
-                      "font-semibold hover:underline",
-                      { 'text-blue-600': context === 'default' || context === 'consultation', 'text-teal-300': context === 'hero' }
-                    )}
+              <div className={classes.form.container}>
+                <div className={classes.form.group}>
+                  <label htmlFor="name" className={classes.form.label}>Full Name</label>
+                  <input 
+                    type="text" 
+                    name="name" 
+                    id="name" 
+                    required 
+                    className={classes.form.input}
+                    placeholder="John Doe" 
+                    value={contactInfo.name} 
+                    onChange={(e) => handleContactChange('name', e.target.value)}
+                  />
+                </div>
+                
+                <div className={classes.form.group}>
+                  <label htmlFor="phone" className={classes.form.label}>Phone Number</label>
+                  <PhoneInput 
+                    name="phone" 
+                    id="phone" 
+                    required 
+                    className={classes.form.input}
+                    placeholder="Enter phone number" 
+                    value={contactInfo.phone} 
+                    onChange={(value) => handleContactChange('phone', value)}
+                    defaultCountry="US"
+                  />
+                </div>
+                
+                <div className={classes.form.group}>
+                  <label htmlFor="email" className={classes.form.label}>Email Address</label>
+                  <input 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    required 
+                    className={classes.form.input}
+                    placeholder="you@example.com" 
+                    value={contactInfo.email} 
+                    onChange={(e) => handleContactChange('email', e.target.value)}
+                  />
+                </div>
+                
+                <div className="pt-2">
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting} 
+                    className={classes.buttons.primary}
                   >
-                    (352) 667-7237
-                  </a>
-                </p>
+                    {isSubmitting ? (
+                      <>
+                        <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit Information'
+                    )}
+                  </button>
+                </div>
+                
+                {errorMessage && (
+                  <p className="text-center text-red-500 text-xs mt-2 p-2 bg-red-50 rounded-lg">
+                    {errorMessage}
+                  </p>
+                )}
               </div>
+            </form>
+          )}
+
+          {/* Success State */}
+          {currentStep === 'success' && (
+            <div className={classes.success.container}>
+              <div className={classes.success.icon}>
+                <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
+              </div>
+              <h3 className={classes.success.title}>Thank You!</h3>
+              <p className={classes.success.text}>
+                Your information has been submitted successfully. Our team will contact you shortly.
+              </p>
+              <button 
+                type="button" 
+                onClick={restart} 
+                className={classes.buttons.tertiary}
+              >
+                Start Over
+              </button>
             </div>
-            
-            <button
-              onClick={restart}
-              className={clsx("text-sm sm:text-base hover:underline font-medium font-heading", {
-                'text-blue-primary': context === 'default' || context === 'consultation',
-                'text-teal-400': context === 'hero'
-              })}
-            >
-              Start Over
-            </button>
-          </motion.div>
-        )}
+          )}
+          
+          {/* Not Qualified State */}
+          {currentStep === 'notQualified' && (
+            <div className={classes.disqualified.container}>
+              <div className={classes.disqualified.icon}>
+                <FontAwesomeIcon icon={faExclamationTriangle} className="h-8 w-8 text-white" />
+              </div>
+              <h3 className={classes.disqualified.title}>Thank You for Your Interest</h3>
+              <div className={classes.disqualified.content}>
+                <p className={clsx("mb-3 text-center", context === 'hero' ? 'text-white' : '')}>
+                  Based on your answers, you may not qualify for this study at this time. Here's a summary of the key eligibility criteria:
+                </p>
+                {Object.entries(answers).map(([questionId, answer]) => {
+                  const question = QUESTIONS.find(q => q.id === questionId);
+                  if (question && answer !== question.qualifyingAnswer) {
+                    return (
+                      <p key={questionId} className={clsx("mb-1", context === 'hero' ? 'text-white' : '')}>
+                        • {question.disqualifyMessage}
+                      </p>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+              <p className={classes.subtitle}>
+                We encourage you to contact our team to discuss your eligibility further.
+              </p>
+              <button 
+                type="button" 
+                onClick={goBackFromDisqualified} 
+                className={classes.buttons.primary}
+              >
+                Take Me Back
+              </button>
+            </div>
+          )}
+        </motion.div>
       </AnimatePresence>
     </div>
   );

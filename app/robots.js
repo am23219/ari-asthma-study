@@ -1,6 +1,6 @@
 // app/robots.js
 
-const SITE_URL = process.env.SITE_URL || 'https://amarimash.netlify.app';
+const SITE_URL = process.env.SITE_URL || 'https://amariuc.netlify.app';
 
 export default function robots() {
   return {
