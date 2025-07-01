@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { trackFbPixelEvent } from './FacebookPixel';
-import { faSpinner, faCheckCircle, faExclamationTriangle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faCheckCircle, faExclamationTriangle, faArrowLeft, faCalendarCheck, faSkipForward } from '@fortawesome/free-solid-svg-icons';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -130,6 +130,8 @@ export default function LeadCaptureForm({ context = 'default' }) {
     email: ''
   });
   const [disqualifyingStep, setDisqualifyingStep] = useState(null);
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [timePreference, setTimePreference] = useState('');
 
   const { trackEvent } = useFacebookTracking();
 
@@ -229,13 +231,50 @@ export default function LeadCaptureForm({ context = 'default' }) {
         eventID: eventId
       });
 
-      setCurrentStep('success');
+      setLeadSubmitted(true);
+      setCurrentStep('scheduling');
 
     } catch (error) {
       console.error('Error during form submission process:', error);
       setErrorMessage('There was an error submitting your information. Please try again or contact us directly.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSkipScheduling = () => {
+    trackEvent('SchedulingSkipped', {
+      study_type: 'UC Clinical Trial Screening'
+    });
+    setCurrentStep('success');
+  };
+
+  const handleSchedulingStarted = () => {
+    trackEvent('SchedulingStarted', {
+      study_type: 'UC Clinical Trial Screening'
+    });
+  };
+
+  const handleTimePreferenceSubmit = async (preference) => {
+    try {
+      // Submit time preference update
+      await fetch('/api/submit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: contactInfo.email,
+          timePreference: preference,
+          isTimePreferenceUpdate: true
+        }),
+      });
+      
+      trackEvent('TimePreferenceSelected', {
+        time_preference: preference,
+        study_type: 'UC Clinical Trial Screening'
+      });
+    } catch (error) {
+      console.error('Error submitting time preference:', error);
+      // Don't fail the flow if this update fails
     }
   };
 
@@ -247,6 +286,8 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setContactInfo({ name: '', phone: '', email: '' });
     setErrorMessage('');
     setDisqualifyingStep(null);
+    setLeadSubmitted(false);
+    setTimePreference('');
   };
 
   const goBackFromDisqualified = () => {
@@ -266,6 +307,8 @@ export default function LeadCaptureForm({ context = 'default' }) {
       setCurrentStep(currentStep - 1);
     }
   };
+
+
 
   // Style classes based on context
   const getClasses = () => {
@@ -355,6 +398,22 @@ export default function LeadCaptureForm({ context = 'default' }) {
           "text-sm sm:text-base opacity-90 font-body",
           isHero ? "text-white/90" : "text-text-sub"
         )
+      },
+      
+      scheduling: {
+        container: "space-y-4 sm:space-y-6",
+        header: "text-center mb-4 sm:mb-6",
+        icon: "mx-auto mb-3 bg-gradient-to-br from-teal-accent to-blue-primary rounded-full p-3 w-16 h-16 flex items-center justify-center shadow-lg",
+        title: clsx(
+          "text-xl sm:text-2xl font-bold font-heading",
+          isHero ? "text-white" : "text-navy-deep"
+        ),
+        subtitle: clsx(
+          "text-sm sm:text-base font-body leading-relaxed",
+          isHero ? "text-white/90" : "text-text-sub"
+        ),
+        calendarContainer: "bg-white rounded-lg shadow-lg p-4 my-4",
+        iframe: "w-full border-none rounded-lg min-h-[600px]"
       },
       
       disqualified: {
@@ -547,6 +606,88 @@ export default function LeadCaptureForm({ context = 'default' }) {
             </form>
           )}
 
+          {/* Scheduling Step */}
+          {currentStep === 'scheduling' && (
+            <div className={classes.scheduling.container}>
+              <div className={classes.scheduling.header}>
+                <div className={classes.scheduling.icon}>
+                  <FontAwesomeIcon icon={faCalendarCheck} className="h-8 w-8 text-white" />
+                </div>
+                <h3 className={classes.scheduling.title}>When Should We Call You?</h3>
+                <p className={classes.scheduling.subtitle}>
+                  Great! We'd love to call you to discuss the study and answer any questions. 
+                  Let us know when works best for you.
+                </p>
+                <div className="text-center">
+                  <div className={clsx(
+                    "inline-block px-4 py-2 rounded-lg text-sm font-medium mb-6",
+                    context === 'hero' 
+                      ? "bg-white/10 text-white/90 border border-white/20" 
+                      : "bg-blue-50 text-blue-800 border border-blue-200"
+                  )}>
+                    <strong>No pressure!</strong> We'll call to confirm and let you ask questions.
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3 mb-6">
+                {[
+                  { value: 'morning', label: 'Morning (9am-12pm)', icon: '🌅' },
+                  { value: 'afternoon', label: 'Afternoon (12pm-5pm)', icon: '☀️' },
+                  { value: 'evening', label: 'Evening (5pm-8pm)', icon: '🌆' },
+                  { value: 'weekends', label: 'Weekends only', icon: '📅' },
+                  { value: 'flexible', label: 'I\'m flexible - anytime works', icon: '✨' }
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={async () => {
+                      setTimePreference(option.value);
+                      handleSchedulingStarted();
+                      await handleTimePreferenceSubmit(option.value);
+                      // Auto-advance after selection
+                      setTimeout(() => {
+                        setCurrentStep('success');
+                      }, 500);
+                    }}
+                    className={clsx(
+                      "w-full flex items-center px-4 py-4 text-left rounded-lg border-2 transition-all duration-200 hover:scale-105 transform",
+                      timePreference === option.value
+                        ? context === 'hero'
+                          ? "border-teal-400 bg-white/20"
+                          : "border-blue-primary bg-blue-50"
+                        : context === 'hero'
+                          ? "border-white/20 bg-white/10 hover:bg-white/20"
+                          : "border-gray-200 bg-white hover:bg-gray-50"
+                    )}
+                  >
+                    <span className="text-2xl mr-3">{option.icon}</span>
+                    <span className={clsx(
+                      "font-medium",
+                      context === 'hero' ? "text-white" : "text-gray-800"
+                    )}>
+                      {option.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="text-center">
+                <button 
+                  type="button" 
+                  onClick={handleSkipScheduling} 
+                  className={classes.buttons.tertiary}
+                >
+                  <FontAwesomeIcon icon={faSkipForward} className="mr-2" />
+                  Skip - I'll wait for your call
+                </button>
+                <p className={classes.skip}>
+                  Either way, our team will contact you within 24 hours.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Success State */}
           {currentStep === 'success' && (
             <div className={classes.success.container}>
@@ -555,7 +696,10 @@ export default function LeadCaptureForm({ context = 'default' }) {
               </div>
               <h3 className={classes.success.title}>Thank You!</h3>
               <p className={classes.success.text}>
-                Your information has been submitted successfully. Our team will contact you shortly.
+                {timePreference 
+                  ? `Perfect! We've noted that you prefer ${timePreference === 'morning' ? 'morning' : timePreference === 'afternoon' ? 'afternoon' : timePreference === 'evening' ? 'evening' : timePreference === 'weekends' ? 'weekend' : 'flexible'} calls. Our team will contact you within 24 hours to schedule your screening call.`
+                  : "Your information has been submitted successfully. Our team will contact you within 24 hours to schedule your screening call."
+                }
               </p>
               <button 
                 type="button" 

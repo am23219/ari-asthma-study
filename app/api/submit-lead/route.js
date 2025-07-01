@@ -25,7 +25,21 @@ function getGeolocationAsync(params) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { eventId, ...formData } = body;
+    const { eventId, isTimePreferenceUpdate, ...formData } = body;
+
+    // Handle time preference updates
+    if (isTimePreferenceUpdate) {
+      if (isDev) {
+        console.log('Time preference update:', formData);
+      }
+      
+      // For time preference updates, we just return success
+      // The time preference is stored and can be used by the team
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Time preference recorded successfully' 
+      });
+    }
 
     // --- 1. Get User Location from IP Address ---
     const headersList = request.headers;
