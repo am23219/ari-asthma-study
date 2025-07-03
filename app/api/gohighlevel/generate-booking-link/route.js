@@ -29,11 +29,14 @@ export async function POST(request) {
           Version: '2021-04-15',
         },
         body: {
-          firstName,
-          lastName,
-          email,
-          phone,
+          contact: {
+            firstName,
+            lastName,
+            email,
+            phone,
+          },
           oneTimeUse: true,
+          skipForm: true,
         },
       },
       // API 1.0 endpoint (fallback)
@@ -44,11 +47,14 @@ export async function POST(request) {
           'Content-Type': 'application/json',
         },
         body: {
-          firstName,
-          lastName,
-          email,
-          phone,
+          contact: {
+            firstName,
+            lastName,
+            email,
+            phone,
+          },
           oneTimeUse: true,
+          skipForm: true,
         },
       },
     ];
@@ -101,6 +107,9 @@ export async function POST(request) {
     if (email) queryParams.append('email', email);
     if (phone) queryParams.append('phone', phone);
     queryParams.append('embed', '1');
+
+    queryParams.append('skipForm', '1');
+
 
     const fallbackBookingLink = `https://api.leadconnectorhq.com/widget/booking/${calendarId}?${queryParams.toString()}`;
 
