@@ -130,7 +130,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
     email: ''
   });
   const [disqualifyingStep, setDisqualifyingStep] = useState(null);
-  const [bookingLink, setBookingLink] = useState(null);
+
 
   const { trackEvent } = useFacebookTracking();
 
@@ -230,32 +230,9 @@ export default function LeadCaptureForm({ context = 'default' }) {
         eventID: eventId
       });
 
-      // Generate booking link after successful submission
-      try {
-        const bookingResponse = await fetch('/api/gohighlevel/generate-booking-link', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            firstName: submissionData.firstName,
-            lastName: submissionData.lastName,
-            email: submissionData.email,
-            phone: submissionData.phone
-          }),
-        });
-
-        const bookingResult = await bookingResponse.json();
-        
-        if (bookingResponse.ok && bookingResult.success) {
-          setBookingLink(bookingResult.bookingLink);
-          setCurrentStep('booking');
-        } else {
-          console.warn('Failed to generate booking link:', bookingResult.message);
-          setCurrentStep('success'); // Fall back to success page
-        }
-      } catch (bookingError) {
-        console.error('Error generating booking link:', bookingError);
-        setCurrentStep('success'); // Fall back to success page
-      }
+      // Note: The one-time booking link will be generated and sent via GoHighLevel workflow
+      // Show success page with instructions to check email for the booking link
+      setCurrentStep('success');
 
     } catch (error) {
       console.error('Error during form submission process:', error);
@@ -273,7 +250,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
     setContactInfo({ name: '', phone: '', email: '' });
     setErrorMessage('');
     setDisqualifyingStep(null);
-    setBookingLink(null);
+
   };
 
   const goBackFromDisqualified = () => {
@@ -574,55 +551,7 @@ export default function LeadCaptureForm({ context = 'default' }) {
             </form>
           )}
 
-          {/* Booking State */}
-          {currentStep === 'booking' && (
-            <div className={classes.success.container}>
-              <div className={classes.success.icon}>
-                <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
-              </div>
-              <h3 className={classes.success.title}>Great! Now Let's Schedule Your Consultation</h3>
-              <p className={classes.success.text}>
-                Your information has been submitted successfully. Please schedule your consultation appointment below:
-              </p>
-              
-              {bookingLink && (
-                <div className="mt-6 w-full">
-                  <iframe 
-                    src={bookingLink}
-                    style={{ 
-                      width: '100%', 
-                      height: '600px', 
-                      border: 'none', 
-                      overflow: 'hidden' 
-                    }}
-                    scrolling="no"
-                    title="Schedule Consultation"
-                    id="booking-widget-iframe"
-                  />
-                  <script 
-                    src="https://link.msgsndr.com/js/form_embed.js" 
-                    type="text/javascript"
-                    async
-                  ></script>
-                </div>
-              )}
-              
-              <div className="mt-4 text-center">
-                <p className={classes.success.text}>
-                  Don't worry if you can't schedule right now - we have your contact information and will follow up with you soon.
-                </p>
-                <button 
-                  type="button" 
-                  onClick={restart} 
-                  className={classes.buttons.tertiary}
-                >
-                  Start Over
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Success State */}
+{/* Success State */}
           {currentStep === 'success' && (
             <div className={classes.success.container}>
               <div className={classes.success.icon}>
@@ -630,7 +559,19 @@ export default function LeadCaptureForm({ context = 'default' }) {
               </div>
               <h3 className={classes.success.title}>Thank You!</h3>
               <p className={classes.success.text}>
-                Your information has been submitted successfully. Our team will contact you shortly.
+                Your information has been submitted successfully. 
+              </p>
+              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-sm font-medium text-blue-900 mb-2">
+                  📧 <strong>Check Your Email!</strong>
+                </p>
+                <p className="text-sm text-blue-800">
+                  We're sending you a personalized booking link to schedule your consultation. 
+                  This link will be customized specifically for you and will expire after you book your appointment.
+                </p>
+              </div>
+              <p className={classes.success.text}>
+                Can't find the email? Our team will also contact you directly to help schedule your consultation.
               </p>
               <button 
                 type="button" 
