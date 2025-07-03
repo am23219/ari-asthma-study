@@ -5,6 +5,7 @@ export async function POST(request) {
     const body = await request.json();
     const { firstName, lastName, email, phone } = body;
 
+
     // Get the GoHighLevel API key from environment variables. We support both
     // `GOHIGHLEVEL_API_KEY` and the previous `GHL_API_KEY` for backward
     // compatibility.
