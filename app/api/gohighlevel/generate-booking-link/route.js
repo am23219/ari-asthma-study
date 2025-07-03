@@ -88,10 +88,19 @@ export async function POST(request) {
     console.log('API endpoints failed, falling back to regular booking widget');
 
     const queryParams = new URLSearchParams();
-    if (firstName) queryParams.append('firstName', firstName);
-    if (lastName) queryParams.append('lastName', lastName);
+    const fullName = [firstName, lastName].filter(Boolean).join(' ');
+    if (firstName) {
+      queryParams.append('firstName', firstName);
+      queryParams.append('firstname', firstName);
+    }
+    if (lastName) {
+      queryParams.append('lastName', lastName);
+      queryParams.append('lastname', lastName);
+    }
+    if (fullName) queryParams.append('name', fullName);
     if (email) queryParams.append('email', email);
     if (phone) queryParams.append('phone', phone);
+    queryParams.append('embed', '1');
 
     const fallbackBookingLink = `https://api.leadconnectorhq.com/widget/booking/${calendarId}?${queryParams.toString()}`;
 
