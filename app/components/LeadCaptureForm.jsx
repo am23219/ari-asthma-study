@@ -133,6 +133,30 @@ export default function LeadCaptureForm({ context = 'default' }) {
   const [bookingLink, setBookingLink] = useState(null);
 
 
+  const buildBookingLinkWithParams = (link, info) => {
+    try {
+      const url = new URL(link);
+      const fullName = `${info.firstName || ''} ${info.lastName || ''}`.trim();
+      if (info.firstName) {
+        url.searchParams.set('firstName', info.firstName);
+        url.searchParams.set('firstname', info.firstName);
+      }
+      if (info.lastName) {
+        url.searchParams.set('lastName', info.lastName);
+        url.searchParams.set('lastname', info.lastName);
+      }
+      if (fullName) url.searchParams.set('name', fullName);
+      if (info.email) url.searchParams.set('email', info.email);
+      if (info.phone) url.searchParams.set('phone', info.phone);
+      url.searchParams.set('embed', '1');
+      url.searchParams.set('skipForm', '1');
+      return url.toString();
+    } catch {
+      return link;
+    }
+  };
+
+
   const { trackEvent } = useFacebookTracking();
 
   const totalQuestions = QUESTIONS.length;
@@ -247,7 +271,11 @@ export default function LeadCaptureForm({ context = 'default' }) {
         const bookingResult = await bookingResponse.json();
 
         if (bookingResponse.ok && bookingResult.success) {
-          setBookingLink(bookingResult.bookingLink);
+          const finalLink = buildBookingLinkWithParams(
+            bookingResult.bookingLink,
+            submissionData
+          );
+          setBookingLink(finalLink);
           setCurrentStep('booking');
         } else {
           console.warn('Failed to generate booking link:', bookingResult.message);
