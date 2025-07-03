@@ -24,4 +24,4 @@
 
 ### Environment
 
-Set the `GHL_API_KEY` variable in `.env.local` to your GoHighLevel API key. Without this value the booking link route will respond with a 500 error.
+Set the `GOHIGHLEVEL_API_KEY` variable in `.env.local` to your GoHighLevel API key (the legacy name `GHL_API_KEY` also works). Without this value the booking link route will respond with a 500 error.

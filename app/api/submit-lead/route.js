@@ -59,7 +59,8 @@ export async function POST(request) {
     }
 
     // --- 2. Submit to GoHighLevel ---
-    const ghlApiKey = process.env.GHL_API_KEY;
+    const ghlApiKey =
+      process.env.GOHIGHLEVEL_API_KEY || process.env.GHL_API_KEY;
     if (!ghlApiKey) {
       throw new Error('Server configuration error: GHL API Key not found.');
     }
