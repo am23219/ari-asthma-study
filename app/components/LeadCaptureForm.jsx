@@ -149,7 +149,9 @@ export default function LeadCaptureForm({ context = 'default' }) {
       if (info.email) url.searchParams.set('email', info.email);
       if (info.phone) url.searchParams.set('phone', info.phone);
       url.searchParams.set('embed', '1');
+
       url.searchParams.set('skipForm', '1');
+
       return url.toString();
     } catch {
       return link;

@@ -107,7 +107,9 @@ export async function POST(request) {
     if (email) queryParams.append('email', email);
     if (phone) queryParams.append('phone', phone);
     queryParams.append('embed', '1');
+
     queryParams.append('skipForm', '1');
+
 
     const fallbackBookingLink = `https://api.leadconnectorhq.com/widget/booking/${calendarId}?${queryParams.toString()}`;
 
