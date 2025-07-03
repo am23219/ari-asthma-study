@@ -21,3 +21,10 @@
 
 ### `app/api/gohighlevel/generate-booking-link/route.js`
 - New API route that hits the LeadConnector endpoint and provides a fallback to the normal widget.
+
+
+### Environment
+
+Set the `GOHIGHLEVEL_API_KEY` variable in `.env.local` to your GoHighLevel API key (the legacy name `GHL_API_KEY` also works). Without this value the booking link route will respond with a 500 error.
+
+

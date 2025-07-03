@@ -5,8 +5,13 @@ export async function POST(request) {
     const body = await request.json();
     const { firstName, lastName, email, phone } = body;
 
-    // Get the GHL API key from environment variables
-    const ghlApiKey = process.env.GOHIGHLEVEL_API_KEY;
+
+    // Get the GoHighLevel API key from environment variables. We support both
+    // `GOHIGHLEVEL_API_KEY` and the previous `GHL_API_KEY` for backward
+    // compatibility.
+    const ghlApiKey =
+      process.env.GOHIGHLEVEL_API_KEY || process.env.GHL_API_KEY;
+
     if (!ghlApiKey) {
       throw new Error('GoHighLevel API key not configured');
     }

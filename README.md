@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Environment Variables
 
 - `SITE_URL` - The fully qualified URL of the site (e.g. `https://amariuc.netlify.app`). This value is used for the sitemap, robots.txt and structured data in `layout.js`.
-- `GHL_API_KEY` - GoHighLevel API Key.
+- `GOHIGHLEVEL_API_KEY` - GoHighLevel API Key. (`GHL_API_KEY` is also accepted.)
 - `GHL_LOCATION_ID` - GoHighLevel Location ID for the specific clinic location.
 - `FB_PIXEL_ID` - Facebook Pixel ID.
 - `FB_API_ACCESS_TOKEN` - Facebook Conversions API Access Token.
