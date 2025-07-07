@@ -26,25 +26,25 @@ const QUESTIONS = [
     disqualifyMessage: 'You must be between 18 and 80 years old and meet the weight requirements.'
   },
   {
-    id: 'q2_uc_diagnosis',
-    text: 'Have you been diagnosed with ulcerative colitis (not Crohn\'s disease or indeterminate colitis)?',
+    id: 'q2_cd_diagnosis',
+    text: 'Have you been diagnosed with Crohn\'s disease (not ulcerative colitis or indeterminate colitis)?',
     qualifyingAnswer: true,
-    disqualifyMessage: 'A formal diagnosis of Ulcerative Colitis is required.'
+    disqualifyMessage: 'A formal diagnosis of Crohn\'s Disease is required.'
   },
   {
-    id: 'q3_uc_symptoms',
-    text: 'Are you currently experiencing moderate to severe UC symptoms, such as:',
+    id: 'q3_cd_symptoms',
+    text: 'Are you currently experiencing moderate to severe Crohn\'s disease symptoms, such as:',
     bullets: [
       'Frequent loose or bloody stools',
       'Urgent bowel movements',
       'Abdominal pain or cramping'
     ],
     qualifyingAnswer: true,
-    disqualifyMessage: 'The study requires participants to be experiencing active UC symptoms.'
+    disqualifyMessage: 'The study requires participants to be experiencing active Crohn\'s disease symptoms.'
   },
   {
     id: 'q4_tried_treatments',
-    text: 'Have you tried any of the following treatments for UC and either didn\'t improve, got worse, or had side effects?',
+    text: 'Have you tried any of the following treatments for Crohn\'s disease and either didn\'t improve, got worse, or had side effects?',
     bullets: [
       'Steroids (e.g., prednisone, budesonide)',
       '5-ASA medications (e.g., mesalamine, sulfasalazine)',
@@ -54,7 +54,7 @@ const QUESTIONS = [
       'S1P modulators (e.g., Zeposia, etrasimod)'
     ],
     qualifyingAnswer: true,
-    disqualifyMessage: 'Participants should have tried other UC treatments without success.'
+    disqualifyMessage: 'Participants should have tried other Crohn\'s disease treatments without success.'
   },
   {
     id: 'q5_had_surgery',
@@ -66,19 +66,19 @@ const QUESTIONS = [
     id: 'q6_other_diagnosis',
     text: 'Have you ever been diagnosed with any of the following?',
     bullets: [
-      'Crohn\'s disease',
+      'Ulcerative colitis',
       'Microscopic colitis',
       'Indeterminate colitis',
       'Primary sclerosing cholangitis'
     ],
     qualifyingAnswer: false,
-    disqualifyMessage: 'A diagnosis of Crohn\'s, microscopic colitis, or other specific conditions may exclude you.'
+    disqualifyMessage: 'A diagnosis of ulcerative colitis, microscopic colitis, or certain other conditions may exclude you.'
   },
   {
     id: 'q7_hospitalized_or_surgery',
-    text: 'Have you been hospitalized for a UC flare within the past 2 weeks or do you currently need surgery for UC?',
+    text: 'Have you been hospitalized for a Crohn\'s disease flare within the past 2 weeks or do you currently need surgery related to Crohn\'s?',
     qualifyingAnswer: false,
-    disqualifyMessage: 'Recent hospitalization or currently needing surgery for UC are exclusion criteria.'
+    disqualifyMessage: 'Recent hospitalization or currently needing surgery for Crohn\'s disease are exclusion criteria.'
   },
   {
     id: 'q8_recent_infections',
@@ -101,7 +101,7 @@ const QUESTIONS = [
   },
   {
     id: 'q10_willing_for_endoscopy',
-    text: 'Are you able and willing to undergo a colonoscopy or flexible sigmoidoscopy if needed?',
+    text: 'Are you able and willing to undergo an endoscopy or imaging procedures if needed?',
     qualifyingAnswer: true,
     disqualifyMessage: 'Willingness to undergo a potential endoscopy is required for the study.'
   },
@@ -228,7 +228,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       question: question.id,
       answer: answer ? 'yes' : 'no',
       step: currentStep,
-      study_type: 'UC Clinical Trial Screening'
+      study_type: 'CD Clinical Trial Screening'
     });
 
     // Check if this answer disqualifies the user
@@ -252,7 +252,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     trackEvent('QuestionnaireSkipped', {
       from_step: currentStep,
-      study_type: 'UC Clinical Trial Screening'
+      study_type: 'CD Clinical Trial Screening'
     });
     
     updateStep('qualified');
@@ -263,11 +263,11 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     trackEvent('InstantBookingChosen', {
       from_step: 'qualified',
-      study_type: 'UC Clinical Trial Screening'
+      study_type: 'CD Clinical Trial Screening'
     });
     
     // Open calendar directly in new tab
-    window.open('https://api.leadconnectorhq.com/widget/booking/E0iPfKdrbUfDrCUCCXb8', '_blank', 'noopener,noreferrer');
+    window.open('https://api.leadconnectorhq.com/widget/booking/n97n9pl3ix3LDmHTmLM8', '_blank', 'noopener,noreferrer');
     
     // Show success message
     updateStep('bookingOpened');
@@ -278,7 +278,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     trackEvent('ContactFirstChosen', {
       from_step: 'qualified',
-      study_type: 'UC Clinical Trial Screening'
+      study_type: 'CD Clinical Trial Screening'
     });
     
     updateStep('contactForm');
@@ -294,7 +294,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       trackEvent('BeganContactForm', {
         form_type: 'Clinical_Trial_Screening',
         completed_prescreen: !skippedPrescreen,
-        study_type: 'UC Clinical Trial Screening'
+        study_type: 'CD Clinical Trial Screening'
       });
     }
   };
@@ -305,7 +305,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     setIsSubmitting(true);
 
     // Determine tags based on user path
-    let tags = ["UC Study", "Website Lead"];
+    let tags = ["Crohn's Study", "Website Lead"];
     if (userPath === 'contact') {
       tags.push("Talk to Someone First");
     }
@@ -959,7 +959,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                   
                   <div className="space-y-4">
                     <a 
-                      href="https://api.leadconnectorhq.com/widget/booking/E0iPfKdrbUfDrCUCCXb8"
+                      href="https://api.leadconnectorhq.com/widget/booking/n97n9pl3ix3LDmHTmLM8"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"

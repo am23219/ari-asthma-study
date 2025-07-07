@@ -9,14 +9,14 @@ const SITE_URL = process.env.SITE_URL || 'https://amariuc.netlify.app';
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Ulcerative Colitis Clinical Trials | Access Research Institute",
-  description: "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+  title: "Crohn's Disease Clinical Trials | Access Research Institute",
+  description: "Explore clinical trials and studies for Crohn's Disease (CD) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "Ulcerative Colitis Clinical Trials | Access Research Institute",
-    description: "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    title: "Crohn's Disease Clinical Trials | Access Research Institute",
+    description: "Explore clinical trials and studies for Crohn's Disease (CD) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
     url: '/',
     siteName: 'Access Research Institute',
     images: [
@@ -24,7 +24,7 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'A doctor and patient discussing Ulcerative Colitis treatment options.',
+        alt: 'A doctor and patient discussing Crohn\'s Disease treatment options.',
       },
     ],
     locale: 'en_US',
@@ -32,8 +32,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Ulcerative Colitis Clinical Trials | Access Research Institute",
-    description: "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    title: "Crohn's Disease Clinical Trials | Access Research Institute",
+    description: "Explore clinical trials and studies for Crohn's Disease (CD) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
     images: ['/og-image.png'],
   },
   robots: {
@@ -52,8 +52,8 @@ export const metadata = {
   structuredData: {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": "Ulcerative Colitis Clinical Trials | Access Research Institute",
-    "description": "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    "name": "Crohn's Disease Clinical Trials | Access Research Institute",
+    "description": "Explore clinical trials and studies for Crohn's Disease (CD) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
     "url": SITE_URL,
     "publisher": {
       "@type": "Organization",
@@ -104,8 +104,8 @@ export default function RootLayout({ children }) {
                   "@type": "MedicalWebPage",
                   "@id": SITE_URL,
                   "url": SITE_URL,
-                  "name": "Ulcerative Colitis Clinical Trials | Access Research Institute",
-                  "description": "Explore clinical trials and studies for Ulcerative Colitis (UC) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+                  "name": "Crohn's Disease Clinical Trials | Access Research Institute",
+                  "description": "Explore clinical trials and studies for Crohn's Disease (CD) treatments. Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
                   "publisher": {
                     "@type": "Organization",
                     "name": "Access Research Institute"

@@ -22,7 +22,7 @@ export default function AboutSection() {
           </h2> 
           <div className="w-24 h-1 bg-gradient-to-r from-blue-primary to-navy-deep mx-auto mb-6"></div>
           <p className="text-lg text-gray-800 max-w-3xl mx-auto font-body leading-relaxed">
-          This study evaluates whether a new medication that blocks the TL1A protein can effectively treat moderate to severe ulcerative colitis when other treatments have not worked adequately.</p>
+          This study evaluates whether a new medication that blocks the TL1A protein can effectively treat moderate to severe Crohn&apos;s disease when other treatments have not worked adequately.</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
