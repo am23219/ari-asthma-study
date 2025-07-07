@@ -100,10 +100,10 @@ const QUESTIONS = [
     disqualifyMessage: 'Recent substance abuse issues may be an exclusion criterion.'
   },
   {
-    id: 'q10_willing_for_endoscopy',
-    text: 'Are you able and willing to undergo an endoscopy or imaging procedures if needed?',
+    id: 'q10_willing_for_colonoscopy',
+    text: 'Are you able and willing to undergo a colonoscopy (or other imaging procedures) if needed?',
     qualifyingAnswer: true,
-    disqualifyMessage: 'Willingness to undergo a potential endoscopy is required for the study.'
+    disqualifyMessage: 'Willingness to undergo a potential colonoscopy is required for the study.'
   },
   {
     id: 'q11_pregnant_or_breastfeeding',
@@ -755,7 +755,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                       
                       <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
                         <span className="text-gray-700 text-base sm:text-lg font-medium">
-                          Endoscopy (if needed)
+                          Colonoscopy (if needed)
                         </span>
                         <span className="text-blue-700 text-xl sm:text-2xl font-bold">
                           $350
@@ -924,7 +924,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                       
                       <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
                         <span className="text-gray-700 text-base sm:text-lg font-medium">
-                          Endoscopy (if needed)
+                          Colonoscopy (if needed)
                         </span>
                         <span className="text-blue-700 text-xl sm:text-2xl font-bold">
                           $350
