@@ -131,7 +131,7 @@ export default function ConsultationSection() {
               </motion.div>
               
               <div className="w-full">
-                <LeadCaptureForm context="consultation" />
+                <LeadCaptureForm context="consultation" onStepChange={() => {}} />
               </div>
               
               <div className="mt-6 text-center">

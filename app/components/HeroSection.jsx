@@ -7,10 +7,30 @@ import LeadCaptureForm from "./LeadCaptureForm";
 
 export default function HeroSection() {
   const [isClient, setIsClient] = useState(false);
+  const [formStep, setFormStep] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleFormStepChange = (step) => {
+    setFormStep(step);
+  };
+
+  // Check if we should show the questionnaire header
+  const shouldShowQuestionnaireHeader = () => {
+    // Show header only during question steps (0-10) and not when qualified or other states
+    return (
+      typeof formStep === 'number' && 
+      formStep >= 0 && 
+      formStep < 11 && 
+      formStep !== 'qualified' && 
+      formStep !== 'success' && 
+      formStep !== 'bookingOpened' && 
+      formStep !== 'contactForm' && 
+      formStep !== 'notQualified'
+    );
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-24 pb-12 md:py-20 overflow-hidden">
@@ -73,13 +93,17 @@ export default function HeroSection() {
 
           <div className="w-full lg:w-7/12">
             <div className="w-full mx-auto lg:mx-0 lg:max-w-none p-4 sm:p-6 bg-black/25 rounded-xl backdrop-blur-md shadow-lg border-2 border-teal-400/50">
-              <h3 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading text-white">
-                Quick 30-Second Eligibility Check
-              </h3>
-              <p className="text-center text-white/90 mb-6 text-base font-body">
-                Answer a few simple questions to see if you qualify for the study.
-              </p>
-              <LeadCaptureForm context="hero" />
+              {shouldShowQuestionnaireHeader() && (
+                <>
+                  <h3 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading text-white">
+                    Quick 30-Second Eligibility Check
+                  </h3>
+                  <p className="text-center text-white/90 mb-6 text-base font-body">
+                    Answer a few simple questions to see if you qualify for the study.
+                  </p>
+                </>
+              )}
+              <LeadCaptureForm context="hero" onStepChange={handleFormStepChange} />
               <p className="text-xs text-center text-white/80 mt-4 font-body">
                   Your information is secure and will only be used to determine study eligibility.
               </p>

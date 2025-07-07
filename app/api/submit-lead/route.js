@@ -68,11 +68,13 @@ export async function POST(request) {
     const contactData = {
       ...formData,
       ...locationData,
-      tags: ["UC Study", "Website Lead"],
+      tags: formData.tags || ["UC Study", "Website Lead"],
       source: "Website Eligibility Form",
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
 Location: ${locationData.city}, ${locationData.state}, ${locationData.postalCode}
+User Path: ${formData.userPath || 'contact'}
+Preferred Contact Time: ${formData.preferredTime || 'Not specified'}
 Did Prescreen: ${!formData.skippedPrescreen}
 Are you between the ages of 18-80?: ${formData.isOfAge !== null ? (formData.isOfAge ? "Yes" : "No") : "Skipped"}
 Have you been diagnosed with ulcerative colitis?: ${formData.hasUcDiagnosis !== null ? (formData.hasUcDiagnosis ? "Yes" : "No") : "Skipped"}
