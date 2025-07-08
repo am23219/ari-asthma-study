@@ -292,7 +292,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       
       trackFbPixelEvent('Lead', {
         content_name: 'Clinical Trial Screening Form',
-        value: 100,
+        value: 75,
         currency: 'USD'
       }, {
         eventID: eventId
@@ -583,24 +583,24 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         </h5>
                       </div>
                       
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
-                          <span className="text-gray-700 text-base sm:text-lg font-medium">
-                            Screening Visit
-                          </span>
-                          <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                            $100
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
-                          <span className="text-gray-700 text-base sm:text-lg font-medium">
-                            Each Completed Study Visit
-                          </span>
-                          <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                            $100
-                          </span>
-                        </div>
+                                          <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
+                        <span className="text-gray-700 text-base sm:text-lg font-medium">
+                          Screening Visit
+                        </span>
+                        <span className="text-blue-700 text-xl sm:text-2xl font-bold">
+                          $75
+                        </span>
                       </div>
+                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
+                        <span className="text-gray-700 text-base sm:text-lg font-medium">
+                          Each Completed Study Visit
+                        </span>
+                        <span className="text-blue-700 text-xl sm:text-2xl font-bold">
+                          $75
+                        </span>
+                      </div>
+                    </div>
                       
                       <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
                         <p className="text-gray-700 text-base sm:text-lg font-medium leading-relaxed text-center">
@@ -796,7 +796,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                           Screening Visit
                         </span>
                         <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                          $100
+                          $75
                         </span>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
@@ -804,7 +804,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                           Each Completed Study Visit
                         </span>
                         <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                          $100
+                          $75
                         </span>
                       </div>
                     </div>
