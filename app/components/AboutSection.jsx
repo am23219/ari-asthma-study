@@ -22,7 +22,8 @@ export default function AboutSection() {
           </h2> 
           <div className="w-24 h-1 bg-gradient-to-r from-blue-primary to-navy-deep mx-auto mb-6"></div>
           <p className="text-lg text-gray-800 max-w-3xl mx-auto font-body leading-relaxed">
-          This study evaluates whether a new medication that blocks the TL1A protein can effectively treat moderate to severe Crohn&apos;s disease when other treatments have not worked adequately.</p>
+          This study evaluates whether an investigational oral medication (MZE829) can help reduce protein in the urine and slow the progression of Chronic Kidney Disease (CKD) in adults with the APOL1 high-risk genotype.
+          </p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -41,7 +42,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-navy-deep font-heading tracking-wide">Study Purpose</h3>
               <p className="text-base text-gray-700 font-body leading-relaxed">
-              This study tests a medication that works through a <strong>completely new mechanism - blocking the TL1A protein</strong> that plays a key role in gut inflammation - potentially offering a new option for patients who haven't found relief with existing therapies.
+              This study tests <strong>MZE829</strong>, an <strong>investigational small-molecule therapy</strong> taken by mouth, designed to <strong>target APOL1-mediated kidney injury</strong> and <strong>reduce albuminuria</strong>—potentially offering a new option for people living with proteinuric CKD.
               </p>
             </div>
           </motion.div>
