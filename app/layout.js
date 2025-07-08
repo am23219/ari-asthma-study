@@ -6,6 +6,13 @@ import Image from 'next/image';
 import FacebookPixel from './components/FacebookPixel';
 
 const SITE_URL = process.env.SITE_URL || 'https://amariuc.netlify.app';
+const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
+
+if (!FB_PIXEL_ID) {
+  console.warn(
+    'NEXT_PUBLIC_FACEBOOK_PIXEL_ID is not set; Facebook Pixel noscript tag will not render.'
+  );
+}
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -120,15 +127,17 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased bg-white-soft text-text-main font-body scroll-smooth" suppressHydrationWarning>
         {/* Facebook Pixel noscript fallback */}
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || '1398933401301342'}&ev=PageView&noscript=1`}
-            alt=""
-          />
-        </noscript>
+        {FB_PIXEL_ID && (
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: 'none' }}
+              src={`https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        )}
         <FacebookPixel />
         <Navbar />
         {children}
