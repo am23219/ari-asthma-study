@@ -112,6 +112,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   // Maintain form position during transitions
   useEffect(() => {
     if (maintainPosition && formRef.current) {
+
       const formElement = formRef.current;
       
       // Use requestAnimationFrame to ensure DOM has updated
@@ -130,12 +131,12 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
             behavior: 'smooth'
           });
         }
-      });
-      
-      // Reset the flag after animation completes
-      const timer = setTimeout(() => {
-        setMaintainPosition(false);
-      }, 150);
+        
+        // Reset the flag after scroll completes
+        setTimeout(() => {
+          setMaintainPosition(false);
+        }, 100);
+      }, 100);
       
       return () => clearTimeout(timer);
     }
@@ -145,12 +146,14 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   const updateStep = (newStep) => {
     // Set flag to maintain position for significant step changes
     const significantStepChanges = [
+
       'qualified',
       'contactForm',
       'bookingOpened',
       'success',
       'reservationSuccess',
       'notQualified'
+
     ];
     
     if (significantStepChanges.includes(newStep)) {
@@ -733,7 +736,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
 
           {/* Booking Opened Confirmation */}
           {currentStep === 'bookingOpened' && (
-            <div className={classes.success.container}>
+            <div data-success-message className={classes.success.container}>
               <div className={classes.success.icon}>
                 <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
               </div>
@@ -1064,7 +1067,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
 
           {/* Reservation Success State */}
           {currentStep === 'reservationSuccess' && (
-            <div className={classes.success.container}>
+            <div data-success-message className={classes.success.container}>
               <div className={classes.success.icon}>
                 <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
               </div>
@@ -1101,11 +1104,9 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                     href="https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"
-                    style={{ color: 'white' }}
+                    className="text-blue-600 hover:text-blue-800 underline text-sm font-normal transition-colors duration-200"
                   >
-                    <span className="mr-3 text-xl text-white">📅</span>
-                    <span className="text-white">Schedule Directly Instead</span>
+                    Schedule Directly Instead
                   </a>
                 </div>
               </div>
@@ -1129,7 +1130,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
 
           {/* Success State */}
           {currentStep === 'success' && (
-            <div className={classes.success.container}>
+            <div data-success-message className={classes.success.container}>
               <div className={classes.success.icon}>
                 <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
               </div>
