@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -92,7 +94,9 @@ export async function POST(request) {
     }
 
     // If API endpoints fail, fall back to regular booking widget with pre-populated parameters
-    console.log('API endpoints failed, falling back to regular booking widget');
+    if (isDev) {
+      console.log('API endpoints failed, falling back to regular booking widget');
+    }
 
     const queryParams = new URLSearchParams();
     const fullName = [firstName, lastName].filter(Boolean).join(' ');
