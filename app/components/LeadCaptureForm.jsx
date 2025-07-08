@@ -117,17 +117,14 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       // Use requestAnimationFrame to ensure DOM has updated
       requestAnimationFrame(() => {
         const rect = formElement.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const isFormVisible = rect.top >= 0 && rect.top <= viewportHeight;
+        const headerHeight = document.querySelector('nav')?.offsetHeight || 0;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const elementTop = rect.top + scrollTop;
+        const targetScrollTop = elementTop - headerHeight;
 
-        if (!isFormVisible) {
-          // Calculate optimal scroll position accounting for header height
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const elementTop = rect.top + scrollTop;
-          const headerHeight = document.querySelector('nav')?.offsetHeight || 0;
-          const offset = Math.max(headerHeight + 20, headerHeight + viewportHeight * 0.1);
-          const targetScrollTop = elementTop - offset;
+        const isAtTarget = Math.abs(rect.top - headerHeight) <= 5;
 
+        if (!isAtTarget) {
           window.scrollTo({
             top: Math.max(0, targetScrollTop),
             behavior: 'smooth'
