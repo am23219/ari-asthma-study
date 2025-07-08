@@ -146,7 +146,12 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   const updateStep = (newStep) => {
     // Set flag to maintain position for significant step changes
     const significantStepChanges = [
-      'qualified', 'contactForm', 'bookingOpened', 'success', 'notQualified'
+      'qualified',
+      'contactForm',
+      'bookingOpened',
+      'success',
+      'reservationSuccess',
+      'notQualified'
     ];
     
     if (significantStepChanges.includes(newStep)) {
