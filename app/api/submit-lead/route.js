@@ -68,18 +68,14 @@ export async function POST(request) {
     const contactData = {
       ...formData,
       ...locationData,
-      tags: formData.tags || ["Crohn's Study", "Website Lead"],
+      tags: formData.tags || ["CKD Study", "Website Lead"],
       source: "Website Eligibility Form",
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
 Location: ${locationData.city}, ${locationData.state}, ${locationData.postalCode}
 User Path: ${formData.userPath || 'contact'}
 Preferred Contact Time: ${formData.preferredTime || 'Not specified'}
-Did Prescreen: ${!formData.skippedPrescreen}
-Are you between the ages of 18-80?: ${formData.isOfAge !== null ? (formData.isOfAge ? "Yes" : "No") : "Skipped"}
-Have you been diagnosed with Crohn's disease?: ${formData.hasUcDiagnosis !== null ? (formData.hasUcDiagnosis ? "Yes" : "No") : "Skipped"}
-Are you currently experiencing symptoms of your Crohn's disease?: ${formData.hasUcSymptoms !== null ? (formData.hasUcSymptoms ? "Yes" : "No") : "Skipped"}
-Despite previous treatments, are you currently experiencing symptoms of active Crohn's disease?: ${formData.hasActiveUcSymptoms !== null ? (formData.hasActiveUcSymptoms ? "Yes" : "No") : "Skipped"}`
+Did Prescreen: ${!formData.skippedPrescreen}`
     };
 
     const ghlResponse = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
@@ -127,7 +123,7 @@ Despite previous treatments, are you currently experiencing symptoms of active C
         has_uc_diagnosis: formData.hasUcDiagnosis,
         has_uc_symptoms: formData.hasUcSymptoms,
         has_active_uc_symptoms: formData.hasActiveUcSymptoms,
-        study_type: 'CD Clinical Trial Screening'
+        study_type: 'CKD Clinical Trial Screening'
     };
     
     await fbAPI.sendEvent({

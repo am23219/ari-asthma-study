@@ -27,11 +27,11 @@ export default function ParticipationBenefitsSection() {
     },
     {
       icon: faHandshake,
-      text: 'Be a <span class="text-teal-accent font-semibold">partner</span> in this quest to help improve understanding of Crohn\'s Disease.'
+      text: 'Be a <span class="text-teal-accent font-semibold">partner</span> in this quest to help improve understanding and treatment of CKD.'
     },
     {
       icon: faUserGroup,
-      text: 'Potentially <span class="text-teal-accent font-semibold">help other people with Crohn\'s Disease</span> in the future.'
+      text: 'Potentially <span class="text-teal-accent font-semibold">help other people with CKD</span> in the future.'
     }
   ];
 
