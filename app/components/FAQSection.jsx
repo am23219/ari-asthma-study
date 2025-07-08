@@ -30,7 +30,7 @@ export default function FAQSection() {
     },
     {
       question: "What is the study medication and how does it work?",
-      answer: "This study tests an investigational oral medication called MZE829 that targets the APOL1 pathway. By reducing kidney inflammation and protein loss in the urine, it may slow progression of chronic kidney disease for people who carry the APOL1 high-risk genotype."
+      answer: "This study tests a medication that works through a completely new mechanism - blocking the TL1A protein that plays a key role in gut inflammation - potentially offering a new option for patients who haven't found relief with existing therapies."
     },
     {
       question: "Do I need insurance to participate?",

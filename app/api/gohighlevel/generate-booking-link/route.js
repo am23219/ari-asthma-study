@@ -16,8 +16,8 @@ export async function POST(request) {
       throw new Error('GoHighLevel API key not configured');
     }
 
-    // Updated calendar ID for CKD study booking widget
-    const calendarId = 'a1VjNanrncl9AJKzAsNm';
+    // Updated calendar ID for Crohn's study booking widget
+    const calendarId = 'n97n9pl3ix3LDmHTmLM8';
 
     // Try multiple potential endpoints for generating one-time booking links
     const endpointsToTry = [
