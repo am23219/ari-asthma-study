@@ -112,30 +112,23 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   // Maintain form position during transitions
   useEffect(() => {
     if (maintainPosition && formRef.current) {
-      // Use a longer delay to ensure DOM has fully updated
-      const timer = setTimeout(() => {
-        // For success states, scroll to the form container with more aggressive positioning
-        if (currentStep === 'reservationSuccess' || currentStep === 'success' || currentStep === 'bookingOpened') {
-          // Find the actual success message element
-          const successElement = formRef.current.querySelector('[data-success-message]');
-          if (successElement) {
-            successElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start',
-              inline: 'nearest' 
-            });
-          } else {
-            // Fallback to form container
-            formRef.current.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start' 
-            });
-          }
-        } else {
-          // For other states, scroll to the form container
-          formRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
+
+      const formElement = formRef.current;
+      
+      // Use requestAnimationFrame to ensure DOM has updated
+      requestAnimationFrame(() => {
+        const rect = formElement.getBoundingClientRect();
+        const headerHeight = document.querySelector('nav')?.offsetHeight || 0;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const elementTop = rect.top + scrollTop;
+        const targetScrollTop = elementTop - headerHeight;
+
+        const isAtTarget = Math.abs(rect.top - headerHeight) <= 5;
+
+        if (!isAtTarget) {
+          window.scrollTo({
+            top: Math.max(0, targetScrollTop),
+            behavior: 'smooth'
           });
         }
         
@@ -153,7 +146,14 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   const updateStep = (newStep) => {
     // Set flag to maintain position for significant step changes
     const significantStepChanges = [
-      'qualified', 'contactForm', 'bookingOpened', 'success', 'notQualified', 'reservationSuccess'
+
+      'qualified',
+      'contactForm',
+      'bookingOpened',
+      'success',
+      'reservationSuccess',
+      'notQualified'
+
     ];
     
     if (significantStepChanges.includes(newStep)) {
