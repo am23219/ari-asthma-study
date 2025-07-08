@@ -119,13 +119,15 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         const rect = formElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const isFormVisible = rect.top >= 0 && rect.top <= viewportHeight;
-        
+
         if (!isFormVisible) {
-          // Calculate optimal scroll position
+          // Calculate optimal scroll position accounting for header height
           const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
           const elementTop = rect.top + scrollTop;
-          const targetScrollTop = elementTop - Math.max(20, viewportHeight * 0.1); // 20px or 10% from top
-          
+          const headerHeight = document.querySelector('nav')?.offsetHeight || 0;
+          const offset = Math.max(headerHeight + 20, headerHeight + viewportHeight * 0.1);
+          const targetScrollTop = elementTop - offset;
+
           window.scrollTo({
             top: Math.max(0, targetScrollTop),
             behavior: 'smooth'
@@ -146,7 +148,12 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   const updateStep = (newStep) => {
     // Set flag to maintain position for significant step changes
     const significantStepChanges = [
-      'qualified', 'contactForm', 'bookingOpened', 'success', 'notQualified'
+      'qualified',
+      'contactForm',
+      'bookingOpened',
+      'success',
+      'reservationSuccess',
+      'notQualified'
     ];
     
     if (significantStepChanges.includes(newStep)) {
