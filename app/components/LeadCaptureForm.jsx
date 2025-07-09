@@ -111,10 +111,12 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
 
   // Maintain form position during transitions
   useEffect(() => {
+    let timer;
+
     if (maintainPosition && formRef.current) {
 
       const formElement = formRef.current;
-      
+
       // Use requestAnimationFrame to ensure DOM has updated
       requestAnimationFrame(() => {
         const rect = formElement.getBoundingClientRect();
@@ -131,15 +133,15 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
             behavior: 'smooth'
           });
         }
-        
+
         // Reset the flag after scroll completes
-        setTimeout(() => {
+        timer = setTimeout(() => {
           setMaintainPosition(false);
         }, 100);
-      }, 100);
-      
-      return () => clearTimeout(timer);
+      });
     }
+
+    return () => clearTimeout(timer);
   }, [currentStep, maintainPosition]);
 
   // Notify parent component of step changes
