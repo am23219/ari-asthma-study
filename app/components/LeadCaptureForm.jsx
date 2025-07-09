@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useFacebookTracking } from '../hooks/useFacebookTracking';
@@ -104,10 +105,45 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   });
   const [disqualifyingStep, setDisqualifyingStep] = useState(null);
   const [userPath, setUserPath] = useState(null); // Track if user chose 'instant' or 'contact'
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
+
+  // Ensure portal renders only after component mounts to avoid SSR mismatch
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   // Ref to maintain form position
   const formRef = useRef(null);
   const [maintainPosition, setMaintainPosition] = useState(false);
+
+  // Handle body scroll lock when modal is open
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    if (showCalendarModal) {
+      // Prevent background scrolling while keeping modal scrollable
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalOverflow;
+    }
+
+    // Cleanup on unmount / dependency change
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [showCalendarModal]);
+
+  // Handle keyboard events for modal
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (showCalendarModal && event.key === 'Escape') {
+        setShowCalendarModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showCalendarModal]);
 
   // Maintain form position during transitions
   useEffect(() => {
@@ -223,10 +259,8 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       study_type: 'CKD Clinical Trial Screening'
     });
     
-    // Open calendar directly in new tab
-    window.open('https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm', '_blank', 'noopener,noreferrer');
-    
-    // Show success message
+    // Show embedded calendar modal
+    setShowCalendarModal(true);
     updateStep('bookingOpened');
   };
 
@@ -312,8 +346,9 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         // For "Talk to someone first" path, show success message
         updateStep('success');
       } else {
-        // For qualified form submissions, show the new email/phone check message
-        updateStep('reservationSuccess');
+        // For qualified form submissions, show embedded calendar modal
+        setShowCalendarModal(true);
+        updateStep('bookingOpened');
       }
 
     } catch (error) {
@@ -336,6 +371,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     setErrorMessage('');
     setDisqualifyingStep(null);
     setUserPath(null);
+    setShowCalendarModal(false);
   };
 
   const goBackFromDisqualified = () => {
@@ -455,16 +491,62 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   const classes = getClasses();
 
   return (
-    <div 
-      ref={formRef} 
-      className={classes.container} 
-      style={{
-        '--phone-input-background': context === 'hero' ? 'rgba(255, 255, 255, 0.1)' : '#fff',
-        '--phone-input-text-color': context === 'hero' ? '#fff' : '#111827',
-        '--phone-input-border-color': context === 'hero' ? 'rgba(255, 255, 255, 0.2)' : '#D1D5DB',
-        '--phone-input-focus-ring-color': context === 'hero' ? '#2DD4BF' : '#00528A'
-      }}
-    >
+    <>
+      {/* Calendar Modal - rendered via portal so it sits above everything */}
+      {isMounted && showCalendarModal && createPortal(
+        <div
+          onClick={() => setShowCalendarModal(false)}
+          className="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm flex flex-col"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'manipulation'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white w-full h-full sm:h-[90vh] sm:w-[90%] sm:max-w-4xl lg:max-w-5xl mx-auto flex flex-col rounded-none sm:rounded-2xl shadow-2xl"
+          >
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-white shadow-sm flex-shrink-0">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-800">Schedule Your Pre-Screening</h3>
+              <button
+                onClick={() => setShowCalendarModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl font-bold w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors touch-manipulation"
+                aria-label="Close calendar"
+              >
+                ×
+              </button>
+            </div>
+            <div className="flex-1 min-h-0 overflow-auto relative">
+              <iframe
+                src="https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                className="w-full h-full block border-0"
+                title="Schedule Appointment"
+                style={{ 
+                  minHeight: '100%',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+                scrolling="yes"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      <div 
+        ref={formRef} 
+        className={classes.container} 
+        style={{
+          '--phone-input-background': context === 'hero' ? 'rgba(255, 255, 255, 0.1)' : '#fff',
+          '--phone-input-text-color': context === 'hero' ? '#fff' : '#111827',
+          '--phone-input-border-color': context === 'hero' ? 'rgba(255, 255, 255, 0.2)' : '#D1D5DB',
+          '--phone-input-focus-ring-color': context === 'hero' ? '#2DD4BF' : '#00528A'
+        }}
+      >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStep}
@@ -744,7 +826,10 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
               </div>
               <h3 className={classes.success.title}>Perfect! Your Calendar is Ready</h3>
               <p className={classes.success.text}>
-                The scheduling calendar has opened in a new tab. Please select your preferred appointment time.
+                {showCalendarModal ? 
+                  "The scheduling calendar is now open. Please select your preferred appointment time." :
+                  "The scheduling calendar was opened. You can reopen it below or use the direct link."
+                }
               </p>
 
               {/* Consistent information matching the qualified step */}
@@ -832,26 +917,39 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                 <div className="p-6">
                   <div className="flex items-center mb-4">
                     <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                      <span className="text-white font-bold text-lg">🆘</span>
+                      <span className="text-white font-bold text-lg">📅</span>
                     </div>
                     <h4 className="font-bold text-emerald-800 text-lg">
-                      Need Help with Scheduling?
+                      {showCalendarModal ? "Calendar is Open Above" : "Need to Schedule?"}
                     </h4>
                   </div>
                   
                   <p className="text-emerald-700 text-base mb-4 leading-relaxed">
-                    If the calendar didn't open or you need assistance, you can access it directly below or contact us.
+                    {showCalendarModal ? 
+                      "The scheduling calendar is open in the popup above. If you don't see it, you can reopen it or use the direct link below." :
+                      "You can reopen the calendar or access it directly below."
+                    }
                   </p>
                   
                   <div className="space-y-4">
+                    {!showCalendarModal && (
+                      <button
+                        onClick={() => setShowCalendarModal(true)}
+                        className="inline-flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"
+                      >
+                        <span className="mr-2 text-white">📅</span>
+                        <span className="text-white">Reopen Calendar</span>
+                      </button>
+                    )}
+                    
                     <a 
                       href="https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"
                     >
-                      <span className="mr-2 text-white">📅</span>
-                      <span className="text-white">Open Scheduling Calendar</span>
+                      <span className="mr-2 text-white">🔗</span>
+                      <span className="text-white">Open in New Tab</span>
                     </a>
                     
                     <div className="text-center">
@@ -1214,5 +1312,6 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         </motion.div>
       </AnimatePresence>
     </div>
+    </>
   );
 } 
