@@ -13,28 +13,28 @@ export default function FAQSection() {
 
   const faqs = [
     {
-      question: "What is a clinical trial?",
-      answer: "A clinical trial is a research study that evaluates new medical treatments, interventions, or devices to determine if they're safe and effective for humans. These studies follow strict scientific standards and regulatory guidelines to protect participants' safety and rights. By participating in our clinical trial, you're helping to advance medical knowledge and potentially improve future treatments for this disease."
+      question: "What is the purpose of the IMAGINE study?",
+      answer: "The IMAGINE study is evaluating an investigational antibody treatment called depemokimab. We want to see if it can improve lung structure and function in people with a specific type of severe asthma. The treatment is unique because it's given only twice a year."
     },
     {
-      question: "What are the benefits of participating?",
-      answer: "You'll receive close monitoring of your health condition at no cost, including specialized tests that might not be part of regular care. If you receive the active medication and it works, you may experience improvement in your condition. However, there's no guarantee you'll receive the active medication or that it will work for you."
+      question: "Who is eligible to participate in this study?",
+      answer: "We are looking for adults (18+) who have had a diagnosis of severe asthma for at least two years. Participants should have a history of asthma attacks despite using their regular controller medications. The study team will perform tests during a screening visit to see if you qualify for this specific type of asthma research."
     },
     {
-      question: "What happens after my screening call?",
-      answer: "If you appear eligible and are interested, a study coordinator will contact you to schedule an in-person screening visit. This will include blood tests, a review of your medical history, and other tests to confirm if you qualify for the study."
+      question: "What is the investigational treatment?",
+      answer: "The investigational treatment is depemokimab, a biologic therapy that targets Interleukin-5 (IL-5), a substance in the body that can cause airway inflammation in some types of asthma. It's designed to be \"ultra-long-acting,\" which is why it's administered only every 6 months."
     },
     {
       question: "What does participation involve?",
-      answer: "Participation involves visits to our clinic in Brooksville, FL. The main part of the study lasts about one year (52 weeks). You can be compensated for your time and travel."
+      answer: "The study lasts about 65 weeks. It includes a screening period, a 52-week treatment period where you will receive two injections of the study drug, and a follow-up period. You will have regular visits with our study team, which will include breathing tests and advanced lung imaging (HRCT scans)."
     },
     {
-      question: "What is the study medication and how does it work?",
-      answer: "This study tests an investigational oral medication called MZE829 that targets the APOL1 pathway. By reducing kidney inflammation and protein loss in the urine, it may slow progression of chronic kidney disease for people who carry the APOL1 high-risk genotype."
+      question: "Are there any costs to participate?",
+      answer: "No. All study-related visits, tests, and the investigational medication are provided at no cost to you. You do not need health insurance to participate. You may also be compensated for your time and travel."
     },
     {
-      question: "Do I need insurance to participate?",
-      answer: "No, you do not need insurance to participate. All study-related care is provided at no cost to qualified participants."
+      question: "What is a bronchoscopy and will I have to do it?",
+      answer: "A bronchoscopy is a procedure where a doctor uses a thin tube with a camera to look inside your lungs. For the IMAGINE study, this is part of an optional sub-study for a small group of participants. You can participate in the main study without having a bronchoscopy. If you are eligible and interested in the sub-study, the team will explain it in detail."
     },
   ];
 
@@ -80,7 +80,7 @@ export default function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-base md:text-lg text-gray-700 max-w-2xl mx-auto font-body">
-            Find answers to common questions about our clinical research study.
+            Find answers to common questions about the IMAGINE study and what it means to participate.
           </p>
         </motion.div>
         
@@ -148,12 +148,7 @@ export default function FAQSection() {
                       <div className="px-6 sm:px-7 md:px-8 pb-8 pt-1 border-t border-blue-light-bg bg-gradient-to-br from-white to-blue-50/50">
                         <div className="mt-4 mb-2 text-gray-700">
                           <p className="leading-relaxed tracking-wide font-body text-base md:text-lg">
-                            {faq.answer.split('. ').map((sentence, i, arr) => (
-                              <span key={i} className="answer-sentence">
-                                {sentence}{i < arr.length - 1 ? '.' : ''}
-                                {i < arr.length - 1 && ' '}
-                              </span>
-                            ))}
+                            {faq.answer}
                           </p>
                           
                           {/* Key points or benefits */}
@@ -166,7 +161,7 @@ export default function FAQSection() {
                                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
                                   </span>
-                                  <span>Access to innovative treatment</span>
+                                  <span>Adults 18+ with severe asthma</span>
                                 </li>
                                 <li className="flex items-start">
                                   <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-light-bg text-blue-primary mr-2">
@@ -174,7 +169,7 @@ export default function FAQSection() {
                                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
                                   </span>
-                                  <span>Close monitoring by medical professionals</span>
+                                  <span>History of asthma attacks</span>
                                 </li>
                                 <li className="flex items-start">
                                   <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-light-bg text-blue-primary mr-2">
@@ -182,38 +177,38 @@ export default function FAQSection() {
                                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
                                   </span>
-                                  <span>Contribute to medical advancements</span>
+                                  <span>Currently on controller medication</span>
                                 </li>
                               </ul>
                             </div>
                           )}
                           
                           {/* Process steps */}
-                          {index === 2 && (
+                          {index === 3 && (
                             <div className="mt-5 space-y-3">
                               <div className="flex items-start">
                                 <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-primary text-white flex items-center justify-center mr-3 font-medium text-sm">1</div>
                                 <div>
-                                  <p className="font-medium text-navy-deep">Initial screening call</p>
+                                  <p className="font-medium text-navy-deep">Screening Period</p>
                                 </div>
                               </div>
                               <div className="flex items-start">
                                 <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-primary text-white flex items-center justify-center mr-3 font-medium text-sm">2</div>
                                 <div>
-                                  <p className="font-medium text-navy-deep">In-person screening visit</p>
+                                  <p className="font-medium text-navy-deep">52-week treatment (2 injections)</p>
                                 </div>
                               </div>
                               <div className="flex items-start">
                                 <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-primary text-white flex items-center justify-center mr-3 font-medium text-sm">3</div>
                                 <div>
-                                  <p className="font-medium text-navy-deep">Eligibility determination</p>
+                                  <p className="font-medium text-navy-deep">Follow-up Period</p>
                                 </div>
                               </div>
                             </div>
                           )}
                           
                           {/* Important note */}
-                          {index === 5 && (
+                          {index === 4 && (
                             <div className="flex items-start mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
                               <div className="flex-shrink-0 text-blue-primary mr-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -221,7 +216,7 @@ export default function FAQSection() {
                                 </svg>
                               </div>
                               <p className="text-sm text-blue-800">
-                                All study medications, procedures, and visits are provided at no cost to qualified participants.
+                                All study medications, procedures, and visits are provided at no cost to qualified participants. Compensation for time and travel may also be available.
                               </p>
                             </div>
                           )}

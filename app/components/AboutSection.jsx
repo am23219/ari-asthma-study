@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,11 +17,11 @@ export default function AboutSection() {
           className="text-center mb-10 md:mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-5 text-navy-deep font-heading tracking-tight">
-            About this Study
+            About the IMAGINE Study
           </h2> 
           <div className="w-24 h-1 bg-gradient-to-r from-blue-primary to-navy-deep mx-auto mb-6"></div>
           <p className="text-lg text-gray-800 max-w-3xl mx-auto font-body leading-relaxed">
-          This study evaluates whether an investigational oral medication (MZE829) can help reduce protein in the urine and slow the progression of Chronic Kidney Disease (CKD) in adults with the APOL1 high-risk genotype.
+          The IMAGINE study is a clinical research trial for people with a specific type of severe asthma. We are looking at how an investigational treatment, called depemokimab, affects the airways and breathing function. Depemokimab is a long-acting treatment given just twice a year.
           </p>
         </motion.div>
         
@@ -42,7 +41,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-navy-deep font-heading tracking-wide">Study Purpose</h3>
               <p className="text-base text-gray-700 font-body leading-relaxed">
-              This study tests <strong>MZE829</strong>, an <strong>investigational small-molecule therapy</strong> taken by mouth, designed to <strong>target APOL1-mediated kidney injury</strong> and <strong>reduce albuminuria</strong>—potentially offering a new option for people living with proteinuric CKD.
+              This study will help us understand if <strong>depemokimab</strong>, an <strong>investigational antibody treatment</strong>, can improve lung structure and function in people with severe asthma. The goal is to see if sustained treatment can reduce inflammation and remodel airways, which we'll measure using advanced imaging.
               </p>
             </div>
           </motion.div>
@@ -62,7 +61,7 @@ export default function AboutSection() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-navy-deep font-heading tracking-wide">Duration</h3>
               <p className="text-base text-gray-700 font-body leading-relaxed">
-              The main part of the study lasts about <strong>one year (52 weeks)</strong>. This includes a <strong>12-week initial treatment phase</strong> followed by a <strong>40-week maintenance phase</strong>. After that, there's an opportunity to continue in an open-label extension phase.
+              Your participation in the study will last approximately <strong>65 weeks</strong>. This includes a screening period (up to 4-8 weeks), a <strong>52-week treatment period</strong> with two injections, and a final follow-up period.
               </p>
             </div>
           </motion.div>

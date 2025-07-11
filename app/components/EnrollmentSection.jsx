@@ -12,7 +12,7 @@ export default function EnrollmentSection() {
           <h2 className="text-4xl font-bold mb-4 tracking-tight text-navy-deep font-heading">How to Enroll</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-primary to-navy-deep mx-auto mb-8"></div>
           <p className="text-lg text-gray-800 max-w-3xl mx-auto leading-relaxed font-body">
-            Ready to join our clinical study? It's simple. Just follow these easy steps.
+            Interested in participating in the IMAGINE study? Our enrollment process is straightforward and designed to ensure this study is the right fit for you.
           </p>
         </div>
         
@@ -32,7 +32,7 @@ export default function EnrollmentSection() {
               <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0 pl-12 md:pl-0 hover:md:pr-14 transition-all duration-300">
                 <h3 className="text-2xl font-semibold mb-3 text-navy-deep font-heading">Initial Consultation</h3>
                 <p className="text-gray-700 leading-relaxed font-body">
-                  Schedule your first chat with our friendly team. We'll talk about your health and see if this study is a <span className="font-medium text-blue-primary border-b border-blue-primary hover:border-b-2 transition-all">good fit for you</span>.
+                  The first step is a conversation with our study team. We'll discuss your asthma history and answer your initial questions to see if the IMAGINE study might be a good match.
                 </p>
               </div>
               <div className="absolute left-4 md:left-1/2 top-0 w-8 h-8 rounded-full bg-blue-primary flex items-center justify-center transform -translate-x-4 md:-translate-x-4 shadow-lg z-20 hover:scale-110 transition-transform duration-300">
@@ -41,7 +41,7 @@ export default function EnrollmentSection() {
               <div className="md:w-1/2 md:pl-12 pl-12 hover:md:pl-14 transition-all duration-300">
                 <div className="bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-blue-light-bg/50">
                   <p className="text-gray-700 font-body">
-                    We'll go over your health background, current care, and understand your condition better.
+                    This is a no-commitment chat to review your medical history and current asthma treatments.
                   </p>
                 </div>
               </div>
@@ -58,7 +58,7 @@ export default function EnrollmentSection() {
               <div className="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1 pl-12 md:pl-0 mb-6 md:mb-0 hover:md:pr-14 transition-all duration-300">
                 <div className="bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-blue-light-bg/50">
                   <p className="text-gray-700 font-body">
-                    We'll walk you through everything about the study – the <span className="font-medium text-blue-primary">potential benefits and risks</span>, what to expect, and answer all your questions.
+                    During this visit, we'll explain the study in detail, including what participation involves, and ensure all your questions are answered.
                   </p>
                 </div>
               </div>
@@ -66,9 +66,9 @@ export default function EnrollmentSection() {
                 <span className="text-white font-bold">2</span>
               </div>
               <div className="md:w-1/2 md:pl-12 order-1 md:order-2 pl-12 mb-6 hover:md:pl-14 transition-all duration-300">
-                <h3 className="text-2xl font-semibold mb-3 text-navy-deep font-heading">Screening Process</h3>
+                <h3 className="text-2xl font-semibold mb-3 text-navy-deep font-heading">Eligibility Screening</h3>
                 <p className="text-gray-700 leading-relaxed font-body">
-                  Next, we'll do a quick check-up to make sure the study is right for your specific needs.
+                  If the initial chat goes well, we will schedule a screening visit. This involves tests to confirm your eligibility, such as breathing tests and a blood sample to check for the specific type of asthma being studied.
                 </p>
               </div>
             </motion.div>
@@ -84,7 +84,7 @@ export default function EnrollmentSection() {
               <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0 pl-12 md:pl-0 hover:md:pr-14 transition-all duration-300">
                 <h3 className="text-2xl font-semibold mb-3 text-navy-deep font-heading">Informed Consent</h3>
                 <p className="text-gray-700 leading-relaxed font-body">
-                  If you feel ready to move forward, you'll review and sign the informed consent form.
+                  After the screening visit, you'll have time to decide if you want to participate. If you do, you'll sign the informed consent form to officially enroll.
                 </p>
               </div>
               <div className="absolute left-4 md:left-1/2 top-0 w-8 h-8 rounded-full bg-blue-primary flex items-center justify-center transform -translate-x-4 md:-translate-x-4 shadow-lg z-20 hover:scale-110 transition-transform duration-300">
@@ -93,7 +93,7 @@ export default function EnrollmentSection() {
               <div className="md:w-1/2 md:pl-12 pl-12 hover:md:pl-14 transition-all duration-300">
                 <div className="bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-blue-light-bg/50">
                   <p className="text-gray-700 font-body">
-                    This important paper explains everything: what happens in the study, the timeline, and your rights as a participant.
+                    This document outlines all aspects of the study, including procedures, schedule, and your rights as a participant. It's to ensure you're making a fully informed decision.
                   </p>
                 </div>
               </div>
@@ -110,7 +110,7 @@ export default function EnrollmentSection() {
               <div className="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1 pl-12 md:pl-0 mb-6 md:mb-0 hover:md:pr-14 transition-all duration-300">
                 <div className="bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-blue-light-bg/50">
                   <p className="text-gray-700 font-body">
-                    You'll get a <span className="font-medium text-blue-primary">personalized treatment plan</span> made just for you, along with a clear schedule for your participation.
+                    You will receive the first of two injections of the investigational medication and a schedule for your upcoming study visits.
                   </p>
                 </div>
               </div>
@@ -118,9 +118,9 @@ export default function EnrollmentSection() {
                 <span className="text-white font-bold">4</span>
               </div>
               <div className="md:w-1/2 md:pl-12 order-1 md:order-2 pl-12 mb-6 hover:md:pl-14 transition-all duration-300">
-                <h3 className="text-2xl font-semibold mb-3 text-navy-deep font-heading">Begin Treatment</h3>
+                <h3 className="text-2xl font-semibold mb-3 text-navy-deep font-heading">Start the Study</h3>
                 <p className="text-gray-700 leading-relaxed font-body">
-                  Embark on your study journey and begin your first treatment session!
+                  Once enrolled, you will be scheduled for your first visit to receive the investigational treatment and begin the 52-week treatment period.
                 </p>
               </div>
             </motion.div>

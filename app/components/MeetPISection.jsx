@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
+import HydrationSafeImage from './HydrationSafeImage';
 
 export default function MeetPISection() {
   return (
@@ -19,7 +20,7 @@ export default function MeetPISection() {
           <div className="w-full md:w-1/3 max-w-[280px] mx-auto md:mx-0 mb-8 md:mb-0">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-primary to-navy-deep transform rotate-6 rounded-2xl"></div>
-              <Image
+              <HydrationSafeImage
                 src="/doctor.jpg"
                 alt="Dr. Luis R. Aponte"
                 width={400}

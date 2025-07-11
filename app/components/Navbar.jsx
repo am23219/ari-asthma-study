@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFacebookTracking } from '../hooks/useFacebookTracking';
+import HydrationSafeImage from './HydrationSafeImage';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function Navbar() {
             {/* Logo - centered on mobile, left-aligned on desktop */}
             <div className="flex-1 flex justify-center md:justify-start">
               <Link href="/" className="flex items-center">
-                <Image
+                <HydrationSafeImage
                   src="/logo.png"
                   alt="Logo"
                   width={200}
@@ -70,7 +71,7 @@ export default function Navbar() {
                 Benefits
               </Link>
               <Link href="/#pi" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
-                Meet the PI
+                Our Team
               </Link>
               <Link href="/#enroll" className="text-navy-deep hover:text-blue-primary transition-colors duration-200 font-medium nav-link font-heading" data-nav-link="true">
                 How to Enroll
@@ -161,7 +162,7 @@ export default function Navbar() {
                   className="px-6 py-4 text-navy-deep hover:bg-blue-light-bg transition-colors duration-200 font-medium flex items-center font-heading"
                   onClick={() => setIsOpen(false)}
                 >
-                  <span>Meet the PI</span>
+                  <span>Our Team</span>
                 </Link>
                 <Link 
                   href="/#enroll" 

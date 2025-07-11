@@ -3,6 +3,7 @@
 import LeadCaptureForm from "./LeadCaptureForm";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import HydrationSafeImage from './HydrationSafeImage';
 
 export default function ConsultationSection() {
   return (
@@ -28,7 +29,7 @@ export default function ConsultationSection() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-light to-teal-accent mx-auto mb-6"></div>
             <p className="text-xl text-gray-800 max-w-2xl mx-auto font-body">
-              Find out if your a good fit for the study. Our team will contact you within 24 hours.
+              Find out if you may be eligible for the IMAGINE study. Complete the pre-screening form, and our team will contact you within 24 hours.
             </p>
           </motion.div>
         </div>
@@ -43,9 +44,9 @@ export default function ConsultationSection() {
           >
             <div className="mb-6 relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-primary to-teal-accent transform rotate-3 rounded-2xl"></div>
-              <Image 
+              <HydrationSafeImage 
                 src="/treatment.png"
-                alt="Doctor and patient discussing treatment options"
+                alt="Doctor discussing asthma treatment options with a patient."
                 width={600}
                 height={300}
                 className="relative w-full h-[250px] rounded-xl object-cover"

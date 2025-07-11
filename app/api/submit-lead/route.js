@@ -68,7 +68,7 @@ export async function POST(request) {
     const contactData = {
       ...formData,
       ...locationData,
-      tags: formData.tags || ["CKD Study", "Website Lead"],
+      tags: formData.tags || ["Asthma Study", "Website Lead"],
       source: "Website Eligibility Form",
       notes: `Quick Eligibility Form Submission
 Submitted at: ${new Date().toISOString()}
@@ -119,11 +119,16 @@ Did Prescreen: ${!formData.skippedPrescreen}`
         currency: 'USD',
         contentCategory: 'Clinical Trial Lead',
         eligibility_status: formData.skippedPrescreen ? 'skipped_prescreen' : 'completed_prescreen',
-        is_of_age: formData.isOfAge,
-        has_uc_diagnosis: formData.hasUcDiagnosis,
-        has_uc_symptoms: formData.hasUcSymptoms,
-        has_active_uc_symptoms: formData.hasActiveUcSymptoms,
-        study_type: 'CKD Clinical Trial Screening'
+        age_18_plus: formData.q1_age,
+        asthma_diagnosis_2_plus_years: formData.q2_asthma_diagnosis,
+        had_2_plus_exacerbations: formData.q3_exacerbations,
+        on_controller_medication: formData.q4_controller_medication,
+        has_other_lung_condition: formData.q5_other_lung_condition,
+        recent_exacerbation: formData.q6_recent_exacerbation,
+        recent_cancer: formData.q7_cancer,
+        on_immunosuppressants: formData.q8_immunosuppressants,
+        is_pregnant_or_breastfeeding: formData.q9_pregnancy,
+        study_type: 'Asthma Clinical Trial Screening'
     };
     
     await fbAPI.sendEvent({

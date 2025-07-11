@@ -18,7 +18,7 @@ export default function BenefitsSection() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-navy-deep font-heading">Study Benefits</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-teal-accent to-gold-soft mx-auto mb-8"></div>
           <p className="text-xl text-gray-800 max-w-3xl mx-auto font-body">
-          Participating in our study offers several potential advantages for people living with Chronic Kidney Disease (CKD).
+          By joining the IMAGINE study, you can play an active role in your healthcare and contribute to the future of asthma treatment. Participation comes with several key benefits.
           </p>
         </div>
         
@@ -32,9 +32,9 @@ export default function BenefitsSection() {
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-heading font-bold mb-3 text-navy-deep">Access to <span className="relative inline-block">Advanced Treatment<span className="absolute -bottom-1 left-0 w-full h-1 bg-teal-accent rounded-full"></span></span></h3>
+              <h3 className="text-xl font-heading font-bold mb-3 text-navy-deep">Access to <span className="relative inline-block">A New Approach to Asthma Care<span className="absolute -bottom-1 left-0 w-full h-1 bg-teal-accent rounded-full"></span></span></h3>
               <p className="text-gray-800 font-body">
-                Participants may receive access to innovative treatments that are not widely available in standard clinical practice.
+                Receive access to an investigational, long-acting antibody treatment (depemokimab) that's administered just twice a year, a potential alternative to more frequent injections.
               </p>
             </div>
           </div>
@@ -50,12 +50,12 @@ export default function BenefitsSection() {
             <div>
               <h3 className="text-xl font-heading font-bold mb-3 text-navy-deep">
                 <span className="relative">
-                  Expert Care<span className="absolute -bottom-1 left-0 w-full h-1 bg-teal-accent rounded-full"></span>
-                  </span> Team
+                  Close Health Monitoring<span className="absolute -bottom-1 left-0 w-full h-1 bg-teal-accent rounded-full"></span>
+                  </span>
                   
               </h3>
               <p className="text-gray-800 font-body">
-                Our specialized team of doctors, nurses, and specialists provide comprehensive care throughout the study.
+                Receive attentive care from our team of asthma specialists, including regular health checks and advanced lung imaging (HRCT scans) to monitor your condition closely.
               </p>
             </div>
           </div>
@@ -71,15 +71,15 @@ export default function BenefitsSection() {
             <div>
               <h3 className="text-xl font-heading font-bold mb-3 text-navy-deep flex items-center flex-wrap">
                 <span className="relative inline-block mr-1">
-                  No Cost
+                  No-Cost
                   <span className="absolute -bottom-1 left-0 w-full h-1 bg-teal-accent rounded-full"></span>
                 </span>
                 <span className="relative inline-block">
-                  Treatment
+                  Study Participation
                 </span>
               </h3>
               <p className="text-gray-800 font-body">
-                Study-related treatments, evaluations, and follow-up visits are provided at no cost to eligible participants.
+                All study-related medication, visits, and assessments are provided at no cost. Health insurance is not required, and you may be compensated for your time.
               </p>
             </div>
           </div>
@@ -95,12 +95,12 @@ export default function BenefitsSection() {
             <div>
               <h3 className="text-xl font-heading font-bold mb-3 text-navy-deep">
                 <span className="relative inline-block">
-                  Medical Advancement
+                  Contribute to a Healthier Future
                   <span className="absolute -bottom-1 left-0 w-full h-1 bg-teal-accent rounded-full"></span>
                 </span>
               </h3>
               <p className="text-gray-800 font-body">
-                By participating, you help advance medical knowledge and potentially improve future treatments for this condition.
+                Your participation will help researchers understand how to better treat severe asthma, potentially leading to improved therapies for millions of people in the future.
               </p>
             </div>
           </div>

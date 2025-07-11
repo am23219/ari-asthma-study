@@ -16,77 +16,82 @@ const toProperCase = (str) => {
   return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-// Questions configuration (updated for CKD study – multi-choice with qualification mapping)
+const Highlight = ({ children, context }) => {
+  const className = clsx(context === 'hero' ? 'text-indigo-600' : 'text-teal-accent');
+  return <span className={className}>{children}</span>;
+};
+
+// Questions configuration (updated for Asthma study)
 const QUESTIONS = [
   {
     id: 'q1_age',
-    text: 'Are you between 18 and 65 years old (inclusive)?',
+    text: 'Are you 18 years of age or older?',
     answerChoices: ['Yes', 'No'],
     answerKey: { Yes: 'Qualified', No: 'Disqualified' },
-    disqualifyMessage: 'You must be between 18 and 65 years old to qualify.'
+    disqualifyMessage: 'You must be 18 years of age or older to qualify.'
   },
   {
-    id: 'q2_ckd_diagnosis',
-    text: 'Have you ever been diagnosed by a doctor with chronic kidney disease (CKD) or kidney problems?',
+    id: 'q2_asthma_diagnosis',
+    text: (context) => <>Has a doctor told you that you have <Highlight context={context}>asthma</Highlight>, and have you had it for at least the past 2 years?</>,
     answerChoices: ['Yes', 'No', 'Unsure'],
     answerKey: { Yes: 'Qualified', No: 'Disqualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'A diagnosis of CKD or kidney problems is required.'
+    disqualifyMessage: 'A diagnosis of asthma for at least 2 years is required.'
   },
   {
-    id: 'q3_type1_diabetes',
-    text: 'Have you been diagnosed with Type 1 (juvenile) diabetes?',
+    id: 'q3_exacerbations',
+    text: (context) => <>In the past 12 months, have you had two or more <Highlight context={context}>asthma flare-ups</Highlight> that required oral or injected steroids (for example, <Highlight context={context}>prednisone</Highlight>) or an emergency room/hospital visit?</>,
+    answerChoices: ['Yes', 'No', 'Unsure'],
+    answerKey: { Yes: 'Qualified', No: 'Disqualified', Unsure: 'Qualified' },
+    disqualifyMessage: 'A history of 2 or more asthma flare-ups in the past 12 months is required.'
+  },
+  {
+    id: 'q4_controller_medication',
+    text: (context) => <>Do you currently use a daily steroid inhaler (such as <Highlight context={context}>Flovent®</Highlight>, <Highlight context={context}>QVAR®</Highlight>, <Highlight context={context}>Pulmicort®</Highlight>, <Highlight context={context}>Symbicort®</Highlight>, <Highlight context={context}>Advair®</Highlight>, <Highlight context={context}>Trelegy®</Highlight>) AND another controller medicine like a long-acting bronchodilator or combination inhaler?</>,
+    answerChoices: ['Yes', 'No', 'Unsure'],
+    answerKey: { Yes: 'Qualified', No: 'Disqualified', Unsure: 'Qualified' },
+    disqualifyMessage: 'Participants must be on a current daily steroid inhaler and another controller medicine.'
+  },
+  {
+    id: 'q5_biologics',
+    text: (context) => <>In the past year, have you received any biologic injections or infusions for <Highlight context={context}>asthma</Highlight>, such as <Highlight context={context}>Nucala® (mepolizumab)</Highlight>, <Highlight context={context}>Cinqair®/Cinqaero® (reslizumab)</Highlight>, <Highlight context={context}>Fasenra® (benralizumab)</Highlight>, <Highlight context={context}>Dupixent® (dupilumab)</Highlight>, <Highlight context={context}>Xolair® (omalizumab)</Highlight>, or <Highlight context={context}>Tezspire® (tezepelumab)</Highlight>?</>,
     answerChoices: ['Yes', 'No', 'Unsure'],
     answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Participants with Type 1 diabetes are not eligible.'
+    disqualifyMessage: 'Previous use of biologic treatments for asthma is a disqualifying factor.'
   },
   {
-    id: 'q4_cardio_event',
-    text: 'In the past 12 months, have you had a heart attack, stroke, or unstable angina?',
+    id: 'q6_smoking_history',
+    text: 'Do you currently smoke or vape, or have you smoked about a pack a day for 20 years (or the equivalent) in the past?',
     answerChoices: ['Yes', 'No', 'Unsure'],
     answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Recent serious cardiovascular events are disqualifying.'
+    disqualifyMessage: 'Current smoking/vaping or a significant smoking history is a disqualifying factor.'
   },
   {
-    id: 'q5_cancer',
-    text: 'Have you been treated for any cancer within the last 2 years (other than minor skin cancers or very early cervical/prostate cancer)?',
+    id: 'q7_other_lung_condition',
+    text: (context) => <>Have you ever been diagnosed with another long-term lung condition—such as <Highlight context={context}>COPD/emphysema</Highlight>, <Highlight context={context}>bronchiectasis</Highlight>, or <Highlight context={context}>pulmonary fibrosis</Highlight>?</>,
     answerChoices: ['Yes', 'No', 'Unsure'],
     answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Recent cancer treatment is disqualifying.'
+    disqualifyMessage: 'Participants with other long-term lung conditions are not eligible.'
   },
   {
-    id: 'q6_transplant',
-    text: 'Have you ever received an organ or bone-marrow transplant?',
-    answerChoices: ['Yes', 'No', 'Unsure'],
-    answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Organ or bone-marrow transplant recipients are not eligible.'
-  },
-  {
-    id: 'q7_steroids',
-    text: 'Are you currently taking high-dose steroid medicines (more than 10 mg of prednisone a day) such as prednisone, methylprednisolone (Medrol), or dexamethasone?',
-    answerChoices: ['Yes', 'No', 'Unsure'],
-    answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'High-dose steroid use is disqualifying.'
-  },
-  {
-    id: 'q8_immunosuppressants',
-    text: 'Are you currently taking powerful immune-suppressing drugs like cyclophosphamide, rituximab (Rituxan), adalimumab (Humira), etanercept (Enbrel), or similar medications?',
-    answerChoices: ['Yes', 'No', 'Unsure'],
-    answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Strong immunosuppressant use is disqualifying.'
-  },
-  {
-    id: 'q9_clot',
-    text: 'Have you had a blood clot (deep-vein thrombosis or pulmonary embolism) within the last year?',
-    answerChoices: ['Yes', 'No', 'Unsure'],
-    answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Recent blood clots are disqualifying.'
-  },
-  {
-    id: 'q10_pregnancy',
+    id: 'q8_pregnancy',
     text: 'Are you currently pregnant or breastfeeding?',
+    answerChoices: ['Yes', 'No'],
+    answerKey: { Yes: 'Disqualified', No: 'Qualified' },
+    disqualifyMessage: 'Participants who are pregnant or breastfeeding are not eligible.'
+  },
+  {
+    id: 'q9_parasite_infection',
+    text: (context) => <>Have you been told you had a <Highlight context={context}>parasite infection</Highlight> (for example, <Highlight context={context}>hookworm</Highlight>) in the last 6 months?</>,
     answerChoices: ['Yes', 'No', 'Unsure'],
     answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
-    disqualifyMessage: 'Pregnancy or breastfeeding is disqualifying.'
+    disqualifyMessage: 'A recent parasite infection is a disqualifying factor.'
+  },
+  {
+    id: 'q10_immune_deficiency',
+    text: (context) => <>Have you ever been diagnosed with an <Highlight context={context}>immune-deficiency condition</Highlight> such as <Highlight context={context}>HIV/AIDS</Highlight>?</>,
+    answerChoices: ['Yes', 'No', 'Unsure'],
+    answerKey: { Yes: 'Disqualified', No: 'Qualified', Unsure: 'Qualified' },
+    disqualifyMessage: 'An immune-deficiency condition is a disqualifying factor.'
   }
 ];
 
@@ -95,7 +100,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [skippedPrescreen, setSkippedPrescreen] = useState(false);
-  const [contactFormStarted, setContactFormStarted] = useState(false);
+
   const [answers, setAnswers] = useState({});
   const [contactInfo, setContactInfo] = useState({
     name: '',
@@ -186,7 +191,6 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     const significantStepChanges = [
 
       'qualified',
-      'contactForm',
       'bookingOpened',
       'success',
       'reservationSuccess',
@@ -219,7 +223,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       question: question.id,
       answer: selectedAnswer,
       step: currentStep,
-      study_type: 'CKD Clinical Trial Screening'
+      study_type: 'Asthma Clinical Trial Screening'
     });
 
     // Determine qualification based on answerKey mapping
@@ -245,7 +249,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     trackEvent('QuestionnaireSkipped', {
       from_step: currentStep,
-      study_type: 'CKD Clinical Trial Screening'
+      study_type: 'Asthma Clinical Trial Screening'
     });
     
     updateStep('qualified');
@@ -256,7 +260,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     trackEvent('InstantBookingChosen', {
       from_step: 'qualified',
-      study_type: 'CKD Clinical Trial Screening'
+      study_type: 'Asthma Clinical Trial Screening'
     });
     
     // Show embedded calendar modal
@@ -269,10 +273,10 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     trackEvent('ContactFirstChosen', {
       from_step: 'qualified',
-      study_type: 'CKD Clinical Trial Screening'
+      study_type: 'Asthma Clinical Trial Screening'
     });
     
-    updateStep('contactForm');
+    updateStep('qualified');
   };
 
   const handleContactChange = (field, value) => {
@@ -280,15 +284,15 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
   };
 
   const handleContactFormStart = () => {
-    if (!contactFormStarted) {
-      setContactFormStarted(true);
-      trackEvent('BeganContactForm', {
-        form_type: 'Clinical_Trial_Screening',
-        completed_prescreen: !skippedPrescreen,
-        study_type: 'CKD Clinical Trial Screening'
-      });
-    }
+    // Track when user starts filling out the contact form
+    trackEvent('ContactFormStarted', {
+      step: 'qualified',
+      study_type: 'Asthma Clinical Trial Screening',
+      user_path: userPath || 'qualified'
+    });
   };
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -296,7 +300,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     setIsSubmitting(true);
 
     // Determine tags based on user path
-    let tags = ["CKD Study", "Website Lead"];
+    let tags = ["Asthma Study", "Website Lead"];
     if (userPath === 'contact') {
       tags.push("Talk to Someone First");
     } else {
@@ -365,7 +369,6 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
     
     updateStep(0);
     setSkippedPrescreen(false);
-    setContactFormStarted(false);
     setAnswers({});
     setContactInfo({ name: '', phone: '', email: '', preferredTime: '' });
     setErrorMessage('');
@@ -575,7 +578,9 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
 
               <div className={classes.question.container}>
                 <p className={classes.question.text}>
-                  {currentQuestion.text}
+                  {typeof currentQuestion.text === 'function' 
+                    ? currentQuestion.text(context) 
+                    : currentQuestion.text}
                 </p>
               </div>
 
@@ -704,11 +709,11 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                     
                     <div className="grid sm:grid-cols-2 gap-4 mb-6">
                       <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-blue-100">
-                        <div className="text-3xl font-bold text-blue-600 mb-2">$75</div>
+                        <div className="text-3xl font-bold text-blue-600 mb-2">$100</div>
                         <p className="text-gray-700 font-medium">Screening Visit*</p>
                       </div>
                       <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-blue-100">
-                        <div className="text-3xl font-bold text-blue-600 mb-2">$75</div>
+                        <div className="text-3xl font-bold text-blue-600 mb-2">$100</div>
                         <p className="text-gray-700 font-medium">Each Study Visit</p>
                       </div>
                     </div>
@@ -944,196 +949,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
             </div>
           )}
 
-          {/* Contact Form Step */}
-          {currentStep === 'contactForm' && (
-            <form onSubmit={handleSubmit} onFocus={handleContactFormStart}>
-              <button 
-                type="button" 
-                onClick={() => updateStep('qualified')}
-                className={clsx(
-                  "w-full flex items-center justify-center px-6 py-4 text-base sm:text-lg font-bold rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-offset-2 font-heading shadow-lg hover:shadow-xl min-h-[56px] touch-manipulation mb-6",
-                  context === 'hero' 
-                    ? "bg-gray-100 border-2 border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-indigo-400" 
-                    : "bg-gray-100 border-2 border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-blue-primary"
-                )}
-              >
-                <FontAwesomeIcon icon={faArrowLeft} className="mr-2 text-lg" />
-                <span>Back to Scheduling Options</span>
-              </button>
-              
-              <div className={classes.header}>
-                <h3 className={classes.title}>Let's Connect</h3>
-                <p className={classes.subtitle}>
-                  We'll call you within 24 hours to discuss the study.
-                </p>
-              </div>
-              
-              <div className={classes.form.container}>
-                <div className={classes.form.group}>
-                  <input 
-                    type="text" 
-                    name="name" 
-                    id="name" 
-                    required 
-                    className={classes.form.input}
-                    placeholder="Your Name" 
-                    value={contactInfo.name} 
-                    onChange={(e) => handleContactChange('name', e.target.value)}
-                  />
-                </div>
-                
-                <div className={classes.form.group}>
-                  <PhoneInput 
-                    name="phone" 
-                    id="phone" 
-                    required 
-                    className={classes.form.input}
-                    placeholder="Phone Number" 
-                    value={contactInfo.phone} 
-                    onChange={(value) => handleContactChange('phone', value)}
-                    defaultCountry="US"
-                    international={false}
-                    countryCallingCodeEditable={false}
-                    countries={['US']}
-                  />
-                </div>
-                
-                <div className={classes.form.group}>
-                  <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    required 
-                    className={classes.form.input}
-                    placeholder="Email Address" 
-                    value={contactInfo.email} 
-                    onChange={(e) => handleContactChange('email', e.target.value)}
-                  />
-                </div>
-                
-                <div className={classes.form.group}>
-                  <select 
-                    name="preferredTime" 
-                    id="preferredTime" 
-                    className={clsx(
-                      classes.form.input,
-                      "appearance-none bg-no-repeat bg-right pr-12",
-                      "cursor-pointer text-ellipsis font-medium",
-                      "option:py-4 option:px-4 option:text-lg option:font-medium",
-                      "focus:ring-4 focus:ring-offset-2",
-                      context === 'hero' 
-                        ? "bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNSA1TDkgMSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K')] bg-[length:12px_8px] bg-[right_1rem_center]"
-                        : "bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNSA1TDkgMSIgc3Ryb2tlPSIjNjc3NDhGIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=')] bg-[length:12px_8px] bg-[right_1rem_center]"
-                    )}
-                    value={contactInfo.preferredTime} 
-                    onChange={(e) => handleContactChange('preferredTime', e.target.value)}
-                    style={{
-                      fontSize: '1rem',
-                      lineHeight: '1.5'
-                    }}
-                  >
-                    <option 
-                      value="" 
-                      className="py-4 px-4 text-lg font-medium leading-relaxed"
-                      style={{
-                        padding: '16px 16px',
-                        fontSize: '1.125rem',
-                        lineHeight: '1.6',
-                        fontWeight: '500',
-                        backgroundColor: context === 'hero' ? '#1e40af' : '#f8fafc',
-                        color: context === 'hero' ? '#ffffff' : '#1f2937'
-                      }}
-                    >
-                      Best time to call (optional)
-                    </option>
-                    <option 
-                      value="morning" 
-                      className="py-4 px-4 text-lg font-medium leading-relaxed"
-                      style={{
-                        padding: '16px 16px',
-                        fontSize: '1.125rem',
-                        lineHeight: '1.6',
-                        fontWeight: '500',
-                        backgroundColor: context === 'hero' ? '#1e40af' : '#f8fafc',
-                        color: context === 'hero' ? '#ffffff' : '#1f2937'
-                      }}
-                    >
-                      Morning (9:00 AM - 12:00 PM)
-                    </option>
-                    <option 
-                      value="afternoon" 
-                      className="py-4 px-4 text-lg font-medium leading-relaxed"
-                      style={{
-                        padding: '16px 16px',
-                        fontSize: '1.125rem',
-                        lineHeight: '1.6',
-                        fontWeight: '500',
-                        backgroundColor: context === 'hero' ? '#1e40af' : '#f8fafc',
-                        color: context === 'hero' ? '#ffffff' : '#1f2937'
-                      }}
-                    >
-                      Afternoon (12:00 PM - 5:00 PM)
-                    </option>
-                    <option 
-                      value="evening" 
-                      className="py-4 px-4 text-lg font-medium leading-relaxed"
-                      style={{
-                        padding: '16px 16px',
-                        fontSize: '1.125rem',
-                        lineHeight: '1.6',
-                        fontWeight: '500',
-                        backgroundColor: context === 'hero' ? '#1e40af' : '#f8fafc',
-                        color: context === 'hero' ? '#ffffff' : '#1f2937'
-                      }}
-                    >
-                      Evening (5:00 PM - 8:00 PM)
-                    </option>
-                    <option 
-                      value="anytime" 
-                      className="py-4 px-4 text-lg font-medium leading-relaxed"
-                      style={{
-                        padding: '16px 16px',
-                        fontSize: '1.125rem',
-                        lineHeight: '1.6',
-                        fontWeight: '500',
-                        backgroundColor: context === 'hero' ? '#1e40af' : '#f8fafc',
-                        color: context === 'hero' ? '#ffffff' : '#1f2937'
-                      }}
-                    >
-                      Anytime (9:00 AM - 8:00 PM)
-                    </option>
-                  </select>
-                </div>
-                
-                <div className="pt-2">
-                  <button 
-                    type="submit" 
-                    disabled={isSubmitting} 
-                    className={classes.buttons.primary}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
-                        Submitting...
-                      </>
-                    ) : (
-                      'Submit'
-                    )}
-                  </button>
-                </div>
-                
-                {errorMessage && (
-                  <p className="text-center text-red-500 text-sm mt-3 p-2 bg-red-50 rounded-lg">
-                    {errorMessage}
-                  </p>
-                )}
-                
-                <p className="text-center text-xs text-gray-500 mt-4">
-                  Your information is secure and confidential.
-                </p>
-              </div>
-            </form>
-          )}
+
 
           {/* Reservation Success State */}
           {currentStep === 'reservationSuccess' && (

@@ -12,14 +12,29 @@ export default function Document() {
           dangerouslySetInnerHTML={{
             __html: `
               // Remove any data attributes added by browser extensions
-              window.addEventListener('DOMContentLoaded', () => {
-                const images = document.querySelectorAll('img[data--h-bstatus], img[data--h-bresult]');
-                images.forEach(img => {
-                  img.removeAttribute('data--h-bstatus');
-                  img.removeAttribute('data--h-bresult');
-                  img.removeAttribute('data--h-bfrom-bx');
-                });
-              });
+              (function() {
+                function removeExtensionAttributes() {
+                  const images = document.querySelectorAll('img');
+                  images.forEach(img => {
+                    // Remove common browser extension attributes
+                    const attrs = img.getAttributeNames();
+                    attrs.forEach(attr => {
+                      if (attr.startsWith('data--h-') || attr.startsWith('data-h-')) {
+                        img.removeAttribute(attr);
+                      }
+                    });
+                  });
+                }
+                
+                // Run immediately
+                removeExtensionAttributes();
+                
+                // Run on DOMContentLoaded
+                document.addEventListener('DOMContentLoaded', removeExtensionAttributes);
+                
+                // Run periodically to catch dynamically added images
+                setInterval(removeExtensionAttributes, 1000);
+              })();
             `,
           }}
         />

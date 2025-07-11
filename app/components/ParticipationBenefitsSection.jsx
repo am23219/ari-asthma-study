@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -8,30 +7,31 @@ import {
   faHeartPulse, 
   faFileLines, 
   faHandshake, 
-  faUserGroup 
+  faUserGroup,
+  faCalendarCheck
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function ParticipationBenefitsSection() {
   const benefits = [
     {
       icon: faHeartPulse,
-      text: 'Have <span class="text-teal-accent font-semibold">in-depth, long-term monitoring of your health</span>. This includes access to specialist medical tests that would not be part of standard care outside of a clinical study.'
+      text: 'Receive <span class="text-teal-accent font-semibold">close monitoring of your asthma</span> by a team of specialists. This includes advanced lung imaging to see how your airways respond to treatment, offering insights not available through standard care.'
     },
     {
-      icon: faAppleWhole,
-      text: 'Receive <span class="text-teal-accent font-semibold">long-term nutrition and physical activity advice</span> to support you in adopting healthier lifestyle choices.'
+      icon: faCalendarCheck,
+      text: 'Experience a <span class="text-teal-accent font-semibold">simpler treatment schedule</span>. The investigational medication is given only twice a year, which could mean fewer clinic visits and less disruption to your life compared to other biologics.'
     },
     {
       icon: faFileLines,
-      text: 'Gain in-depth <span class="text-teal-accent font-semibold">understanding of your condition</span>.'
+      text: 'Gain a deeper <span class="text-teal-accent font-semibold">understanding of your specific type of asthma</span> and how new treatments are being developed to target it.'
     },
     {
       icon: faHandshake,
-      text: 'Be a <span class="text-teal-accent font-semibold">partner</span> in this quest to help improve understanding and treatment of CKD.'
+      text: 'Become a <span class="text-teal-accent font-semibold">vital partner</span> in the effort to advance asthma research and develop more effective, convenient therapies.'
     },
     {
       icon: faUserGroup,
-      text: 'Potentially <span class="text-teal-accent font-semibold">help other people with CKD</span> in the future.'
+      text: 'Help <span class="text-teal-accent font-semibold">improve the lives of millions</span> of people who struggle with severe asthma in the future.'
     }
   ];
 
@@ -46,11 +46,11 @@ export default function ParticipationBenefitsSection() {
           className="text-center mb-10 md:mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-5 text-navy-deep font-heading tracking-tight">
-            What Would Taking Part Mean for Me?
+            What Does Participation Involve?
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-primary to-navy-deep mx-auto mb-6"></div>
           <p className="text-lg text-gray-800 max-w-3xl mx-auto font-body leading-relaxed">
-            Taking part in this study may provide you with an opportunity to:
+            Taking part in the IMAGINE study is an opportunity to contribute to medical science and potentially benefit from a new approach to asthma care. Here's what it could mean for you:
           </p>
         </motion.div>
 

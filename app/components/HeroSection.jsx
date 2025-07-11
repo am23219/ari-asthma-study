@@ -50,16 +50,16 @@ export default function HeroSection() {
               transition={{ duration: 0.5 }}
             >
               <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 text-white leading-tight tracking-tight" style={{ textShadow: '0 2px 15px rgba(0,0,0,0.8)' }}>
-                Have you been <span className="block">managing</span> <span className="text-[#00B3A6] drop-shadow-lg">Chronic Kidney Disease (CKD)?</span>
+                Struggling with <span className="block">Severe Asthma?</span> <span className="text-[#00B3A6] drop-shadow-lg">The IMAGINE Study</span>
               </h1>
               <p className="font-body text-lg md:text-xl text-white mb-6 md:mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.6)' }}>
-              Join our clinical research study evaluating an investigational oral medication that may help slow kidney damage and reduce protein in the urine.
+              The IMAGINE Study is evaluating a new, long-acting investigational treatment that may help control a specific type of severe asthma. This could mean fewer asthma attacks and a simpler treatment routine with only two injections per year.
               </p>
               
               <div className="mb-6 md:mb-10">
                 <h3 className="text-xl md:text-2xl font-semibold text-white mb-4 flex items-center text-left font-heading" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.6)' }}>
                   <span className="bg-[#00B3A6] h-8 w-2 mr-3 rounded-full"></span>
-                  Study Benefits
+                  Participation Benefits
                 </h3>
                 <ul className="space-y-3 md:space-y-5 max-w-xl lg:mx-0">
                   <li className="flex items-center bg-white/10 hover:bg-white/15 transition-colors duration-300 rounded-lg p-3 backdrop-blur-sm border border-white/10">
@@ -68,7 +68,7 @@ export default function HeroSection() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                       </svg>
                     </div>
-                    <span className="text-lg md:text-xl font-medium text-white font-body">No Cost</span>
+                    <span className="text-lg md:text-xl font-medium text-white font-body">Receive investigational treatment at no cost</span>
                   </li>
                   <li className="flex items-center bg-white/10 hover:bg-white/15 transition-colors duration-300 rounded-lg p-3 backdrop-blur-sm border border-white/10">
                     <div className="bg-[#00B3A6] rounded-full p-2 mr-4 flex-shrink-0">
@@ -76,7 +76,7 @@ export default function HeroSection() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                       </svg>
                     </div>
-                    <span className="text-lg md:text-xl font-medium text-white font-body">Free Transportation via Uber</span>
+                    <span className="text-lg md:text-xl font-medium text-white font-body">Complimentary transportation</span>
                   </li>
                   <li className="flex items-center bg-white/10 hover:bg-white/15 transition-colors duration-300 rounded-lg p-3 backdrop-blur-sm border border-white/10">
                     <div className="bg-[#00B3A6] rounded-full p-2 mr-4 flex-shrink-0">
@@ -84,7 +84,7 @@ export default function HeroSection() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                       </svg>
                     </div>
-                    <span className="text-lg md:text-xl font-medium text-white font-body">Compensation Provided</span>
+                    <span className="text-lg md:text-xl font-medium text-white font-body">Compensation for participation</span>
                   </li>
                 </ul>
               </div>

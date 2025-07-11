@@ -2,7 +2,6 @@ import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Script from 'next/script';
-import Image from 'next/image';
 import FacebookPixel from './components/FacebookPixel';
 
 const SITE_URL = process.env.SITE_URL || 'https://amariuc.netlify.app';
@@ -16,14 +15,14 @@ if (!FB_PIXEL_ID) {
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "CKD Clinical Trials | Access Research Institute",
-  description: "Explore clinical trials and studies for Chronic Kidney Disease (CKD). Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+  title: "Severe Asthma Clinical Trial | The IMAGINE Study | Access Research Institute",
+  description: "Learn about the IMAGINE Study, a clinical trial for a new, long-acting treatment for severe asthma. Find out about eligibility, benefits, and how to enroll. Help advance asthma research with Access Research Institute.",
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "CKD Clinical Trials | Access Research Institute",
-    description: "Explore clinical trials and studies for Chronic Kidney Disease (CKD). Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    title: "Severe Asthma Clinical Trial | The IMAGINE Study | Access Research Institute",
+    description: "Learn about the IMAGINE Study, a clinical trial for a new, long-acting treatment for severe asthma. Find out about eligibility, benefits, and how to enroll. Help advance asthma research with Access Research Institute.",
     url: '/',
     siteName: 'Access Research Institute',
     images: [
@@ -31,7 +30,7 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'A doctor and patient discussing CKD treatment options.',
+        alt: 'A doctor explaining a new asthma treatment to a patient.',
       },
     ],
     locale: 'en_US',
@@ -39,8 +38,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "CKD Clinical Trials | Access Research Institute",
-    description: "Explore clinical trials and studies for Chronic Kidney Disease (CKD). Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    title: "Severe Asthma Clinical Trial | The IMAGINE Study | Access Research Institute",
+    description: "Learn about the IMAGINE Study, a clinical trial for a new, long-acting treatment for severe asthma. Find out about eligibility, benefits, and how to enroll. Help advance asthma research with Access Research Institute.",
     images: ['/og-image.png'],
   },
   robots: {
@@ -59,8 +58,8 @@ export const metadata = {
   structuredData: {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": "CKD Clinical Trials | Access Research Institute",
-    "description": "Explore clinical trials and studies for Chronic Kidney Disease (CKD). Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+    "name": "Severe Asthma Clinical Trial | The IMAGINE Study | Access Research Institute",
+    "description": "Learn about the IMAGINE Study, a clinical trial for a new, long-acting treatment for severe asthma. Find out about eligibility, benefits, and how to enroll. Help advance asthma research with Access Research Institute.",
     "url": SITE_URL,
     "publisher": {
       "@type": "Organization",
@@ -111,8 +110,8 @@ export default function RootLayout({ children }) {
                   "@type": "MedicalWebPage",
                   "@id": SITE_URL,
                   "url": SITE_URL,
-                  "name": "CKD Clinical Trials | Access Research Institute",
-                  "description": "Explore clinical trials and studies for Chronic Kidney Disease (CKD). Learn about participation benefits and enrollment. Access Research Institute is a leading provider of clinical research services.",
+                  "name": "Severe Asthma Clinical Trial | The IMAGINE Study | Access Research Institute",
+                  "description": "Learn about the IMAGINE Study, a clinical trial for a new, long-acting treatment for severe asthma. Find out about eligibility, benefits, and how to enroll. Help advance asthma research with Access Research Institute.",
                   "publisher": {
                     "@type": "Organization",
                     "name": "Access Research Institute"
@@ -125,7 +124,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className="antialiased bg-white-soft text-text-main font-body scroll-smooth" suppressHydrationWarning>
+      <body className="antialiased bg-white-soft text-text-main font-body scroll-smooth" suppressHydrationWarning={true}>
         {/* Facebook Pixel noscript fallback */}
         {FB_PIXEL_ID && (
           <noscript>
