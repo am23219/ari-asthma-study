@@ -92,21 +92,24 @@ export default function HeroSection() {
           </div>
 
           <div className="w-full lg:w-7/12">
-            <div className="w-full mx-auto lg:mx-0 lg:max-w-none p-4 sm:p-6 bg-black/25 rounded-xl backdrop-blur-md shadow-lg border-2 border-teal-400/50">
+            <div className="w-full mx-auto lg:mx-0 lg:max-w-none overflow-hidden rounded-xl shadow-2xl border border-white/20">
               {shouldShowQuestionnaireHeader() && (
-                <>
-                  <h3 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading text-white">
+                <div className="bg-gradient-to-r from-blue-100/95 to-cyan-100/95 backdrop-blur-sm px-4 sm:px-6 py-6 border-b border-blue-200/30">
+                  <h3 className="text-2xl md:text-3xl font-bold text-center mb-2 font-heading text-gray-800">
                     Quick 30-Second Eligibility Check
                   </h3>
-                  <p className="text-center text-white/90 mb-6 text-base font-body">
+                  <p className="text-center text-gray-700 mb-0 text-base font-body">
                     Answer a few simple questions to see if you qualify for the study.
                   </p>
-                </>
+                </div>
               )}
-              <LeadCaptureForm context="hero" onStepChange={handleFormStepChange} />
-              <p className="text-xs text-center text-white/80 mt-4 font-body">
-                  Your information is secure and will only be used to determine study eligibility.
-              </p>
+              
+              <div className="bg-gradient-to-br from-white/95 to-blue-50/95 backdrop-blur-md p-4 sm:p-6">
+                <LeadCaptureForm context="hero" onStepChange={handleFormStepChange} />
+                <p className="text-xs text-center text-gray-600 mt-4 font-body">
+                    Your information is secure and will only be used to determine study eligibility.
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -397,24 +397,24 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
       
       header: clsx(
         "text-center mb-4 sm:mb-6",
-        isHero ? "text-white" : "text-navy-deep"
+        isHero ? "text-gray-800" : "text-navy-deep"
       ),
       
       title: clsx(
         "text-xl sm:text-2xl md:text-3xl font-bold mb-2 font-heading leading-tight",
-        isHero ? "text-white" : "text-navy-deep"
+        isHero ? "text-gray-800" : "text-navy-deep"
       ),
       
       subtitle: clsx(
         "text-sm sm:text-base opacity-90 font-body",
-        isHero ? "text-white/90" : "text-text-sub"
+        isHero ? "text-gray-700" : "text-text-sub"
       ),
       
       question: {
-        container: "mb-4 sm:mb-6",
+        container: "mb-6 sm:mb-8",
         text: clsx(
-          "text-lg sm:text-xl font-bold mb-3 sm:mb-4 border-l-4 pl-3 py-1 font-heading leading-relaxed",
-          isHero ? "text-white border-teal-400" : "text-navy-deep border-teal-accent"
+          "text-xl sm:text-2xl md:text-3xl font-bold mb-6 sm:mb-8 border-l-4 pl-4 sm:pl-6 py-3 sm:py-4 font-heading leading-relaxed",
+          isHero ? "text-gray-800 border-indigo-500" : "text-navy-deep border-teal-accent"
         )
       },
       
@@ -423,19 +423,19 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         primary: clsx(
           "w-full px-6 py-4 sm:py-5 text-base sm:text-lg font-bold text-white rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-offset-2 font-heading shadow-lg hover:shadow-xl min-h-[56px] touch-manipulation",
           isHero 
-            ? "bg-gradient-to-br from-teal-500 to-cyan-600 focus:ring-teal-400" 
+            ? "bg-gradient-to-br from-indigo-500 to-blue-600 focus:ring-indigo-400" 
             : "bg-gradient-to-br from-blue-primary to-navy-deep focus:ring-blue-primary"
         ),
         secondary: clsx(
           "w-full px-6 py-4 sm:py-5 text-base sm:text-lg font-bold text-white rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-offset-2 font-heading min-h-[56px] touch-manipulation",
           isHero 
-            ? "bg-white/10 border-2 border-white/20 hover:bg-white/20 focus:ring-teal-400" 
+            ? "bg-gray-700/80 border-2 border-gray-600/60 hover:bg-gray-600/80 focus:ring-indigo-400" 
             : "bg-blue-primary/50 border-2 border-blue-primary/80 hover:bg-blue-primary/70 focus:ring-blue-primary"
         ),
         tertiary: clsx(
           "w-full text-center px-6 py-4 text-base sm:text-lg font-medium rounded-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-offset-2 font-body min-h-[56px] touch-manipulation",
           isHero 
-            ? "border-2 border-white/50 text-white/90 hover:bg-white/10 focus:ring-teal-400" 
+            ? "border-2 border-gray-400 text-gray-700 hover:bg-gray-100 focus:ring-indigo-400" 
             : "border-2 border-blue-primary/80 text-blue-primary hover:bg-blue-primary/10 focus:ring-blue-primary"
         )
       },
@@ -445,12 +445,12 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         group: "space-y-2",
         label: clsx(
           "block text-lg sm:text-xl font-medium font-heading",
-          isHero ? "text-white" : "text-gray-700"
+          isHero ? "text-gray-800" : "text-gray-700"
         ),
         input: clsx(
           "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
           isHero 
-            ? "border-white/20 bg-white/10 text-white placeholder-white/70 focus:ring-teal-400 focus:border-teal-400" 
+            ? "border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-indigo-400 focus:border-indigo-400" 
             : "border-gray-300 bg-white text-gray-900 focus:ring-navy-accent focus:border-navy-accent"
         )
       },
@@ -460,11 +460,11 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         icon: "mx-auto mb-4 bg-gradient-to-br from-teal-accent to-blue-primary rounded-full p-4 w-20 h-20 flex items-center justify-center shadow-lg",
         title: clsx(
           "text-2xl sm:text-3xl font-bold font-heading leading-tight",
-          isHero ? "text-white" : "text-navy-deep"
+          isHero ? "text-gray-800" : "text-navy-deep"
         ),
         text: clsx(
           "text-base sm:text-lg font-body leading-relaxed",
-          isHero ? "text-white/90" : "text-text-sub"
+          isHero ? "text-gray-700" : "text-text-sub"
         )
       },
       
@@ -473,17 +473,17 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         icon: "mx-auto mb-3 bg-gradient-to-br from-orange-400 to-red-500 rounded-full p-3 w-16 h-16 flex items-center justify-center shadow-lg",
         title: clsx(
           "text-xl sm:text-2xl font-bold font-heading",
-          isHero ? "text-white" : "text-navy-deep"
+          isHero ? "text-gray-800" : "text-navy-deep"
         ),
         content: clsx(
           "text-left space-y-2 text-xs sm:text-sm font-body",
-          isHero ? "text-white" : "text-text-sub"
+          isHero ? "text-gray-700" : "text-text-sub"
         )
       },
       
       skip: clsx(
         "text-center text-xs mt-3 opacity-70",
-        isHero ? "text-white/60" : "text-gray-400"
+        isHero ? "text-gray-600" : "text-gray-400"
       )
     };
   };
@@ -541,10 +541,10 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
         ref={formRef} 
         className={classes.container} 
         style={{
-          '--phone-input-background': context === 'hero' ? 'rgba(255, 255, 255, 0.1)' : '#fff',
-          '--phone-input-text-color': context === 'hero' ? '#fff' : '#111827',
-          '--phone-input-border-color': context === 'hero' ? 'rgba(255, 255, 255, 0.2)' : '#D1D5DB',
-          '--phone-input-focus-ring-color': context === 'hero' ? '#2DD4BF' : '#00528A'
+          '--phone-input-background': context === 'hero' ? '#fff' : '#fff',
+          '--phone-input-text-color': context === 'hero' ? '#111827' : '#111827',
+          '--phone-input-border-color': context === 'hero' ? '#D1D5DB' : '#D1D5DB',
+          '--phone-input-focus-ring-color': context === 'hero' ? '#6366F1' : '#00528A'
         }}
       >
       <AnimatePresence mode="wait">
@@ -616,14 +616,41 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
           {/* Qualified Step - Contact Form */}
           {currentStep === 'qualified' && (
             <form onSubmit={handleSubmit} onFocus={handleContactFormStart}>
-              {/* Header */}
-              <div className={classes.success.container}>
-                <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
-                  <FontAwesomeIcon icon={faUserDoctor} className="text-white h-8 w-8 relative z-10" />
+              {/* Header - Integrated with main content */}
+              <div className="text-center mb-8">
+                <div className="mb-6">
+                  <div className="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg bg-white border-2 border-blue-100 mb-4">
+                    <FontAwesomeIcon icon={faUserDoctor} className="text-blue-600 h-7 w-7" />
+                  </div>
+                  <h3 className={clsx(
+                    "text-3xl sm:text-4xl font-bold mb-3 font-heading leading-tight",
+                    context === 'hero' ? "text-gray-800" : "text-gray-900"
+                  )}>
+                    You're Invited for a Complimentary Pre-Screening
+                  </h3>
+                  <div className={clsx(
+                    "w-20 h-0.5 mx-auto",
+                    context === 'hero' ? "bg-indigo-400" : "bg-blue-500"
+                  )}></div>
                 </div>
-                <h3 className={classes.success.title}>You're Invited for a Complimentary Pre-Screening</h3>
-                <p className={clsx(classes.success.text, "max-w-3xl mx-auto")}>
-                  Based on your answers, you may be a candidate. The next step is a no-cost, no-obligation pre-screening visit to confirm if the study is right for you.
+                
+                <p className={clsx(
+                  "text-lg sm:text-xl font-medium leading-relaxed max-w-4xl mx-auto mb-2",
+                  context === 'hero' ? "text-gray-700" : "text-gray-700"
+                )}>
+                  Based on your answers, <strong>you may be a good fit for the study.</strong>
+                </p>
+                
+                <p className={clsx(
+                  "text-lg sm:text-xl font-medium leading-relaxed max-w-4xl mx-auto mb-2",
+                  context === 'hero' ? "text-gray-700" : "text-gray-700"
+                )}>
+                  The next step is a 
+                  <span className={clsx(
+                    "font-semibold",
+                    context === 'hero' ? "text-gray-800" : "text-gray-900"
+                  )}> no-cost, no-obligation </span> 
+                  pre-screening visit, where our team will go over your health in more detail, walk you through what the study involves, and help you decide if it's the right fit for you.
                 </p>
               </div>
 
@@ -633,7 +660,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                 <div className="px-6 py-10 sm:p-12">
                   <div className="text-center mb-12">
                     <h4 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">What to Expect at Your Visit</h4>
-                    <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-teal-500 rounded-full mx-auto"></div>
+                    <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mx-auto"></div>
                   </div>
                   
                   {/* Clean Process Steps */}
@@ -647,7 +674,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                     </div>
 
                     <div className="text-center group">
-                      <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300 shadow-lg">
+                      <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300 shadow-lg">
                         <FontAwesomeIcon icon={faUserDoctor} className="text-white h-7 w-7" />
                       </div>
                       <h5 className="text-xl font-bold text-gray-900 mb-3">Educational Consultation</h5>
@@ -702,7 +729,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                 </div>
 
                 {/* Form Section - Clean and Modern */}
-                <div className="bg-gradient-to-b from-gray-50 to-white px-6 py-10 sm:p-12 border-t border-gray-100">
+                <div className="bg-gradient-to-b from-blue-50 to-white px-6 py-10 sm:p-12 border-t border-blue-100">
                   <div className="text-center mb-8">
                     <h4 className="text-3xl font-bold text-gray-900 mb-4">Reserve Your Free Pre-Screening</h4>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto">Enter your details below to get a link to our scheduling calendar.</p>
@@ -799,20 +826,20 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         disabled={isSubmitting}
                         className={clsx(
                           "relative w-full group overflow-hidden",
-                          "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500",
-                          "hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600",
+                          "bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500",
+                          "hover:from-indigo-600 hover:via-blue-600 hover:to-purple-600",
                           "text-white font-bold text-lg sm:text-xl",
                           "py-5 px-8 rounded-xl",
                           "shadow-xl hover:shadow-2xl",
                           "transform hover:scale-[1.02] active:scale-[0.98]",
                           "transition-all duration-300 ease-out",
                           "border-2 border-transparent hover:border-white/20",
-                          "focus:outline-none focus:ring-4 focus:ring-teal-300/50",
+                          "focus:outline-none focus:ring-4 focus:ring-indigo-300/50",
                           "min-h-[64px] touch-manipulation",
                           isSubmitting && "opacity-75 cursor-not-allowed"
                         )}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="relative flex items-center justify-center space-x-3">
                           {isSubmitting ? (
                             <>
@@ -923,7 +950,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                 className={clsx(
                   "w-full flex items-center justify-center px-6 py-4 text-base sm:text-lg font-bold rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-offset-2 font-heading shadow-lg hover:shadow-xl min-h-[56px] touch-manipulation mb-6",
                   context === 'hero' 
-                    ? "bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 focus:ring-teal-400" 
+                    ? "bg-gray-100 border-2 border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-indigo-400" 
                     : "bg-gray-100 border-2 border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-blue-primary"
                 )}
               >
@@ -1113,7 +1140,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
               </div>
               <h3 className={classes.success.title}>Your Scheduling Link Has Been Sent!</h3>
               {/* Combined notification and scheduling */}
-              <div className="mt-8 bg-gradient-to-br from-blue-50 to-teal-50 rounded-xl p-6 border-2 border-blue-200 shadow-sm">
+              <div className="mt-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200 shadow-sm">
                 <div className="text-center">
                   <div className="flex items-center justify-center space-x-4 mb-4">
                     <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
@@ -1222,14 +1249,14 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
               </div>
               <h3 className={classes.disqualified.title}>Thank You for Your Interest</h3>
               <div className={classes.disqualified.content}>
-                <p className={clsx("mb-3 text-center", context === 'hero' ? 'text-white' : '')}>
+                <p className={clsx("mb-3 text-center", context === 'hero' ? 'text-gray-700' : '')}>
                   Based on your answers, you may not qualify for this study at this time. Here's a summary of the key eligibility criteria:
                 </p>
                 {Object.entries(answers).map(([questionId, answer]) => {
                   const question = QUESTIONS.find(q => q.id === questionId);
                   if (question && question.answerKey[answer] === 'Disqualified') {
                     return (
-                      <p key={questionId} className={clsx("mb-1", context === 'hero' ? 'text-white' : '')}>
+                      <p key={questionId} className={clsx("mb-1", context === 'hero' ? 'text-gray-700' : '')}>
                         • {question.disqualifyMessage}
                       </p>
                     );
