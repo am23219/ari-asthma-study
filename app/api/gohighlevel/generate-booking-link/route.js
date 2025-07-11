@@ -18,8 +18,12 @@ export async function POST(request) {
       throw new Error('GoHighLevel API key not configured');
     }
 
-    // Updated calendar ID for CKD study booking widget
-    const calendarId = 'a1VjNanrncl9AJKzAsNm';
+    // Get calendar ID from environment variables
+    const calendarId = process.env.GOHIGHLEVEL_CALENDAR_ID;
+
+    if (!calendarId) {
+      throw new Error('GoHighLevel calendar ID not configured');
+    }
 
     // Try multiple potential endpoints for generating one-time booking links
     const endpointsToTry = [

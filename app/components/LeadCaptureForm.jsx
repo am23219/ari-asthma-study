@@ -518,7 +518,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
             </div>
             <div className="flex-1 min-h-0 overflow-auto relative">
               <iframe
-                src="https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm"
+                src={`https://api.leadconnectorhq.com/widget/booking/${process.env.NEXT_PUBLIC_GOHIGHLEVEL_CALENDAR_ID}`}
                 width="100%"
                 height="100%"
                 frameBorder="0"
@@ -618,117 +618,114 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
             <form onSubmit={handleSubmit} onFocus={handleContactFormStart}>
               {/* Header */}
               <div className={classes.success.container}>
-                <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
-                  <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600 h-8 w-8 relative z-10" />
+                <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
+                  <FontAwesomeIcon icon={faUserDoctor} className="text-white h-8 w-8 relative z-10" />
                 </div>
-                <h3 className={classes.success.title}>You're Invited for a Full Pre-Screening</h3>
+                <h3 className={classes.success.title}>You're Invited for a Complimentary Pre-Screening</h3>
                 <p className={clsx(classes.success.text, "max-w-3xl mx-auto")}>
                   Based on your answers, you may be a candidate. The next step is a no-cost, no-obligation pre-screening visit to confirm if the study is right for you.
                 </p>
               </div>
 
-              {/* Main Content Container - Full Width */}
-              <div className="mt-8 mb-8 bg-white text-gray-800 rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden">
-                {/* 1. What to Expect Section */}
-                <div className="px-6 py-8 sm:p-10 pb-6">
-                  <h4 className="text-2xl sm:text-3xl font-bold text-navy-deep text-center mb-8 font-heading">What to Expect at Your Visit</h4>
+              {/* Main Content Container - Simplified and Clean */}
+              <div className="mt-8 mb-8 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+                {/* What to Expect Section */}
+                <div className="px-6 py-10 sm:p-12">
+                  <div className="text-center mb-12">
+                    <h4 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">What to Expect at Your Visit</h4>
+                    <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-teal-500 rounded-full mx-auto"></div>
+                  </div>
                   
-                  {/* Vertical Stepper */}
-                  <div className="space-y-6">
-                    
-                    {/* Step 1 */}
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
-                        <FontAwesomeIcon icon={faFileMedical} className="text-blue-600 h-5 w-5 relative z-10" />
+                  {/* Clean Process Steps */}
+                  <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div className="text-center group">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300 shadow-lg">
+                        <FontAwesomeIcon icon={faFileMedical} className="text-white h-7 w-7" />
                       </div>
-                      <div className="flex-1 pt-2">
-                        <h5 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 font-heading">Medical History Review</h5>
-                        <p className="text-gray-600 text-base leading-relaxed font-body">Our medical team will conduct a comprehensive review of your health background.</p>
-                      </div>
+                      <h5 className="text-xl font-bold text-gray-900 mb-3">Medical History Review</h5>
+                      <p className="text-gray-600 leading-relaxed">Comprehensive review of your health background with our medical team.</p>
                     </div>
 
-                    {/* Step 2 */}
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
-                        <FontAwesomeIcon icon={faUserDoctor} className="text-emerald-600 h-5 w-5 relative z-10" />
+                    <div className="text-center group">
+                      <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300 shadow-lg">
+                        <FontAwesomeIcon icon={faUserDoctor} className="text-white h-7 w-7" />
                       </div>
-                      <div className="flex-1 pt-2">
-                        <h5 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 font-heading">Educational Consultation</h5>
-                        <p className="text-gray-600 text-base leading-relaxed font-body">You'll have the opportunity to learn about your kidney health and ask any questions.</p>
-                      </div>
+                      <h5 className="text-xl font-bold text-gray-900 mb-3">Educational Consultation</h5>
+                      <p className="text-gray-600 leading-relaxed">Learn about your condition and ask questions about our study.</p>
                     </div>
 
-                    {/* Step 3 */}
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(147, 51, 234, 0.8) 0%, rgba(147, 51, 234, 0.4) 50%, transparent 100%)'}}>
-                        <FontAwesomeIcon icon={faClipboardCheck} className="text-purple-600 h-5 w-5 relative z-10" />
+                    <div className="text-center group">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300 shadow-lg">
+                        <FontAwesomeIcon icon={faClipboardCheck} className="text-white h-7 w-7" />
                       </div>
-                      <div className="flex-1 pt-2">
-                        <h5 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 font-heading">Qualification Assessment</h5>
-                        <p className="text-gray-600 text-base leading-relaxed font-body">We will determine if the study is a good and safe fit for your specific health needs.</p>
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
-
-                {/* 2. Key Details Section */}
-                <div className="px-6 sm:px-10 pb-8">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                    {/* Compensation Card */}
-                    <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6 border border-green-200/50 shadow-sm">
-                      <div className="flex items-center mb-6">
-                        <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.4) 50%, transparent 100%)'}}>
-                          <span className="text-green-600 text-xl relative z-10">🤝</span>
-                        </div>
-                        <h6 className="font-bold text-gray-800 ml-5 font-heading text-lg">Compensation If You Qualify</h6>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between p-4 bg-white/70 rounded-lg border border-green-100">
-                          <span className="text-gray-700 font-medium text-base font-body">Screening Visit</span>
-                          <span className="text-green-700 text-xl sm:text-2xl font-bold font-heading">$75</span>
-                        </div>
-                        <div className="flex items-center justify-between p-4 bg-white/70 rounded-lg border border-green-100">
-                          <span className="text-gray-700 font-medium text-base font-body">Each Completed Study Visit</span>
-                          <span className="text-green-700 text-xl sm:text-2xl font-bold font-heading">$75</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Location & Duration Card */}
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200/50 shadow-sm">
-                      <div className="space-y-5">
-                        <div className="flex items-start space-x-4">
-                          <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
-                            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-blue-600 h-5 w-5 relative z-10" />
-                          </div>
-                          <div className="flex-1 pt-2">
-                            <h6 className="font-bold text-gray-800 font-heading text-lg">Location</h6>
-                            <p className="text-gray-700 text-base font-body leading-relaxed">Access Research Institute at Oak Hill Hospital, Brooksville, FL</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start space-x-4">
-                          <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.4) 50%, transparent 100%)'}}>
-                            <FontAwesomeIcon icon={faClock} className="text-green-600 h-5 w-5 relative z-10" />
-                          </div>
-                          <div className="flex-1 pt-2">
-                            <h6 className="font-bold text-gray-800 font-heading text-lg">Visit Duration</h6>
-                            <p className="text-gray-700 text-base font-body leading-relaxed">Approx. 3-4 hours (may end earlier)</p>
-                          </div>
-                        </div>
-                      </div>
+                      <h5 className="text-xl font-bold text-gray-900 mb-3">Qualification Assessment</h5>
+                      <p className="text-gray-600 leading-relaxed">Determine if the study is a good and safe fit for your needs.</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Form Section with visible gradient blend */}
-                <div className="bg-gradient-to-b from-blue-50/50 via-blue-100/60 to-blue-50/70 px-6 py-8 sm:p-10 border-t border-blue-200/40">
+                {/* Compensation Section - Simplified */}
+                <div className="px-6 sm:px-12 pb-10">
+                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-100 max-w-3xl mx-auto">
+                    <div className="text-center mb-8">
+                      <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-white text-2xl">💰</span>
+                      </div>
+                      <h5 className="text-2xl font-bold text-gray-900 mb-2">Study Compensation</h5>
+                      <p className="text-gray-600">You receive payment for your time and participation</p>
+                    </div>
+                    
+                    <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                      <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-emerald-100">
+                        <div className="text-3xl font-bold text-emerald-600 mb-2">$75</div>
+                        <p className="text-gray-700 font-medium">Screening Visit*</p>
+                      </div>
+                      <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-emerald-100">
+                        <div className="text-3xl font-bold text-emerald-600 mb-2">$75</div>
+                        <p className="text-gray-700 font-medium">Each Study Visit</p>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white/80 rounded-xl p-4 text-center border border-emerald-100 mb-4">
+                      <p className="text-emerald-800 font-semibold">
+                        <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
+                        No Cost to You • No Insurance Required
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-gray-500 text-sm">
+                        *Screening Visit is scheduled after your pre-screening appointment
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Form Section - Clean and Modern */}
+                <div className="bg-gradient-to-b from-gray-50 to-white px-6 py-10 sm:p-12 border-t border-gray-100">
                   <div className="text-center mb-8">
-                    <h4 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 leading-tight font-heading">
-                      Reserve Your Free Pre-Screening
-                    </h4>
-                    <p className="text-gray-600 max-w-xl mx-auto font-body">Enter your details below to get a link to our scheduling calendar.</p>
+                    <h4 className="text-3xl font-bold text-gray-900 mb-4">Reserve Your Free Pre-Screening</h4>
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">Enter your details below to get a link to our scheduling calendar.</p>
+                  </div>
+                  
+                  {/* Location & Duration - Simplified */}
+                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 max-w-md mx-auto">
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <FontAwesomeIcon icon={faMapMarkerAlt} className="text-blue-600 h-5 w-5" />
+                        </div>
+                        <h6 className="font-semibold text-gray-900 mb-1">Location</h6>
+                        <p className="text-gray-600 text-sm">Alongside Oak Hill Hospital<br /><strong>Brooksville, FL</strong></p>
+                      </div>
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <FontAwesomeIcon icon={faClock} className="text-green-600 h-5 w-5" />
+                        </div>
+                        <h6 className="font-semibold text-gray-900 mb-1">Duration</h6>
+                        <p className="text-gray-600 text-sm">Approx. 3-4 hours<br />(may end earlier)</p>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="space-y-4 sm:space-y-6 max-w-lg mx-auto">
@@ -886,7 +883,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                     )}
                     
                     <a 
-                      href="https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm"
+                      href={`https://api.leadconnectorhq.com/widget/booking/${process.env.NEXT_PUBLIC_GOHIGHLEVEL_CALENDAR_ID}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"
@@ -1144,7 +1141,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                   </div>
                   
                   <a 
-                    href="https://api.leadconnectorhq.com/widget/booking/a1VjNanrncl9AJKzAsNm"
+                    href={`https://api.leadconnectorhq.com/widget/booking/${process.env.NEXT_PUBLIC_GOHIGHLEVEL_CALENDAR_ID}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 underline text-sm font-normal transition-colors duration-200"

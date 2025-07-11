@@ -33,7 +33,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-24 pb-12 md:py-20 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center lg:items-start lg:justify-start pt-24 pb-12 md:py-20 overflow-hidden">
       <div
         className="absolute inset-0 bg-[url('/treatment-image.jpg')] bg-cover bg-center opacity-100 z-[0]"
       ></div>
@@ -41,8 +41,8 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-br from-[#003F73]/90 via-[#00609B]/85 to-[#0077CC]/95 z-[1]"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-[1]"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full lg:pt-12">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 md:gap-8">
           <div className="w-full lg:w-5/12 text-center lg:text-left mt-2 md:mt-0">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
