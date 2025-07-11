@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { trackFbPixelEvent } from './FacebookPixel';
-import { faSpinner, faCheckCircle, faExclamationTriangle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faExclamationTriangle, faArrowLeft, faMapMarkerAlt, faClock, faDollarSign, faFileMedical, faUserDoctor, faClipboardCheck, faInfoCircle, faCheckCircle, faEnvelope, faPhone, faCalendarCheck, faHandshake, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 const toProperCase = (str) => {
   if (!str) return '';
@@ -616,200 +616,228 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
           {/* Qualified Step - Contact Form */}
           {currentStep === 'qualified' && (
             <form onSubmit={handleSubmit} onFocus={handleContactFormStart}>
+              {/* Header */}
               <div className={classes.success.container}>
-                <div className={classes.success.icon}>
-                  <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
+                <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
+                  <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600 h-8 w-8 relative z-10" />
                 </div>
-                <h3 className={classes.success.title}>You Qualify for our Pre-Screening</h3>
+                <h3 className={classes.success.title}>You're Invited for a Full Pre-Screening</h3>
+                <p className={clsx(classes.success.text, "max-w-3xl mx-auto")}>
+                  Based on your answers, you may be a candidate. The next step is a no-cost, no-obligation pre-screening visit to confirm if the study is right for you.
+                </p>
+              </div>
 
-                {/* What Happens at Your Visit & Contact Form - Combined in light blue box */}
-                <div className="mt-8 mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200 shadow-sm">
-                  <div className="p-6 sm:p-8">
-                    <div className="flex items-center mb-6">
-                      <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                        <span className="text-white font-bold text-lg">📅</span>
-                      </div>
-                      <h4 className="font-bold text-gray-800 text-lg sm:text-xl leading-tight">
-                        What Happens at Your Pre-Screening Visit
-                      </h4>
-                    </div>
+              {/* Main Content Container - Full Width */}
+              <div className="mt-8 mb-8 bg-white text-gray-800 rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden">
+                {/* 1. What to Expect Section */}
+                <div className="px-6 py-8 sm:p-10 pb-6">
+                  <h4 className="text-2xl sm:text-3xl font-bold text-navy-deep text-center mb-8 font-heading">What to Expect at Your Visit</h4>
+                  
+                  {/* Vertical Stepper */}
+                  <div className="space-y-6">
                     
-                    <div className="space-y-4 mb-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-green-600 font-bold text-sm">1</span>
-                        </div>
-                        <p className="text-gray-700 text-lg sm:text-xl font-medium leading-relaxed">
-                          Review of your full medical history
-                        </p>
+                    {/* Step 1 */}
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
+                        <FontAwesomeIcon icon={faFileMedical} className="text-blue-600 h-5 w-5 relative z-10" />
                       </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-green-600 font-bold text-sm">2</span>
-                        </div>
-                        <p className="text-gray-700 text-lg sm:text-xl font-medium leading-relaxed">
-                          Ask questions and learn about your condition
-                        </p>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-green-600 font-bold text-sm">3</span>
-                        </div>
-                        <p className="text-gray-700 text-lg sm:text-xl font-medium leading-relaxed">
-                          See if the study is a good fit for you
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Compensation Information - Made more prominent */}
-                    <div className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-xl p-6 border-2 border-blue-200 mb-8">
-                      <div className="flex items-center mb-4">
-                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                          <span className="text-white font-bold text-lg">🤝</span>
-                        </div>
-                        <h5 className="font-bold text-gray-800 text-lg sm:text-xl">
-                          Compensation If You Qualify
-                        </h5>
-                      </div>
-                      
-                                          <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
-                        <span className="text-gray-700 text-base sm:text-lg font-medium">
-                          Screening Visit
-                        </span>
-                        <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                          $75
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
-                        <span className="text-gray-700 text-base sm:text-lg font-medium">
-                          Each Completed Study Visit
-                        </span>
-                        <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                          $75
-                        </span>
-                      </div>
-                    </div>
-                      
-                      <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-gray-700 text-base sm:text-lg font-medium leading-relaxed text-center">
-                          ⏱️ Visit takes about <strong>3 hours</strong>
-                        </p>
+                      <div className="flex-1 pt-2">
+                        <h5 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 font-heading">Medical History Review</h5>
+                        <p className="text-gray-600 text-base leading-relaxed font-body">Our medical team will conduct a comprehensive review of your health background.</p>
                       </div>
                     </div>
 
-                    {/* Contact Form - Now inside the same blue box */}
-                    <div className="space-y-4 sm:space-y-6">
-                      {/* CTA Heading */}
-                      <div className="text-center mb-6">
-                        <h4 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 leading-tight">
-                          Reserve Your Free Pre-Screening
-                        </h4>
+                    {/* Step 2 */}
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
+                        <FontAwesomeIcon icon={faUserDoctor} className="text-emerald-600 h-5 w-5 relative z-10" />
                       </div>
-                      
-                      <div className="space-y-2">
-                        <input 
-                          type="text" 
-                          name="name" 
-                          id="name" 
-                          required 
-                          className={clsx(
-                            "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
-                            "border-blue-300 bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500"
-                          )}
-                          placeholder="Your Name" 
-                          value={contactInfo.name} 
-                          onChange={(e) => handleContactChange('name', e.target.value)}
-                        />
+                      <div className="flex-1 pt-2">
+                        <h5 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 font-heading">Educational Consultation</h5>
+                        <p className="text-gray-600 text-base leading-relaxed font-body">You'll have the opportunity to learn about your kidney health and ask any questions.</p>
                       </div>
-                      
-                      <div className="space-y-2">
-                        <PhoneInput 
-                          name="phone" 
-                          id="phone" 
-                          required 
-                          className={clsx(
-                            "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
-                            "border-blue-300 bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500"
-                          )}
-                          placeholder="Phone Number" 
-                          value={contactInfo.phone} 
-                          onChange={(value) => handleContactChange('phone', value)}
-                          defaultCountry="US"
-                          international={false}
-                          countryCallingCodeEditable={false}
-                          countries={['US']}
-                        />
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(147, 51, 234, 0.8) 0%, rgba(147, 51, 234, 0.4) 50%, transparent 100%)'}}>
+                        <FontAwesomeIcon icon={faClipboardCheck} className="text-purple-600 h-5 w-5 relative z-10" />
                       </div>
-                      
-                      <div className="space-y-2">
-                        <input 
-                          type="email" 
-                          name="email" 
-                          id="email" 
-                          required 
-                          className={clsx(
-                            "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
-                            "border-blue-300 bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500"
-                          )}
-                          placeholder="Email Address" 
-                          value={contactInfo.email} 
-                          onChange={(e) => handleContactChange('email', e.target.value)}
-                        />
+                      <div className="flex-1 pt-2">
+                        <h5 className="font-semibold text-gray-800 text-lg sm:text-xl mb-2 font-heading">Qualification Assessment</h5>
+                        <p className="text-gray-600 text-base leading-relaxed font-body">We will determine if the study is a good and safe fit for your specific health needs.</p>
                       </div>
-                      
-                      {/* Main CTA - Reserve Pre-Screening */}
-                      <div className="pt-2">
-                        <button 
-                          type="submit"
-                          disabled={isSubmitting}
-                          className={clsx(
-                            "relative w-full group overflow-hidden",
-                            "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500",
-                            "hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600",
-                            "text-white font-bold text-lg sm:text-xl",
-                            "py-6 px-8 rounded-2xl",
-                            "shadow-xl hover:shadow-2xl",
-                            "transform hover:scale-[1.02] active:scale-[0.98]",
-                            "transition-all duration-300 ease-out",
-                            "border-2 border-transparent hover:border-white/20",
-                            "focus:outline-none focus:ring-4 focus:ring-teal-300/50",
-                            "min-h-[64px] touch-manipulation",
-                            isSubmitting && "opacity-75 cursor-not-allowed"
-                          )}
-                        >
-                          {/* Animated background glow */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          
-                          {/* Button content */}
-                          <div className="relative flex items-center justify-center space-x-3">
-                            {isSubmitting ? (
-                              <>
-                                <FontAwesomeIcon icon={faSpinner} spin className="text-xl" />
-                                <span className="font-heading">Reserving...</span>
-                              </>
-                            ) : (
-                              <>
-                                <span className="text-2xl">📅</span>
-                                <span className="font-heading">Get My Scheduling Link</span>
-                              </>
-                            )}
+                    </div>
+                    
+                  </div>
+                </div>
+
+                {/* 2. Key Details Section */}
+                <div className="px-6 sm:px-10 pb-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    {/* Compensation Card */}
+                    <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6 border border-green-200/50 shadow-sm">
+                      <div className="flex items-center mb-6">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.4) 50%, transparent 100%)'}}>
+                          <span className="text-green-600 text-xl relative z-10">🤝</span>
+                        </div>
+                        <h6 className="font-bold text-gray-800 ml-5 font-heading text-lg">Compensation If You Qualify</h6>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-4 bg-white/70 rounded-lg border border-green-100">
+                          <span className="text-gray-700 font-medium text-base font-body">Screening Visit</span>
+                          <span className="text-green-700 text-xl sm:text-2xl font-bold font-heading">$75</span>
+                        </div>
+                        <div className="flex items-center justify-between p-4 bg-white/70 rounded-lg border border-green-100">
+                          <span className="text-gray-700 font-medium text-base font-body">Each Completed Study Visit</span>
+                          <span className="text-green-700 text-xl sm:text-2xl font-bold font-heading">$75</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Location & Duration Card */}
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200/50 shadow-sm">
+                      <div className="space-y-5">
+                        <div className="flex items-start space-x-4">
+                          <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
+                            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-blue-600 h-5 w-5 relative z-10" />
                           </div>
-                          
-                          {/* Pulse animation */}
-                          <div className="absolute inset-0 bg-white/10 rounded-2xl opacity-0 group-hover:opacity-100 animate-pulse"></div>
-                        </button>
+                          <div className="flex-1 pt-2">
+                            <h6 className="font-bold text-gray-800 font-heading text-lg">Location</h6>
+                            <p className="text-gray-700 text-base font-body leading-relaxed">Access Research Institute at Oak Hill Hospital, Brooksville, FL</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-4">
+                          <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.4) 50%, transparent 100%)'}}>
+                            <FontAwesomeIcon icon={faClock} className="text-green-600 h-5 w-5 relative z-10" />
+                          </div>
+                          <div className="flex-1 pt-2">
+                            <h6 className="font-bold text-gray-800 font-heading text-lg">Visit Duration</h6>
+                            <p className="text-gray-700 text-base font-body leading-relaxed">Approx. 3-4 hours (may end earlier)</p>
+                          </div>
+                        </div>
                       </div>
-                      
-                      {errorMessage && (
-                        <p className="text-center text-red-500 text-sm mt-3 p-2 bg-red-50 rounded-lg">
-                          {errorMessage}
-                        </p>
-                      )}
-
                     </div>
+                  </div>
+                </div>
+
+                {/* Form Section with visible gradient blend */}
+                <div className="bg-gradient-to-b from-blue-50/50 via-blue-100/60 to-blue-50/70 px-6 py-8 sm:p-10 border-t border-blue-200/40">
+                  <div className="text-center mb-8">
+                    <h4 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 leading-tight font-heading">
+                      Reserve Your Free Pre-Screening
+                    </h4>
+                    <p className="text-gray-600 max-w-xl mx-auto font-body">Enter your details below to get a link to our scheduling calendar.</p>
+                  </div>
+                  
+                  <div className="space-y-4 sm:space-y-6 max-w-lg mx-auto">
+                    <div>
+                      <input 
+                        type="text" 
+                        name="name" 
+                        id="name" 
+                        required 
+                        className={clsx(
+                          "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
+                          "border-gray-300 bg-white text-gray-900 focus:ring-blue-primary/50 focus:border-blue-primary"
+                        )}
+                        placeholder="Full Name" 
+                        value={contactInfo.name} 
+                        onChange={(e) => handleContactChange('name', e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <PhoneInput 
+                        name="phone" 
+                        id="phone" 
+                        required 
+                        className={clsx(
+                          "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
+                          "border-gray-300 bg-white text-gray-900 focus:ring-blue-primary/50 focus:border-blue-primary"
+                        )}
+                        placeholder="Phone Number" 
+                        value={contactInfo.phone} 
+                        onChange={(value) => handleContactChange('phone', value)}
+                        defaultCountry="US"
+                        international={false}
+                        countryCallingCodeEditable={false}
+                        countries={['US']}
+                      />
+                    </div>
+                    
+                    <div>
+                      <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        required 
+                        className={clsx(
+                          "mt-2 block w-full px-4 py-4 sm:py-5 text-lg sm:text-xl border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 transition-all duration-200 min-h-[56px] touch-manipulation",
+                          "border-gray-300 bg-white text-gray-900 focus:ring-blue-primary/50 focus:border-blue-primary"
+                        )}
+                        placeholder="Email Address" 
+                        value={contactInfo.email} 
+                        onChange={(e) => handleContactChange('email', e.target.value)}
+                      />
+                    </div>
+
+                    {/* Qualification Note
+                    <div className="!mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200/80 shadow-sm">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-md relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
+                          <FontAwesomeIcon icon={faInfoCircle} className="text-blue-600 h-4 w-4 relative z-10" />
+                        </div>
+                        <p className="text-blue-800 text-sm font-medium leading-relaxed font-body pt-1">
+                          <strong>Please Note:</strong> Qualification depends on the study's medical requirements, which are confirmed during the pre-screening visit.
+                        </p>
+                      </div>
+                    </div> */}
+                    
+                    {/* Main CTA */}
+                    <div className="pt-4">
+                      <button 
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={clsx(
+                          "relative w-full group overflow-hidden",
+                          "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500",
+                          "hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600",
+                          "text-white font-bold text-lg sm:text-xl",
+                          "py-5 px-8 rounded-xl",
+                          "shadow-xl hover:shadow-2xl",
+                          "transform hover:scale-[1.02] active:scale-[0.98]",
+                          "transition-all duration-300 ease-out",
+                          "border-2 border-transparent hover:border-white/20",
+                          "focus:outline-none focus:ring-4 focus:ring-teal-300/50",
+                          "min-h-[64px] touch-manipulation",
+                          isSubmitting && "opacity-75 cursor-not-allowed"
+                        )}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="relative flex items-center justify-center space-x-3">
+                          {isSubmitting ? (
+                            <>
+                              <FontAwesomeIcon icon={faSpinner} spin className="text-xl" />
+                              <span className="font-heading">Reserving...</span>
+                            </>
+                          ) : (
+                            <>
+                              <FontAwesomeIcon icon={faCalendarCheck} className="text-2xl mr-2" />
+                              <span className="font-heading">Get My Scheduling Link</span>
+                            </>
+                          )}
+                        </div>
+                        <div className="absolute inset-0 bg-white/10 rounded-2xl opacity-0 group-hover:opacity-100 animate-pulse"></div>
+                      </button>
+                    </div>
+                    
+                    {errorMessage && (
+                      <p className="text-center text-red-600 text-sm mt-3 p-3 bg-red-100 rounded-lg font-medium">
+                        {errorMessage}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -821,103 +849,18 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
           {/* Booking Opened Confirmation */}
           {currentStep === 'bookingOpened' && (
             <div data-success-message className={classes.success.container}>
-              <div className={classes.success.icon}>
-                <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
+              <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
+                <FontAwesomeIcon icon={faCalendarCheck} className="text-emerald-600 h-8 w-8 relative z-10" />
               </div>
               <h3 className={classes.success.title}>Perfect! Your Calendar is Ready</h3>
-              <p className={classes.success.text}>
-                {showCalendarModal ? 
-                  "The scheduling calendar is now open. Please select your preferred appointment time." :
-                  "The scheduling calendar was opened. You can reopen it below or use the direct link."
-                }
-              </p>
-
-              {/* Consistent information matching the qualified step */}
-              <div className="mt-8 mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200 shadow-sm">
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                      <span className="text-white font-bold text-lg">📅</span>
-                    </div>
-                    <h4 className="font-bold text-gray-800 text-lg sm:text-xl leading-tight">
-                      Your Pre-Screening Visit Details
-                    </h4>
-                  </div>
-                  
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-green-600 font-bold text-sm">1</span>
-                      </div>
-                      <p className="text-gray-700 text-lg sm:text-xl font-medium leading-relaxed">
-                        Review of your full medical history
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-start space-x-4">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-green-600 font-bold text-sm">2</span>
-                      </div>
-                      <p className="text-gray-700 text-lg sm:text-xl font-medium leading-relaxed">
-                        Ask questions and learn about your condition
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-start space-x-4">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-green-600 font-bold text-sm">3</span>
-                      </div>
-                      <p className="text-gray-700 text-lg sm:text-xl font-medium leading-relaxed">
-                        See if the study is a good fit for you
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Compensation Information - Consistent with qualified step */}
-                  <div className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-xl p-6 border-2 border-blue-200">
-                    <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                        <span className="text-white font-bold text-lg">🤝</span>
-                      </div>
-                      <h5 className="font-bold text-gray-800 text-lg sm:text-xl">
-                        Compensation If You Qualify
-                      </h5>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
-                        <span className="text-gray-700 text-base sm:text-lg font-medium">
-                          Screening Visit
-                        </span>
-                        <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                          $75
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200">
-                        <span className="text-gray-700 text-base sm:text-lg font-medium">
-                          Each Completed Study Visit
-                        </span>
-                        <span className="text-blue-700 text-xl sm:text-2xl font-bold">
-                          $75
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <p className="text-gray-700 text-base sm:text-lg font-medium leading-relaxed text-center">
-                        ⏱️ Visit takes about <strong>3 hours</strong>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
               
               {/* Enhanced fallback section with better styling */}
               <div className="mt-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border-2 border-emerald-200 shadow-sm">
                 <div className="p-6">
                   <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                      <span className="text-white font-bold text-lg">📅</span>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
+                      <FontAwesomeIcon icon={faCalendarCheck} className="text-emerald-600 h-5 w-5 relative z-10" />
                     </div>
                     <h4 className="font-bold text-emerald-800 text-lg">
                       {showCalendarModal ? "Calendar is Open Above" : "Need to Schedule?"}
@@ -937,7 +880,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         onClick={() => setShowCalendarModal(true)}
                         className="inline-flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"
                       >
-                        <span className="mr-2 text-white">📅</span>
+                        <FontAwesomeIcon icon={faCalendarCheck} className="mr-2 text-white h-4 w-4" />
                         <span className="text-white">Reopen Calendar</span>
                       </button>
                     )}
@@ -948,7 +891,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-lg"
                     >
-                      <span className="mr-2 text-white">🔗</span>
+                      <FontAwesomeIcon icon={faExternalLinkAlt} className="mr-2 text-white h-4 w-4" />
                       <span className="text-white">Open in New Tab</span>
                     </a>
                     
@@ -1074,7 +1017,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         color: context === 'hero' ? '#ffffff' : '#1f2937'
                       }}
                     >
-                      🕐 Best time to call (optional)
+                      Best time to call (optional)
                     </option>
                     <option 
                       value="morning" 
@@ -1088,7 +1031,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         color: context === 'hero' ? '#ffffff' : '#1f2937'
                       }}
                     >
-                      🌅 Morning (9:00 AM - 12:00 PM)
+                      Morning (9:00 AM - 12:00 PM)
                     </option>
                     <option 
                       value="afternoon" 
@@ -1102,7 +1045,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         color: context === 'hero' ? '#ffffff' : '#1f2937'
                       }}
                     >
-                      ☀️ Afternoon (12:00 PM - 5:00 PM)
+                      Afternoon (12:00 PM - 5:00 PM)
                     </option>
                     <option 
                       value="evening" 
@@ -1116,7 +1059,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         color: context === 'hero' ? '#ffffff' : '#1f2937'
                       }}
                     >
-                      🌆 Evening (5:00 PM - 8:00 PM)
+                      Evening (5:00 PM - 8:00 PM)
                     </option>
                     <option 
                       value="anytime" 
@@ -1130,7 +1073,7 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         color: context === 'hero' ? '#ffffff' : '#1f2937'
                       }}
                     >
-                      ⏰ Anytime (9:00 AM - 8:00 PM)
+                      Anytime (9:00 AM - 8:00 PM)
                     </option>
                   </select>
                 </div>
@@ -1168,19 +1111,19 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
           {/* Reservation Success State */}
           {currentStep === 'reservationSuccess' && (
             <div data-success-message className={classes.success.container}>
-              <div className={classes.success.icon}>
-                <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
+              <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
+                <FontAwesomeIcon icon={faEnvelope} className="text-emerald-600 h-8 w-8 relative z-10" />
               </div>
               <h3 className={classes.success.title}>Your Scheduling Link Has Been Sent!</h3>
               {/* Combined notification and scheduling */}
               <div className="mt-8 bg-gradient-to-br from-blue-50 to-teal-50 rounded-xl p-6 border-2 border-blue-200 shadow-sm">
                 <div className="text-center">
                   <div className="flex items-center justify-center space-x-4 mb-4">
-                    <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xl">📧</span>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)'}}>
+                      <FontAwesomeIcon icon={faEnvelope} className="text-blue-600 h-5 w-5 relative z-10" />
                     </div>
-                    <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xl">📱</span>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.4) 50%, transparent 100%)'}}>
+                      <FontAwesomeIcon icon={faPhone} className="text-green-600 h-5 w-5 relative z-10" />
                     </div>
                   </div>
                   <h4 className="font-bold text-gray-800 text-xl mb-2">
@@ -1214,8 +1157,8 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
               {/* Contact info */}
               <div className="mt-8 bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <span className="text-white text-sm">📞</span>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(107, 114, 128, 0.8) 0%, rgba(107, 114, 128, 0.4) 50%, transparent 100%)'}}>
+                    <FontAwesomeIcon icon={faPhone} className="text-gray-600 h-4 w-4 relative z-10" />
                   </div>
                   <p className="text-gray-700 text-sm mb-1">
                     <strong>Need Help?</strong>
@@ -1231,8 +1174,8 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
           {/* Success State */}
           {currentStep === 'success' && (
             <div data-success-message className={classes.success.container}>
-              <div className={classes.success.icon}>
-                <FontAwesomeIcon icon={faCheckCircle} className="h-8 w-8 text-white" />
+              <div className="mx-auto mb-6 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl relative" style={{background: 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 50%, transparent 100%)'}}>
+                <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600 h-8 w-8 relative z-10" />
               </div>
               <h3 className={classes.success.title}>Thank You for Your Interest</h3>
               <p className={classes.success.text}>
@@ -1277,8 +1220,8 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
           {/* Not Qualified State */}
           {currentStep === 'notQualified' && (
             <div className={classes.disqualified.container}>
-              <div className={classes.disqualified.icon}>
-                <FontAwesomeIcon icon={faExclamationTriangle} className="h-8 w-8 text-white" />
+              <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center shadow-lg relative" style={{background: 'radial-gradient(circle, rgba(251, 146, 60, 0.8) 0%, rgba(251, 146, 60, 0.4) 50%, transparent 100%)'}}>
+                <FontAwesomeIcon icon={faExclamationTriangle} className="h-8 w-8 text-orange-600 relative z-10" />
               </div>
               <h3 className={classes.disqualified.title}>Thank You for Your Interest</h3>
               <div className={classes.disqualified.content}>
