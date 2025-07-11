@@ -1,6 +1,6 @@
-# UC Study Site
+# IMAGINE Study - Severe Asthma
 
-This is a Next.js project for a clinical trial landing page for Ulcerative Colitis.
+This is a Next.js project for a clinical trial landing page for the IMAGINE Study, evaluating a new investigational treatment for severe asthma.
 
 ## Getting Started
 
@@ -21,6 +21,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `FB_API_ACCESS_TOKEN` - Facebook Conversions API Access Token.
 - `FB_TEST_EVENT_CODE` - (Optional) Facebook Test Event Code for debugging server-side events.
 
-# am-ar-ckd-maze
-# ari-asthma-study
 # ari-asthma-study

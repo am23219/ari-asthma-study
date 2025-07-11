@@ -34,12 +34,186 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center lg:items-start lg:justify-start pt-24 pb-12 md:py-20 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-[url('/treatment-image.jpg')] bg-cover bg-center opacity-100 z-[0]"
-      ></div>
+      {/* Animated Helix Background */}
+      <div className="absolute inset-0 z-[0]" style={{
+        background: `linear-gradient(135deg, 
+          rgba(0, 63, 115, 0.95) 0%,
+          rgba(0, 96, 155, 0.9) 25%,
+          rgba(0, 119, 204, 0.9) 50%,
+          rgba(0, 179, 166, 0.85) 75%,
+          rgba(0, 119, 204, 0.9) 100%
+        )`
+      }}>
+        {/* Multiple Animated Helixes */}
+        {[...Array(5)].map((_, i) => {
+          const helixColors = [
+            'rgba(0, 179, 166, 0.8)', // Main teal
+            'rgba(0, 199, 204, 0.7)', // Light cyan
+            'rgba(0, 155, 200, 0.6)', // Blue-cyan
+            'rgba(64, 224, 208, 0.5)', // Turquoise
+            'rgba(0, 206, 209, 0.7)'  // Dark turquoise
+          ];
+          const backColors = [
+            'rgba(0, 139, 139, 0.4)', // Dark cyan
+            'rgba(0, 159, 164, 0.3)', // Medium cyan
+            'rgba(0, 119, 160, 0.3)', // Blue-cyan back
+            'rgba(32, 178, 170, 0.25)', // Medium sea green
+            'rgba(0, 166, 169, 0.4)'  // Dark turquoise back
+          ];
+          
+          return (
+            <div
+              key={i}
+              className="absolute opacity-25"
+              style={{
+                left: `${20 + i * 20}%`,
+                top: '-10%',
+                width: '200px',
+                height: '120%',
+                animation: `rotateHelix ${8 + i * 2}s linear infinite`,
+                animationDelay: `${i * 1.5}s`
+              }}
+            >
+              {/* Helix Structure */}
+              <div className="relative w-full h-full">
+                {[...Array(20)].map((_, j) => (
+                  <div
+                    key={j}
+                    className="absolute w-4 h-4 rounded-full"
+                    style={{
+                      background: helixColors[i % helixColors.length],
+                      left: `${40 + 30 * Math.sin((j * Math.PI) / 3)}%`,
+                      top: `${j * 5}%`,
+                      opacity: 0.4 + (Math.sin((j * Math.PI) / 3) + 1) * 0.3,
+                      transform: `scale(${0.5 + Math.abs(Math.sin((j * Math.PI) / 3)) * 0.5})`,
+                      animation: `pulse ${2 + (j % 3)}s ease-in-out infinite`,
+                      animationDelay: `${j * 0.1}s`,
+                      boxShadow: `0 0 8px ${helixColors[i % helixColors.length]}`
+                    }}
+                  />
+                ))}
+                {[...Array(20)].map((_, j) => (
+                  <div
+                    key={`back-${j}`}
+                    className="absolute w-3 h-3 rounded-full"
+                    style={{
+                      background: backColors[i % backColors.length],
+                      left: `${40 - 30 * Math.sin((j * Math.PI) / 3)}%`,
+                      top: `${j * 5 + 2.5}%`,
+                      opacity: 0.2 + (Math.sin((j * Math.PI) / 3) + 1) * 0.15,
+                      transform: `scale(${0.3 + Math.abs(Math.sin((j * Math.PI) / 3)) * 0.3})`,
+                      animation: `pulse ${2.5 + (j % 3)}s ease-in-out infinite`,
+                      animationDelay: `${j * 0.15}s`,
+                      boxShadow: `0 0 6px ${backColors[i % backColors.length]}`
+                    }}
+                  />
+                ))}
+                {/* Connecting Lines */}
+                {[...Array(19)].map((_, j) => (
+                  <div
+                    key={`line-${j}`}
+                    className="absolute"
+                    style={{
+                      background: `linear-gradient(90deg, ${helixColors[i % helixColors.length]}, ${backColors[i % backColors.length]})`,
+                      left: `${40 + 30 * Math.sin((j * Math.PI) / 3)}%`,
+                      top: `${j * 5 + 2}%`,
+                      width: `${Math.abs(60 * Math.sin((j * Math.PI) / 3))}%`,
+                      height: '1px',
+                      opacity: 0.15 + Math.abs(Math.sin((j * Math.PI) / 3)) * 0.15,
+                      transformOrigin: 'left center',
+                      animation: `fadeInOut ${3 + (j % 2)}s ease-in-out infinite`,
+                      animationDelay: `${j * 0.2}s`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+        
+        {/* Floating DNA Particles */}
+        {[...Array(15)].map((_, i) => {
+          const particleColors = [
+            'rgba(0, 179, 166, 0.6)', // Main teal
+            'rgba(0, 199, 204, 0.5)', // Light cyan
+            'rgba(64, 224, 208, 0.4)', // Turquoise
+            'rgba(0, 206, 209, 0.5)', // Dark turquoise
+            'rgba(175, 238, 238, 0.3)' // Pale turquoise
+          ];
+          
+          return (
+            <div
+              key={`particle-${i}`}
+              className="absolute w-2 h-2 rounded-full opacity-40"
+              style={{
+                background: particleColors[i % particleColors.length],
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `float ${5 + Math.random() * 5}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 5}s`,
+                boxShadow: `0 0 4px ${particleColors[i % particleColors.length]}`
+              }}
+            />
+          );
+        })}
+        
+        {/* Flowing Helix Lines */}
+        <div className="absolute inset-0 opacity-8" style={{
+          background: `
+            repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 20px,
+              rgba(0, 179, 166, 0.2) 20px,
+              rgba(0, 179, 166, 0.2) 22px,
+              transparent 22px,
+              transparent 60px
+            ),
+            repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 20px,
+              rgba(0, 199, 204, 0.15) 20px,
+              rgba(0, 199, 204, 0.15) 22px,
+              transparent 22px,
+              transparent 60px
+            )
+          `,
+          backgroundSize: '400px 400px',
+          animation: 'slideBackground 20s linear infinite'
+        }}></div>
+      </div>
+      
+      {/* CSS Animation Styles */}
+      <style jsx>{`
+        @keyframes rotateHelix {
+          0% { transform: rotateY(0deg); }
+          100% { transform: rotateY(360deg); }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 0.3; transform: scale(0.8); }
+          50% { opacity: 0.8; transform: scale(1.2); }
+        }
+        
+        @keyframes fadeInOut {
+          0%, 100% { opacity: 0.05; }
+          50% { opacity: 0.3; }
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          33% { transform: translateY(-20px) rotate(120deg); }
+          66% { transform: translateY(10px) rotate(240deg); }
+        }
+        
+        @keyframes slideBackground {
+          0% { background-position: 0 0, 0 0; }
+          100% { background-position: 400px 400px, -400px -400px; }
+        }
+      `}</style>
 
-      <div className="absolute inset-0 bg-gradient-to-br from-[#003F73]/90 via-[#00609B]/85 to-[#0077CC]/95 z-[1]"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-[1]"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full lg:pt-12">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 md:gap-8">
