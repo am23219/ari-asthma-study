@@ -693,29 +693,29 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
 
                 {/* Compensation Section - Simplified */}
                 <div className="px-6 sm:px-12 pb-10">
-                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-100 max-w-3xl mx-auto">
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200 max-w-3xl mx-auto">
                     <div className="text-center mb-8">
-                      <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-white text-2xl">💰</span>
+                      <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <FontAwesomeIcon icon={faHandshake} className="text-white h-6 w-6" />
                       </div>
                       <h5 className="text-2xl font-bold text-gray-900 mb-2">Study Compensation</h5>
                       <p className="text-gray-600">You receive payment for your time and participation</p>
                     </div>
                     
                     <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                      <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-emerald-100">
-                        <div className="text-3xl font-bold text-emerald-600 mb-2">$75</div>
+                      <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-blue-100">
+                        <div className="text-3xl font-bold text-blue-600 mb-2">$75</div>
                         <p className="text-gray-700 font-medium">Screening Visit*</p>
                       </div>
-                      <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-emerald-100">
-                        <div className="text-3xl font-bold text-emerald-600 mb-2">$75</div>
+                      <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-blue-100">
+                        <div className="text-3xl font-bold text-blue-600 mb-2">$75</div>
                         <p className="text-gray-700 font-medium">Each Study Visit</p>
                       </div>
                     </div>
                     
-                    <div className="bg-white/80 rounded-xl p-4 text-center border border-emerald-100 mb-4">
-                      <p className="text-emerald-800 font-semibold">
-                        <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
+                    <div className="bg-white/80 rounded-xl p-4 text-center border border-blue-100 mb-4">
+                      <p className="text-blue-800 font-semibold">
+                        <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                         No Cost to You • No Insurance Required
                       </p>
                     </div>
@@ -732,7 +732,6 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                 <div className="bg-gradient-to-b from-blue-50 to-white px-6 py-10 sm:p-12 border-t border-blue-100">
                   <div className="text-center mb-8">
                     <h4 className="text-3xl font-bold text-gray-900 mb-4">Reserve Your Free Pre-Screening</h4>
-                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">Enter your details below to get a link to our scheduling calendar.</p>
                   </div>
                   
                   {/* Location & Duration - Simplified */}
@@ -753,6 +752,10 @@ export default function LeadCaptureForm({ context = 'default', onStepChange }) {
                         <p className="text-gray-600 text-sm">Approx. 3-4 hours<br />(may end earlier)</p>
                       </div>
                     </div>
+                  </div>
+                  
+                  <div className="text-center mb-8">
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">Enter your details below to get a link to our scheduling calendar.</p>
                   </div>
                   
                   <div className="space-y-4 sm:space-y-6 max-w-lg mx-auto">
